@@ -16,9 +16,8 @@ class Shortcode
         $this->plugin_basename = $plugin_basename;
     }
 
-    function script_that_requires_jquery() {
-        wp_register_script( 'script-with-dependency', plugins_url('/assets/js/highcharts/9.3.3/highcharts.js', $this->plugin_basename), array('jquery'), '9.3.3', true );
-        wp_enqueue_script( 'script-with-dependency' );
+    public function script_that_requires_jquery() {
+        wp_enqueue_script( 'script-with-dependency', plugins_url('/assets/js/highcharts/9.3.3/highcharts.js', $this->plugin_basename), array(''), false, false );
     }
 
     public function onLoaded()
@@ -28,7 +27,8 @@ class Shortcode
 
     public function shortcodeOutput($atts)
     {
-        var_dump(plugins_url('/assets/js/highcharts/9.3.3/highcharts.js', $this->plugin_basename));
+        add_action( 'wp_enqueue_scripts', 'script_that_requires_jquery' );
+        var_dump(wp_script_is( 'script-with-dependency', 'queue' ));
         return  'Weshalb funktioniert das Einbinden des JS-Files nicht';
     }
 
