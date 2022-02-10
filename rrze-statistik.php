@@ -106,7 +106,7 @@ function loaded()
         });
     } else {
         // Hauptklasse (Main) wird instanziiert.
-        $main = new Main(plugin_basename(__DIR__));
+        $main = new Main(plugin_basename(__FILE__));
         $main->onLoaded();
     }
 }
