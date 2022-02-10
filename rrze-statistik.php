@@ -18,6 +18,8 @@ defined('ABSPATH') || exit;
 
 use RRZE\statistik\Main;
 
+const RRZE_HIGHCHARTS_VERSION = '9.3.3';
+
 const RRZE_PHP_VERSION = '7.4';
 const RRZE_WP_VERSION = '5.8';
 const RRZE_PLUGIN_FILE = __FILE__;
@@ -104,7 +106,7 @@ function loaded()
         });
     } else {
         // Hauptklasse (Main) wird instanziiert.
-        $main = new Main(__FILE__);
+        $main = new Main(plugin_basename(__DIR__));
         $main->onLoaded();
     }
 }

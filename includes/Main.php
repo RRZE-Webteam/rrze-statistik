@@ -10,21 +10,22 @@ class Main
      * Full path- and file name of plugin.
      * @var string
      */
-    protected $pluginFile;
+    public $plugin_basename;
 
     /**
      * Variablen Werte zuweisen.
      * @param string $pluginFile Path and file name of plugin
      */
-    public function __construct($pluginFile)
+    public function __construct($plugin_basename)
     {
-        $this->pluginFile = $pluginFile;
+        $this->plugin_basename = $plugin_basename;
     }
-    
+
     public function onLoaded()
     {
         new Helper();
-        $shortcode = new Shortcode($this->pluginFile);
+
+        $shortcode = new Shortcode($this->plugin_basename);
         $shortcode->onLoaded();
     }
 }
