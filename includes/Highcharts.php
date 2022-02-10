@@ -12,7 +12,9 @@ class Highcharts
     }
 
     public function statistik_enqueue_script() {
+        wp_enqueue_style( 'highcharts-css', plugins_url('/assets/css/highcharts-style.css', $this->plugin_basename), array(), false, 'all' );
         wp_enqueue_script( 'highcharts-js', plugins_url('/assets/js/highcharts/9.3.3/highcharts.js', $this->plugin_basename), array('jquery'), false, true );
+        wp_enqueue_script( 'index-js', plugins_url('/assets/js/index.js', $this->plugin_basename), array('jquery'), false, true );
 
         $modules = ['accessibility', 'data', 'export-data', 'exporting'];
         foreach ($modules as $val){

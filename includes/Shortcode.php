@@ -25,8 +25,12 @@ class Shortcode
 
     public function shortcodeOutput($atts)
     {
-
-        return  'Weshalb funktioniert das Einbinden des JS-Files nicht';
+        return  '<figure class="highcharts-figure">
+        <div id="container"></div>
+        <p class="highcharts-description">
+          Die Besuche der letzten 24 Monate.
+        </p>
+      </figure>';
     }
 
     public function getContent()
