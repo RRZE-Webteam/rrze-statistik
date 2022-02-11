@@ -22,7 +22,7 @@ class Analytics
      */
     public function getLinechart($data){
         $data = new Data($this->plugin_basename);
-        $data->fetchLast24Months();
+        $data->fetchLast24Months('https://statistiken.rrze.fau.de/webauftritte/logs/www.wordpress.rrze.fau.de/webalizer.hist');
         return $this->highcharts->lineplot();
     }
 }

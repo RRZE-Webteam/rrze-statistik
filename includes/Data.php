@@ -14,19 +14,42 @@ class Data
     
         $this->plugin_basename = $plugin_basename;
     }
+    
+    public function fetchData($url){
+        return wp_remote_get( esc_url_raw($url));
+    }
 
-    public function fetchLast24Months()
+    public function retrieveBody($url){
+        $output = wp_remote_retrieve_body($this->fetchData($url));
+        return $output;
+    }
+
+    public function fetchLast24Months($url)
     {
-        $data = wp_remote_get( esc_url_raw('https://statistiken.rrze.fau.de/webauftritte/logs/www.wordpress.rrze.fau.de/webalizer.hist'));
-        $data_body = wp_remote_retrieve_body($data);
-        $data_trim = rtrim($data_body," \n\r\t\v");
-        //$replaced = str_replace(" ", ",", $data_body);
-        //$output = preg_split("/ /", $data_body);
-        $array = preg_split("/\r\n|\n|\r/", $data_trim);
-        $output = [];
-        foreach($array as $value){
-            array_push($output, preg_split("/ /", $value));
+        $keymap = array(
+            'monat',
+            'jahr',
+            'hits',
+            'files',
+            'hosts',
+            'kbytes',
+            'anzahl_monate',
+            'aufgezeichnete_tage',
+            'pages',
+            'visits',
+                );
+        $data = $this->fetchData($url);
+        if ($data !== null){
+            $data_body = $this->retrieveBody($url);
+            $data_trim = rtrim($data_body," \n\r\t\v");
+            $array = preg_split("/\r\n|\n|\r/", $data_trim);
+            $output = [];
+            foreach($array as $value){
+                array_push($output, array_combine($keymap, preg_split("/ /", $value)));
+            }
+            var_dump($output);
+        } else {
+            return "requested data could not been retrieved!";
         }
-        var_dump($output);
     } 
 }
