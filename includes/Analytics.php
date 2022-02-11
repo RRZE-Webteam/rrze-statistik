@@ -21,6 +21,8 @@ class Analytics
      * @return void
      */
     public function getLinechart($data){
+        $data = new Data($this->plugin_basename);
+        $data->fetchLast24Months();
         return $this->highcharts->lineplot();
     }
 }
