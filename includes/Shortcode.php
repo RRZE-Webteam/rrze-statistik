@@ -4,9 +4,6 @@ namespace RRZE\statistik;
 
 defined('ABSPATH') || exit;
 
-/**
- * Shortcode
- */
 class Shortcode
 {
     public $plugin_basename;
@@ -16,8 +13,6 @@ class Shortcode
         $this->plugin_basename = $plugin_basename;
     }
 
-
-
     public function onLoaded()
     {
         add_shortcode('rrze_statistik', [$this, 'shortcodeOutput'], 10, 2);
@@ -25,12 +20,8 @@ class Shortcode
 
     public function shortcodeOutput($atts)
     {
-        return  '<figure class="highcharts-figure">
-        <div id="container"></div>
-        <p class="highcharts-description">
-          Die Besuche der letzten 24 Monate.
-        </p>
-      </figure>';
+        $analytics = new Analytics($this->plugin_basename);
+        return $analytics->getLinechart('');
     }
 
     public function getContent()

@@ -4,11 +4,15 @@ namespace RRZE\statistik;
 
 defined('ABSPATH') || exit;
 
+/**
+ * Loads Highcharts js-files and returns the needed html structure for js-files to work
+ */
 class Highcharts
 {
     public function __construct($plugin_basename)
     {
         $this->plugin_basename = $plugin_basename;
+        $this->loadHighcharts();
     }
 
     public function statistik_enqueue_script() {
@@ -24,5 +28,14 @@ class Highcharts
 
     public function loadHighcharts(){
         add_action( 'wp_enqueue_scripts', array( $this, 'statistik_enqueue_script' ));
+    }
+
+    public function lineplot(){
+        return  '<figure class="highcharts-figure">
+        <div id="container"></div>
+        <p class="highcharts-description">
+          Die Besuche der letzten 24 Monate.
+        </p>
+      </figure>';
     }
 }
