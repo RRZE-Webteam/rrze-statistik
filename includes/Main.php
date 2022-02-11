@@ -27,7 +27,7 @@ class Main
         new Helper();
         $highcharts = new Highcharts($this->plugin_basename);
         $highcharts->loadHighcharts();
-        
+
         $shortcode = new Shortcode($this->plugin_basename);
         $shortcode->onLoaded();
     }
