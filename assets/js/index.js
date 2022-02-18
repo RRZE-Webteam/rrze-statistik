@@ -1,4 +1,8 @@
-console.log('HI');
+var linechart_dataset;
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  console.log( linechart_dataset );
+});
 
 Highcharts.chart('container', {
     chart: {
