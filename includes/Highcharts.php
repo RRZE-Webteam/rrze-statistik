@@ -25,6 +25,11 @@ class Highcharts
         foreach ($modules as $val) {
             wp_enqueue_script('highcharts-module-' . $val, plugins_url('/assets/js/highcharts/9.3.3/modules/' . $val . '.js', $this->plugin_basename), array('jquery'), false, true);
         }
+
+        $maps = ['accessibility', 'data', 'export-data', 'exporting'];
+        foreach ($maps as $val) {
+            wp_enqueue_script('highcharts-module-' . $val, plugins_url('/assets/js/highcharts/9.3.3/modules/' . $val . '.js.map', $this->plugin_basename), array('jquery'), false, true);
+        }
     }
 
     public function loadHighcharts()
@@ -34,11 +39,11 @@ class Highcharts
 
     public function lineplot()
     {
-        return  '<figure class="highcharts-figure">
+        return  '<div class="rrze-statistik"><figure class="highcharts-figure">
         <div id="container"></div>
         <p class="highcharts-description">
           Die Besuche der letzten 24 Monate.
         </p>
-      </figure>';
+      </figure></div>';
     }
 }

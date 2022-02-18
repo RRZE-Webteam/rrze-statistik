@@ -50,6 +50,8 @@ class Data
                 array_push($output, array_combine($keymap, preg_split("/ /", $value)));
             }
             var_dump($output);
+
+            wp_localize_script('index-js', 'linechart_dataset', $output);
         } else {
             return "requested data could not been retrieved!";
         }

@@ -1,3 +1,5 @@
+console.log('HI');
+
 Highcharts.chart('container', {
     chart: {
       type: 'areaspline'
