@@ -27,7 +27,8 @@ class Data
     }
 
     public function fetchLast24Months($url)
-    {
+    {   
+        /* DATA STRUCTURE */
         $keymap = array(
             'monat',
             'jahr',
@@ -40,9 +41,13 @@ class Data
             'pages',
             'visits',
         );
+        
+        /* Wenn nicht im Uninetz wird "forbidden" returnt */
+
         $data = $this->fetchData($url);
-        if ($data !== null) {
-            $data_body = $this->retrieveBody($url);
+        $data_body = $this->retrieveBody($url);
+        if (!str_contains($data_body, "Forbidden")) {
+            var_dump($data);
             $data_trim = rtrim($data_body, " \n\r\t\v");
             $array = preg_split("/\r\n|\n|\r/", $data_trim);
             $output = [];
@@ -53,7 +58,7 @@ class Data
 
             wp_localize_script('index-js', 'linechart_dataset', $output);
         } else {
-            return "requested data could not been retrieved!";
+            return "Sie befinden sich aktuell nicht im Universitäts-Netzwerk.";
         }
     }
 }
