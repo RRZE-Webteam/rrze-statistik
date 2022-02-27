@@ -28,6 +28,8 @@ class Main
         $highcharts = new Highcharts($this->plugin_basename);
         $highcharts->loadHighcharts();
 
+        new Dashboard($this->plugin_basename);
+
         $shortcode = new Shortcode($this->plugin_basename);
         $shortcode->onLoaded();
     }
