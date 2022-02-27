@@ -8,7 +8,7 @@ Datenstruktur:
 */
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  if (linechart_dataset === !undefined){
+  if (linechart_dataset !== undefined){
   let filterData = (dataset, year) => {
     let output = dataset.filter(data => {
       return data.jahr === year.toString();
