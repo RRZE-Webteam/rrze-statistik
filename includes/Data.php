@@ -44,7 +44,16 @@ class Data
         
         /* Wenn nicht im Uninetz wird "forbidden" returnt */
         $data_body = $this->retrieveBody($url);
-        if (!str_contains($data_body, "Forbidden")) {
+        if (str_contains($data_body, "Forbidden")){
+            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+            return 'forbidden';
+        } else if (strlen($data_body) === 0){
+            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+            return 'no_data';
+        } else if (str_contains($data_body, "could not be found on this server")){
+            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+            return 'no_data';
+        } else {
             $data_trim = rtrim($data_body, " \n\r\t\v");
             $array = preg_split("/\r\n|\n|\r/", $data_trim);
             $output = [];
@@ -56,8 +65,7 @@ class Data
                 'l10n_print_after' => 'linechart_dataset = ' . json_encode( $output ) . ';'
             );
             wp_localize_script('index-js', 'linechart_dataset', $reshuffled_data);
-        } else {
-            return NULL;
-        }
+            return $output;
+        } 
     }
 }

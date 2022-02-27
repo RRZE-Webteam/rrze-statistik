@@ -8,7 +8,9 @@ Datenstruktur:
 */
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  if (linechart_dataset !== undefined){
+  if (linechart_dataset[0] === 'forbidden'){
+    console.log("You aren't connected to the university Network");
+  } else {
   let filterData = (dataset, year) => {
     let output = dataset.filter(data => {
       return data.jahr === year.toString();
@@ -21,13 +23,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let outputFirstYear = filterData(linechart_dataset, currentYear-2);
 
   let generateDatasets = (dataset) => {
-  let datasetDummy = [null, null, null, null, null, null, null, null, null, null, null, null];
-  let datasetOutput = datasetDummy;
-  dataset.forEach(data => {
-    datasetOutput[parseInt(data.monat)-1] = parseInt(data.visits);
-  });
-  return datasetOutput;
-}
+    let datasetDummy = [null, null, null, null, null, null, null, null, null, null, null, null];
+    let datasetOutput = datasetDummy;
+    dataset.forEach(data => {
+      datasetOutput[parseInt(data.monat)-1] = parseInt(data.visits);
+    });
+    return datasetOutput;
+  }
 
   let datasetFirstYear = generateDatasets(outputFirstYear);
   let datasetSecondYear = generateDatasets(outputSecondYear);
@@ -99,7 +101,5 @@ Highcharts.chart('container', {
     }, 
             ]
   });
-  } else {
-    console.log("You are currently not connected to the University Network");
-  }
+  };
 });
