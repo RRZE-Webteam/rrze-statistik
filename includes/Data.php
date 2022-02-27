@@ -43,22 +43,21 @@ class Data
         );
         
         /* Wenn nicht im Uninetz wird "forbidden" returnt */
-
-        $data = $this->fetchData($url);
         $data_body = $this->retrieveBody($url);
         if (!str_contains($data_body, "Forbidden")) {
-            var_dump($data);
             $data_trim = rtrim($data_body, " \n\r\t\v");
             $array = preg_split("/\r\n|\n|\r/", $data_trim);
             $output = [];
             foreach ($array as $value) {
                 array_push($output, array_combine($keymap, preg_split("/ /", $value)));
             }
-            var_dump($output);
-
-            wp_localize_script('index-js', 'linechart_dataset', $output);
+            
+            $reshuffled_data = array(
+                'l10n_print_after' => 'linechart_dataset = ' . json_encode( $output ) . ';'
+            );
+            wp_localize_script('index-js', 'linechart_dataset', $reshuffled_data);
         } else {
-            return "Sie befinden sich aktuell nicht im Universitäts-Netzwerk.";
+            return NULL;
         }
     }
 }
