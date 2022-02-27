@@ -20,8 +20,14 @@ class Shortcode
 
     public function shortcodeOutput($atts)
     {
+        $shortcode_attr = shortcode_atts(array(
+            'url'           => 'www.wordpress.rrze.fau.de',
+        ), $atts);
+
+        $url = $shortcode_attr['url'];
+
         $analytics = new Analytics($this->plugin_basename);
-        return $analytics->getLinechart('');
+        return $analytics->getLinechart($url);
     }
 
     public function getContent()
