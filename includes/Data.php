@@ -68,4 +68,10 @@ class Data
             return $output;
         } 
     }
+
+    public function fetchPopularUrls($url)
+    {
+        $data_body = $this->retrieveBody($url);
+        var_dump($data_body);
+    }
 }

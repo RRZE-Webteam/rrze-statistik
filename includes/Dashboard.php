@@ -23,5 +23,6 @@ class Dashboard
     {
         $analytics = new Analytics($this->plugin_basename);
         echo ($analytics->getLinechart(get_site_url()));
+        $analytics->retrievePopularSites();
     }
 }

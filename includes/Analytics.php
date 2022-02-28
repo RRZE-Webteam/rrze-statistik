@@ -48,4 +48,12 @@ class Analytics
             return $this->highcharts->lineplot();
         };
     }
+
+    public function retrievePopularSites()
+    {
+        $url = $this->retrieveSiteURL(true);
+        $data = new Data($this->plugin_basename);
+        $date = date("Ym");
+        $ready_check = $data->fetchPopularUrls('https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/url_202201.tab');
+    }
 }
