@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\statistik;
+namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 
@@ -35,7 +35,7 @@ class Analytics
     public function getLinechart()
     {
         //set value of $url to true while debugging..
-        $url = $this->retrieveSiteUrl(true);
+        $url = $this->retrieveSiteUrl(false);
         $data = new Data($this->plugin_basename);
         $ready_check = $data->fetchLast24Months('https://statistiken.rrze.fau.de/webauftritte/logs/'.$url.'/webalizer.hist');
         if ($ready_check === 'forbidden'){

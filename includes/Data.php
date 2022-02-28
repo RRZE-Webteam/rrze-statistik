@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\statistik;
+namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 

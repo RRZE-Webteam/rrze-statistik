@@ -12,11 +12,11 @@ License URI:     http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:     rrze-statistik
 */
 
-namespace RRZE\statistik;
+namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 
-use RRZE\statistik\Main;
+use RRZE\Statistik\Main;
 
 const RRZE_HIGHCHARTS_VERSION = '9.3.3';
 
