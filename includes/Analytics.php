@@ -9,10 +9,9 @@ defined('ABSPATH') || exit;
  */
 class Analytics
 {
-    public function __construct($plugin_basename)
+    public function __construct()
     {
-        $this->plugin_basename = $plugin_basename;
-        $this->highcharts = new Highcharts($this->plugin_basename);
+        $this->highcharts = new Highcharts();
     }
 
     public function getImgLink($type)
@@ -38,8 +37,7 @@ class Analytics
     {
         //set value of $url to true while debugging..
         $url = $this->retrieveSiteUrl(true);
-        $data = new Data($this->plugin_basename);
-        $ready_check = $data->fetchLast24Months('https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist');
+        $ready_check = Data::fetchLast24Months('https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist');
         if ($ready_check === 'forbidden') {
             return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>Sie sind aktuell nicht mit dem Universitätsnetzwerk verbunden.</strong><br/>Verbinden Sie sich via VPN, um auf die letzten Statistiken zuzugreifen.';
         } else if ($ready_check === 'no_data') {
