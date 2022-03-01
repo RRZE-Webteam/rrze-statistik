@@ -6,9 +6,8 @@ defined('ABSPATH') || exit;
 
 class Dashboard
 {
-    public function __construct($plugin_basename)
+    public function __construct()
     {
-        $this->plugin_basename = $plugin_basename;
         add_action('wp_dashboard_setup', [$this, 'my_custom_dashboard_widgets']);
     }
 
@@ -21,7 +20,7 @@ class Dashboard
 
     function custom_dashboard_help()
     {
-        $analytics = new Analytics($this->plugin_basename);
+        $analytics = new Analytics();
         echo ($analytics->getLinechart(get_site_url()));
     }
 }
