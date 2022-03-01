@@ -7,30 +7,20 @@ defined('ABSPATH') || exit;
 class Main
 {
     /**
-     * Full path- and file name of plugin.
-     * @var string
-     */
-    public $plugin_basename;
-
-    /**
      * Variablen Werte zuweisen.
      * @param string $pluginFile Path and file name of plugin
      */
-    public function __construct($plugin_basename)
-    {
-        $this->plugin_basename = $plugin_basename;
-    }
-
-
-    public function onLoaded()
+    public function __construct()
     {
         new Helper();
-        $highcharts = new Highcharts($this->plugin_basename);
+        $highcharts = new Highcharts();
         $highcharts->loadHighcharts();
 
-        new Dashboard($this->plugin_basename);
+        new Dashboard();
 
-        $shortcode = new Shortcode($this->plugin_basename);
+        $shortcode = new Shortcode();
         $shortcode->onLoaded();
+
+        Cron::init();
     }
 }
