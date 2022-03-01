@@ -37,7 +37,7 @@ class Analytics
     public function getLinechart()
     {
         //set value of $url to true while debugging..
-        $url = $this->retrieveSiteUrl(false);
+        $url = $this->retrieveSiteUrl(true);
         $data = new Data($this->plugin_basename);
         $ready_check = $data->fetchLast24Months('https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist');
         if ($ready_check === 'forbidden') {
@@ -47,13 +47,5 @@ class Analytics
         } else {
             return $this->highcharts->lineplot();
         };
-    }
-
-    public function retrievePopularSites()
-    {
-        $url = $this->retrieveSiteURL(true);
-        $data = new Data($this->plugin_basename);
-        $date = date("Ym");
-        $ready_check = $data->fetchPopularUrls('https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/url_202201.tab');
     }
 }

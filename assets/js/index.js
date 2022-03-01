@@ -1,4 +1,5 @@
 var linechart_dataset;
+var popularSites_dataset;
 let currentYear = new Date().getFullYear();
 
 /*
@@ -6,10 +7,11 @@ Datenstruktur:
 0 {monat: "3", jahr: "2020", hits: "222475", files: "188973", hosts: "2112", …}
 ...
 */
-
 document.addEventListener("DOMContentLoaded", function(event) {
+  console.log(popularSites_dataset);
+
   if (linechart_dataset[0] === 'forbidden'){
-    console.log("You aren't connected to the university Network");
+    console.log("Data could not be retrieved");
   } else {
   let filterData = (dataset, year) => {
     let output = dataset.filter(data => {

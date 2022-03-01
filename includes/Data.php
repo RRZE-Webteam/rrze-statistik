@@ -15,19 +15,31 @@ class Data
         $this->plugin_basename = $plugin_basename;
     }
 
-    public function fetchData($url)
+    public function fetchDataBody($url)
     {
-        return wp_remote_get(esc_url_raw($url));
-    }
-
-    public function retrieveBody($url)
-    {
-        $output = wp_remote_retrieve_body($this->fetchData($url));
-        return $output;
+        $cached_processed_value = get_transient('rrze_statistik_webalizer_hist_processed');
+        if (false !== $cached_processed_value) {
+            return [1, $cached_processed_value];
+        } else {
+            $cached = get_transient('rrze_statistik_webalizer_hist');
+            var_dump($cached);
+            if ($cached !== false) {
+                return [0, $cached];
+            } else {
+                $cachable = wp_remote_get(esc_url_raw($url));
+                
+                $cachable_body = wp_remote_retrieve_body($cachable);
+                var_dump($cachable_body);
+                if(strlen($cachable_body) !== 0){
+                    set_transient('rrze_statistik_webalizer_hist', $cachable_body, 120);
+                }
+                return [0, $cachable_body];
+            }
+        }
     }
 
     public function fetchLast24Months($url)
-    {   
+    {
         /* DATA STRUCTURE */
         $keymap = array(
             'monat',
@@ -41,37 +53,50 @@ class Data
             'pages',
             'visits',
         );
-        
+
         /* Wenn nicht im Uninetz wird "forbidden" returnt */
-        $data_body = $this->retrieveBody($url);
-        if (str_contains($data_body, "Forbidden")){
-            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
-            return 'forbidden';
-        } else if (strlen($data_body) === 0){
-            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
-            return 'no_data';
-        } else if (str_contains($data_body, "could not be found on this server")){
-            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
-            return 'no_data';
-        } else {
-            $data_trim = rtrim($data_body, " \n\r\t\v");
-            $array = preg_split("/\r\n|\n|\r/", $data_trim);
-            $output = [];
-            foreach ($array as $value) {
-                array_push($output, array_combine($keymap, preg_split("/ /", $value)));
+        $data = $this->fetchDataBody($url);
+        $ready_check = $data[0];
+        $data_body = $data[1];
+        //var_dump(get_transient('rrze_staistik_webalizer_hist'));
+        //var_dump($data_body);
+
+        if($ready_check === 0){
+            if (str_contains($data_body, "Forbidden")) {
+                wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+                return 'forbidden';
+            } else if (strlen($data_body) === 0) {
+                wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+                return 'no_data';
+            } else if (str_contains($data_body, "could not be found on this server")) {
+                wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+                return 'no_data';
+            } else {
+                $data_trim = rtrim($data_body, " \n\r\t\v");
+                $array = preg_split("/\r\n|\n|\r/", $data_trim);
+                $output = [];
+                foreach ($array as $value) {
+                    array_push($output, array_combine($keymap, preg_split("/ /", $value)));
+                }
+
+                $cachable = $output;
+                set_transient('rrze_statistik_webalizer_hist_processed', $cachable, 60 * 60 * 24);
+
+                $reshuffled_data = array(
+                    'l10n_print_after' => 'linechart_dataset = ' . json_encode($output) . ';'
+                );
+                wp_localize_script('index-js', 'linechart_dataset', $reshuffled_data);
+                return $output;
             }
-            
+        }
+        else{
+            var_dump('hier');
             $reshuffled_data = array(
-                'l10n_print_after' => 'linechart_dataset = ' . json_encode( $output ) . ';'
+                'l10n_print_after' => 'linechart_dataset = ' . json_encode($data_body) . ';'
             );
             wp_localize_script('index-js', 'linechart_dataset', $reshuffled_data);
-            return $output;
-        } 
+            return $data_body;
+        }
     }
-
-    public function fetchPopularUrls($url)
-    {
-        $data_body = $this->retrieveBody($url);
-        var_dump($data_body);
-    }
+    
 }
