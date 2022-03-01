@@ -6,13 +6,6 @@ defined('ABSPATH') || exit;
 
 class Shortcode
 {
-    public $plugin_basename;
-
-    public function __construct($plugin_basename)
-    {
-        $this->plugin_basename = $plugin_basename;
-    }
-
     public function onLoaded()
     {
         add_shortcode('rrze_statistik', [$this, 'shortcodeOutput'], 10, 2);
@@ -26,7 +19,7 @@ class Shortcode
 
         $url = $shortcode_attr['url'];
 
-        $analytics = new Analytics($this->plugin_basename);
+        $analytics = new Analytics();
         return $analytics->getLinechart($url);
     }
 
