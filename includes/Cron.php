@@ -37,7 +37,6 @@ class Cron
      */
     public static function runEvents()
     {
-        $data = new Data;
         Data::updateData();
     }
 
