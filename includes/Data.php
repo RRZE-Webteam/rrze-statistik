@@ -9,13 +9,11 @@ defined('ABSPATH') || exit;
  */
 class Data
 {
-    public function __construct($plugin_basename)
-    {
-
-        $this->plugin_basename = $plugin_basename;
+    public static function updateData() {
+        // Get the data from the API.
     }
 
-    public function fetchDataBody($url)
+    public static function fetchDataBody($url)
     {
         $cached_processed_value = get_transient('rrze_statistik_webalizer_hist_processed');
         if (false !== $cached_processed_value) {
@@ -38,7 +36,7 @@ class Data
         }
     }
 
-    public function fetchLast24Months($url)
+    public static function fetchLast24Months($url)
     {
         /* DATA STRUCTURE */
         $keymap = array(
@@ -55,20 +53,20 @@ class Data
         );
 
         /* Wenn nicht im Uninetz wird "forbidden" returnt */
-        $data = $this->fetchDataBody($url);
+        $data = self::fetchDataBody($url);
         $ready_check = $data[0];
         $data_body = $data[1];
         //var_dump(get_transient('rrze_staistik_webalizer_hist'));
         //var_dump($data_body);
 
         if($ready_check === 0){
-            if (str_contains($data_body, "Forbidden")) {
+            if (strpos($data_body, "Forbidden") !== false) {
                 wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
                 return 'forbidden';
             } else if (strlen($data_body) === 0) {
                 wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
                 return 'no_data';
-            } else if (str_contains($data_body, "could not be found on this server")) {
+            } else if (strpos($data_body, "could not be found on this server") !== false) {
                 wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
                 return 'no_data';
             } else {
