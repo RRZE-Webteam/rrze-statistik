@@ -1,5 +1,5 @@
 var linechart_dataset;
-var popularSites_dataset;
+var ready_check;
 let currentYear = new Date().getFullYear();
 const { __, _x, _n, sprintf } = wp.i18n;
 
@@ -9,9 +9,8 @@ Datenstruktur:
 ...
 */
 document.addEventListener("DOMContentLoaded", function(event) {
-  console.log(popularSites_dataset);
 
-  if (linechart_dataset[0] === ['forbidden']){
+  if (ready_check[0] === ['forbidden']){
     console.log("Data could not be retrieved");
   } else {
   let filterData = (dataset, year) => {
