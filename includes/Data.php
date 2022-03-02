@@ -11,32 +11,48 @@ class Data
 {
     public static function updateData() {
         // Get the data from the API.
+        $url = Analytics::retrieveSiteUrl(false);
+        $data_body = Self::fetchDataBody($url);
+        $validation = Self::validateData($data_body);
+        if (!$validation){
+            add_option('rrze_statistik_webalizer_hist_data', 'forbidden');
+            return 'forbidden';
+        } else {
+            $data = Self::processDataBody($data_body);
+            add_option('rrze_statistik_webalizer_hist_data', $data);
+            return $data;
+        }
     }
 
     public static function fetchDataBody($url)
     {
-        $cached_processed_value = get_transient('rrze_statistik_webalizer_hist_processed');
-        if (false !== $cached_processed_value) {
-            return [1, $cached_processed_value];
+        $cachable = wp_remote_get(esc_url_raw($url));
+        $cachable_body = wp_remote_retrieve_body($cachable);
+        var_dump($cachable_body);
+        /*if(strlen($cachable_body) !== 0){
+            set_transient('rrze_statistik_webalizer_hist', $cachable_body, 120);
+        }*/
+        return $cachable_body;
+        
+    }
+
+    public static function validateData($data_body)
+    {
+        if (strpos($data_body, "Forbidden") !== false) {
+            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+            return false;
+        } else if (strlen($data_body) === 0) {
+            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+            return false;
+        } else if (strpos($data_body, "could not be found on this server") !== false) {
+            wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
+            return false;
         } else {
-            $cached = get_transient('rrze_statistik_webalizer_hist');
-            var_dump($cached);
-            if ($cached !== false) {
-                return [0, $cached];
-            } else {
-                $cachable = wp_remote_get(esc_url_raw($url));
-                
-                $cachable_body = wp_remote_retrieve_body($cachable);
-                var_dump($cachable_body);
-                if(strlen($cachable_body) !== 0){
-                    set_transient('rrze_statistik_webalizer_hist', $cachable_body, 120);
-                }
-                return [0, $cachable_body];
-            }
+            return true;
         }
     }
 
-    public static function fetchLast24Months($url)
+    public static function processDataBody($data_body)
     {
         /* DATA STRUCTURE */
         $keymap = array(
@@ -51,50 +67,28 @@ class Data
             'pages',
             'visits',
         );
-
-        /* Wenn nicht im Uninetz wird "forbidden" returnt */
-        $data = self::fetchDataBody($url);
-        $ready_check = $data[0];
-        $data_body = $data[1];
-        //var_dump(get_transient('rrze_staistik_webalizer_hist'));
-        //var_dump($data_body);
-
-        if($ready_check === 0){
-            if (strpos($data_body, "Forbidden") !== false) {
-                wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
-                return 'forbidden';
-            } else if (strlen($data_body) === 0) {
-                wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
-                return 'no_data';
-            } else if (strpos($data_body, "could not be found on this server") !== false) {
-                wp_localize_script('index-js', 'linechart_dataset', ['forbidden']);
-                return 'no_data';
-            } else {
-                $data_trim = rtrim($data_body, " \n\r\t\v");
-                $array = preg_split("/\r\n|\n|\r/", $data_trim);
-                $output = [];
-                foreach ($array as $value) {
-                    array_push($output, array_combine($keymap, preg_split("/ /", $value)));
-                }
-
-                $cachable = $output;
-                set_transient('rrze_statistik_webalizer_hist_processed', $cachable, 60 * 60 * 24);
-
-                $reshuffled_data = array(
-                    'l10n_print_after' => 'linechart_dataset = ' . json_encode($output) . ';'
-                );
-                wp_localize_script('index-js', 'linechart_dataset', $reshuffled_data);
-                return $output;
-            }
+        $data_trim = rtrim($data_body, " \n\r\t\v");
+        $array = preg_split("/\r\n|\n|\r/", $data_trim);
+        $output = [];
+        foreach ($array as $value) {
+            array_push($output, array_combine($keymap, preg_split("/ /", $value)));
         }
-        else{
-            var_dump('hier');
-            $reshuffled_data = array(
-                'l10n_print_after' => 'linechart_dataset = ' . json_encode($data_body) . ';'
-            );
-            wp_localize_script('index-js', 'linechart_dataset', $reshuffled_data);
-            return $data_body;
-        }
+        return $output;
     }
-    
+
+    public static function sendToJs($data_body)
+    {
+        $reshuffled_data = array(
+            'l10n_print_after' => 'linechart_dataset = ' . json_encode($data_body) . ';'
+        );
+        wp_localize_script('index-js', 'linechart_dataset', $reshuffled_data);
+        return $data_body;
+    }
+
+    public static function fetchLast24Months($url)
+    {
+        $data = get_option('rrze_statistik_webalizer_hist_data');
+        var_dump($data);
+        Self::sendToJs($data);
+    }
 }

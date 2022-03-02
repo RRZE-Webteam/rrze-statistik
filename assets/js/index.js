@@ -10,7 +10,7 @@ Datenstruktur:
 document.addEventListener("DOMContentLoaded", function(event) {
   console.log(popularSites_dataset);
 
-  if (linechart_dataset[0] === 'forbidden'){
+  if (linechart_dataset[0] === ['forbidden']){
     console.log("Data could not be retrieved");
   } else {
   let filterData = (dataset, year) => {
