@@ -18,7 +18,7 @@ class Highcharts
     {
         wp_enqueue_style(
             'highcharts-css', 
-            plugins_url('dist/highcharts-style.css', plugin()->getBasename()),
+            plugins_url('dist/highcharts.css', plugin()->getBasename()),
             array(), 
             plugin()->getVersion(), 
             'all'

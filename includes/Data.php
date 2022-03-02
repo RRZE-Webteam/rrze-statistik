@@ -38,13 +38,13 @@ class Data
     public static function validateData($data_body)
     {
         if (strpos($data_body, "Forbidden") !== false) {
-            wp_localize_script('index-js', 'ready_check', ['forbidden']);
+            wp_localize_script('index-js', 'ready_check', 'forbidden');
             return false;
         } else if (strlen($data_body) === 0) {
-            wp_localize_script('index-js', 'ready_check', ['forbidden']);
+            wp_localize_script('index-js', 'ready_check', 'forbidden');
             return false;
         } else if (strpos($data_body, "could not be found on this server") !== false) {
-            wp_localize_script('index-js', 'ready_check', ['forbidden']);
+            wp_localize_script('index-js', 'ready_check', 'forbidden');
             return false;
         } else {
             return true;

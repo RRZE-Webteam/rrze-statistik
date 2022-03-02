@@ -9,8 +9,7 @@ Datenstruktur:
 ...
 */
 document.addEventListener("DOMContentLoaded", function(event) {
-
-  if (ready_check[0] === ['forbidden']){
+  if (typeof linechart_dataset == null){
     console.log("Data could not be retrieved");
   } else {
   let filterData = (dataset, year) => {
@@ -36,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let datasetFirstYear = generateDatasets(outputFirstYear);
   let datasetSecondYear = generateDatasets(outputSecondYear);
   let datasetThirdYear = generateDatasets(outputThirdYear);
-
+  
 Highcharts.chart('container', {
     chart: {
       type: 'areaspline'
@@ -103,5 +102,6 @@ Highcharts.chart('container', {
     }, 
             ]
   });
+  
   };
 });
