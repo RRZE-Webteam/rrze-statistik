@@ -13,9 +13,7 @@ class Data
         // Get the data from the API.
         $url = Analytics::retrieveSiteUrl(true);
         $data_body = Self::fetchDataBody($url);
-        var_dump($data_body);
         $validation = Self::validateData($data_body);
-        var_dump($validation);
         if ($validation === false){
             update_option('rrze_statistik_webalizer_hist_data', 'forbidden');
             return 'forbidden';
@@ -30,7 +28,6 @@ class Data
     {
         $cachable = wp_remote_get(esc_url_raw($url));
         $cachable_body = wp_remote_retrieve_body($cachable);
-        var_dump($cachable_body);
         /*if(strlen($cachable_body) !== 0){
             set_transient('rrze_statistik_webalizer_hist', $cachable_body, 120);
         }*/
@@ -89,9 +86,7 @@ class Data
 
     public static function fetchLast24Months($url)
     {
-        Self::updateData();
         $data = get_option('rrze_statistik_webalizer_hist_data');
-        var_dump($data);
         Self::sendToJs($data);
         return $data;
     }
