@@ -1,0 +1,42 @@
+{
+  "name": "rrze-statistik",
+  "version": "1.0.0",
+  "description": "Anzeige der Statistik von Webauftritten in der Dashboard",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack --mode=development --watch",
+    "build": "webpack --mode=production",
+    "clean": "rm -rf dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RRZE-Webteam/rrze-statistik.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RRZE-Webteam/rrze-statistik/issues"
+  },
+  "homepage": "https://github.com/RRZE-Webteam/rrze-statistik#readme",
+  "dependencies": {
+    "jquery": "^3.6.0"
+  },
+  "devDependencies": {
+      "@babel/core": "^7.14",
+      "@babel/preset-env": "^7.14",
+      "autoprefixer": "^10.3.1",
+      "babel-loader": "^8.2.2",
+      "clean-webpack-plugin": "^3.0.0",
+      "css-loader": "^6.2.0",
+      "css-minimizer-webpack-plugin": "^3.0.2",
+      "mini-css-extract-plugin": "^2.1.0",
+      "node-sass": "^6.0.1",
+      "postcss-loader": "^6.1.1",
+      "sass-loader": "^12.1.0",
+      "semver": "^7.3.5",
+      "style-loader": "^3.2.1",
+      "terser-webpack-plugin": "^5.1.4",
+      "webpack": "^5.46.0",
+      "webpack-cli": "^4.7.2"
+  }
+}
