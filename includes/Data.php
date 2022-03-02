@@ -9,13 +9,14 @@ defined('ABSPATH') || exit;
  */
 class Data
 {
-    public static function updateData() {
+    public static function updateData()
+    {
         // Get the data from the API.
         $url = Analytics::retrieveSiteUrl(true);
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
-        if ($validation === false){
-            update_option('rrze_statistik_webalizer_hist_data', 'forbidden');
+
+        if ($validation === false) {
             return 'forbidden';
         } else {
             $data = Self::processDataBody($data_body);
@@ -32,7 +33,6 @@ class Data
             set_transient('rrze_statistik_webalizer_hist', $cachable_body, 120);
         }*/
         return $cachable_body;
-        
     }
 
     public static function validateData($data_body)
@@ -87,7 +87,11 @@ class Data
     public static function fetchLast24Months($url)
     {
         $data = get_option('rrze_statistik_webalizer_hist_data');
-        Self::sendToJs($data);
-        return $data;
+        if ($data === false) {
+            return 'forbidden';
+        } else {
+            Self::sendToJs($data);
+            return $data;
+        }
     }
 }

@@ -47,7 +47,6 @@ spl_autoload_register(function ($class) {
 // Register plugin hooks.
 register_activation_hook(__FILE__, __NAMESPACE__ . '\activation');
 register_deactivation_hook(__FILE__, __NAMESPACE__ . '\deactivation');
-register_uninstall_hook(__FILE__, __NAMESPACE__ . '\deinstallation');
 
 add_action('plugins_loaded', __NAMESPACE__ . '\loaded');
 
@@ -109,13 +108,6 @@ function activation()
 function deactivation()
 {
     //
-}
-
-/**
- * Deinstallation callback function.
- */
-function deinstallation()
-{
     delete_option('rrze_statistik_webalizer_hist_data');
 }
 
