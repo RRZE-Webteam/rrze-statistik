@@ -1,6 +1,7 @@
 var linechart_dataset;
 var popularSites_dataset;
 let currentYear = new Date().getFullYear();
+const { __, _x, _n, sprintf } = wp.i18n;
 
 /*
 Datenstruktur:
@@ -57,28 +58,28 @@ Highcharts.chart('container', {
     },
     xAxis: {
       categories: [
-        'Jan',
-        'Feb',
-        'März',
-        'April',
-        'Mai',
-        'Juni',
-        'Juli',
-        'Aug',
-        'Sep',
-        'Okt',
-        'Nov',
-        'Dez',      
+        __('Jan', 'rrze-statistik'),
+        __('Feb', 'rrze-statistik'),
+        __('März', 'rrze-statistik'),
+        __('April', 'rrze-statistik'),
+        __('Mai', 'rrze-statistik'),
+        __('Juni', 'rrze-statistik'),
+        __('Juli', 'rrze-statistik'),
+        __('Aug', 'rrze-statistik'),
+        __('Sep', 'rrze-statistik'),
+        __('Okt', 'rrze-statistik'),
+        __('Nov', 'rrze-statistik'),
+        __('Dez', 'rrze-statistik'),      
       ],
     },
     yAxis: {
       title: {
-        text: 'Besucher'
+        text: __('Besucher', 'rrze-statistik')
       }
     },
     tooltip: {
       shared: true,
-      valueSuffix: ' Besucher/Monat'
+      valueSuffix: __(' Besucher/Monat', 'rrze-statistik')
     },
     credits: {
       enabled: false

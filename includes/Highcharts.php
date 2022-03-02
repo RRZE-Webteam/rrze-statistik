@@ -33,10 +33,11 @@ class Highcharts
         wp_enqueue_script(
             'index-js', 
             plugins_url('assets/js/index.js', plugin()->getBasename()),
-            array('jquery'), 
+            array('jquery', 'wp-i18n'), 
             plugin()->getVersion(),
             true
         );
+        wp_set_script_translations('index-js', 'rrze-statistik');
 
         $modules = ['accessibility', 'data', 'export-data', 'exporting'];
         foreach ($modules as $val) {

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-01T09:48:55+00:00\n"
+"POT-Creation-Date: 2022-03-02T12:50:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: rrze-statistik\n"
@@ -34,18 +34,30 @@ msgstr ""
 msgid "https://blogs.fau.de/webworking/"
 msgstr ""
 
+#: includes/Analytics.php:41
+msgid "Es kann einige Tage dauern, bevor die Statistiken zu Ihrer Webseite ("
+msgstr ""
+
+#: includes/Analytics.php:41
+msgid ") im Dashboard dargestellt werden."
+msgstr ""
+
+#: includes/Dashboard.php:18
+msgid "Seitenbesucher der letzten 24 Monate"
+msgstr ""
+
 #. translators: 1: Server PHP version number, 2: Required PHP version number.
-#: rrze-statistik.php:64
+#: rrze-statistik.php:72
 msgid "The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s."
 msgstr ""
 
 #. translators: 1: Server WordPress version number, 2: Required WordPress version number.
-#: rrze-statistik.php:71
+#: rrze-statistik.php:79
 msgid "The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s."
 msgstr ""
 
 #. translators: 1: The plugin name, 2: The error string.
-#: rrze-statistik.php:89
-#: rrze-statistik.php:138
+#: rrze-statistik.php:97
+#: rrze-statistik.php:146
 msgid "Plugins: %1$s: %2$s"
 msgstr ""

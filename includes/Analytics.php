@@ -38,7 +38,7 @@ class Analytics
         $url = $this->retrieveSiteUrl(true);
         $ready_check = Data::fetchLast24Months(Self::retrieveSiteUrl(true));
         if ($ready_check === 'forbidden') {
-            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>Ihre Seite konnte nicht auf statistiken.rrze.fau.de gefunden werden.</strong><br/> Falls Ihre Seite (' . $url . ') neu ist, kann es einen Monat dauern, bevor Statistiken dargestellt werden können.';
+            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>'.__('Es kann einige Tage dauern, bevor die Statistiken zu Ihrer Webseite (', 'rrze-statistik') . $url . __(') im Dashboard dargestellt werden.', 'rrze-statistik').'</strong><br/>';
         } else {
             return $this->highcharts->lineplot();
         };
