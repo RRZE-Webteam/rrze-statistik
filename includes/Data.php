@@ -86,7 +86,6 @@ class Data
 
     public static function fetchLast24Months($url)
     {
-        delete_option('rrze_statistik_webalizer_hist_data');
         $data = get_option('rrze_statistik_webalizer_hist_data');
         if ($data === false) {
             return 'forbidden';

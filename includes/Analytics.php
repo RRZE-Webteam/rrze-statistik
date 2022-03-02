@@ -36,9 +36,11 @@ class Analytics
     {
         //set value of $url to true while debugging..
         $url = $this->retrieveSiteUrl(true);
+        $remove_char = ["https://", "http://", "/"];
+        $site = 'www.' . str_replace($remove_char, "", get_site_url());
         $ready_check = Data::fetchLast24Months(Self::retrieveSiteUrl(true));
         if ($ready_check === 'forbidden') {
-            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>'.__('Es kann einige Tage dauern, bevor die Statistiken zu Ihrer Webseite (', 'rrze-statistik') . $url . __(') im Dashboard dargestellt werden.', 'rrze-statistik').'</strong><br/>';
+            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>'.__('Es kann einige Tage dauern, bevor die Statistiken zu Ihrer Webseite (', 'rrze-statistik') . $site . __(') im Dashboard dargestellt werden.', 'rrze-statistik').'</strong><br/>';
         } else {
             return $this->highcharts->lineplot();
         };
