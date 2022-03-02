@@ -100,8 +100,6 @@ function activation()
                 $error
             )
         );
-    } else {
-        add_option('rrze_statistik_webalizer_hist_data', 'forbidden');
     }
 }
 
@@ -118,7 +116,7 @@ function deactivation()
  */
 function deinstallation()
 {
-    delete_option('rrze_statistik_webalizer_hist_data', 'forbidden');
+    delete_option('rrze_statistik_webalizer_hist_data');
 }
 
 /**
