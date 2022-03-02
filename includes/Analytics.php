@@ -23,21 +23,22 @@ class Analytics
         }
     }
 
-    public function retrieveSiteUrl($debug)
+    public static function retrieveSiteUrl($debug)
     {
         if ($debug === false) {
             $remove_char = ["https://", "http://", "/"];
-            return 'www.' . str_replace($remove_char, "", get_site_url());
+            $url = 'www.' . str_replace($remove_char, "", get_site_url());
         } else {
-            return "www.fau.de";
+            $url = "www.fau.de";
         }
+        return 'https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist';
     }
 
     public function getLinechart()
     {
         //set value of $url to true while debugging..
         $url = $this->retrieveSiteUrl(true);
-        $ready_check = Data::fetchLast24Months('https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist');
+        $ready_check = Data::fetchLast24Months();
         if ($ready_check === 'forbidden') {
             return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>Sie sind aktuell nicht mit dem Universitätsnetzwerk verbunden.</strong><br/>Verbinden Sie sich via VPN, um auf die letzten Statistiken zuzugreifen.';
         } else if ($ready_check === 'no_data') {
