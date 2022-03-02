@@ -11,15 +11,17 @@ class Data
 {
     public static function updateData() {
         // Get the data from the API.
-        $url = Analytics::retrieveSiteUrl(false);
+        $url = Analytics::retrieveSiteUrl(true);
         $data_body = Self::fetchDataBody($url);
+        var_dump($data_body);
         $validation = Self::validateData($data_body);
-        if (!$validation){
-            add_option('rrze_statistik_webalizer_hist_data', 'forbidden');
+        var_dump($validation);
+        if ($validation === false){
+            update_option('rrze_statistik_webalizer_hist_data', 'forbidden');
             return 'forbidden';
         } else {
             $data = Self::processDataBody($data_body);
-            add_option('rrze_statistik_webalizer_hist_data', $data);
+            update_option('rrze_statistik_webalizer_hist_data', $data);
             return $data;
         }
     }
@@ -87,8 +89,10 @@ class Data
 
     public static function fetchLast24Months($url)
     {
+        Self::updateData();
         $data = get_option('rrze_statistik_webalizer_hist_data');
         var_dump($data);
         Self::sendToJs($data);
+        return $data;
     }
 }

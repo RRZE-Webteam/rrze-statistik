@@ -38,7 +38,7 @@ class Analytics
     {
         //set value of $url to true while debugging..
         $url = $this->retrieveSiteUrl(true);
-        $ready_check = Data::fetchLast24Months();
+        $ready_check = Data::fetchLast24Months(Self::retrieveSiteUrl(true));
         if ($ready_check === 'forbidden') {
             return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>Sie sind aktuell nicht mit dem Universitätsnetzwerk verbunden.</strong><br/>Verbinden Sie sich via VPN, um auf die letzten Statistiken zuzugreifen.';
         } else if ($ready_check === 'no_data') {
