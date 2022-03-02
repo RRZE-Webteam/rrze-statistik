@@ -1,0 +1,137 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: RRZE Statistik\n"
+"POT-Creation-Date: 2022-03-02 14:05+0100\n"
+"PO-Revision-Date: 2022-03-02 14:07+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: rrze-statistik.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: assets/js/index.js:61
+msgid "Jan"
+msgstr "Jan"
+
+#: assets/js/index.js:62
+msgid "Feb"
+msgstr "Feb"
+
+#: assets/js/index.js:63
+msgid "März"
+msgstr "Mar"
+
+#: assets/js/index.js:64
+msgid "April"
+msgstr "Apr"
+
+#: assets/js/index.js:65
+msgid "Mai"
+msgstr "May"
+
+#: assets/js/index.js:66
+msgid "Juni"
+msgstr "Jun"
+
+#: assets/js/index.js:67
+msgid "Juli"
+msgstr "Jul"
+
+#: assets/js/index.js:68
+msgid "Aug"
+msgstr "Aug"
+
+#: assets/js/index.js:69
+msgid "Sep"
+msgstr "Sep"
+
+#: assets/js/index.js:70
+msgid "Okt"
+msgstr "Oct"
+
+#: assets/js/index.js:71
+msgid "Nov"
+msgstr "Nov"
+
+#: assets/js/index.js:72
+msgid "Dez"
+msgstr "Dec"
+
+#: assets/js/index.js:77
+msgid "Besucher"
+msgstr "Visitors"
+
+#: assets/js/index.js:82
+msgid " Besucher/Monat"
+msgstr " Visitors/Month"
+
+#: includes/Analytics.php:41
+msgid "Es kann einige Tage dauern, bevor die Statistiken zu Ihrer Webseite ("
+msgstr "It might take several days before statistics for your website ("
+
+#: includes/Analytics.php:41
+msgid ") im Dashboard dargestellt werden."
+msgstr ") will be displayed inside your dashboard."
+
+#: includes/Dashboard.php:18
+msgid "Seitenbesucher der letzten 24 Monate"
+msgstr "Site visitors within the last 24 months"
+
+#: includes/Plugin.php:189
+#, php-format
+msgid "Call to undefined method %1$s::%2$s"
+msgstr ""
+
+#. translators: 1: Server PHP version number, 2: Required PHP version number.
+#: rrze-statistik.php:72
+#, php-format
+msgid ""
+"The server is running PHP version %1$s. The Plugin requires at least PHP "
+"version %2$s."
+msgstr ""
+
+#. translators: 1: Server WordPress version number, 2: Required WordPress version number.
+#: rrze-statistik.php:79
+#, php-format
+msgid ""
+"The server is running WordPress version %1$s. The Plugin requires at least "
+"WordPress version %2$s."
+msgstr ""
+
+#. translators: 1: The plugin name, 2: The error string.
+#: rrze-statistik.php:97 rrze-statistik.php:146
+#, php-format
+msgid "Plugins: %1$s: %2$s"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "RRZE Statistik"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/rrze-webteam/rrze-statistik"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Anzeige der Statistiken im Dashboard"
+msgstr "Displays monthly statistics within your Dashboard"
+
+#. Author of the plugin/theme
+msgid "RRZE Webteam"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://blogs.fau.de/webworking/"
+msgstr ""

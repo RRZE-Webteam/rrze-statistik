@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-02T12:50:56+00:00\n"
+"POT-Creation-Date: 2022-03-02T12:56:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: rrze-statistik\n"
@@ -60,4 +60,60 @@ msgstr ""
 #: rrze-statistik.php:97
 #: rrze-statistik.php:146
 msgid "Plugins: %1$s: %2$s"
+msgstr ""
+
+#: assets/js/index.js:61
+msgid "Jan"
+msgstr ""
+
+#: assets/js/index.js:62
+msgid "Feb"
+msgstr ""
+
+#: assets/js/index.js:63
+msgid "März"
+msgstr ""
+
+#: assets/js/index.js:64
+msgid "April"
+msgstr ""
+
+#: assets/js/index.js:65
+msgid "Mai"
+msgstr ""
+
+#: assets/js/index.js:66
+msgid "Juni"
+msgstr ""
+
+#: assets/js/index.js:67
+msgid "Juli"
+msgstr ""
+
+#: assets/js/index.js:68
+msgid "Aug"
+msgstr ""
+
+#: assets/js/index.js:69
+msgid "Sep"
+msgstr ""
+
+#: assets/js/index.js:70
+msgid "Okt"
+msgstr ""
+
+#: assets/js/index.js:71
+msgid "Nov"
+msgstr ""
+
+#: assets/js/index.js:72
+msgid "Dez"
+msgstr ""
+
+#: assets/js/index.js:77
+msgid "Besucher"
+msgstr ""
+
+#: assets/js/index.js:82
+msgid " Besucher/Monat"
 msgstr ""
