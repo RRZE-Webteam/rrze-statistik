@@ -32,7 +32,7 @@ class Highcharts
         );
         wp_enqueue_script(
             'index-js', 
-            plugins_url('dist/highcharts.js', plugin()->getBasename()),
+            plugins_url('dist/highchartsIndex.js', plugin()->getBasename()),
             array('jquery', 'wp-i18n'), 
             plugin()->getVersion(),
             true

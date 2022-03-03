@@ -1,17 +1,20 @@
-var linechart_dataset;
-var ready_check;
+var linechartDataset;
 let currentYear = new Date().getFullYear();
 const { __, _x, _n, sprintf } = wp.i18n;
-
 /*
 Datenstruktur:
 0 {monat: "3", jahr: "2020", hits: "222475", files: "188973", hosts: "2112", …}
 ...
 */
 document.addEventListener("DOMContentLoaded", function(event) {
-  if (typeof linechart_dataset == null){
+
+console.log(linechartDataset);
+  if (linechartDataset === undefined){
     console.log("Data could not be retrieved");
+    console.log(linechartDataset);
   } else {
+    console.log("else");
+    console.log(linechartDataset);
   let filterData = (dataset, year) => {
     let output = dataset.filter(data => {
       return data.jahr === year.toString();
@@ -19,9 +22,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return output;
   }
 
-  let outputThirdYear = filterData(linechart_dataset, currentYear);
-  let outputSecondYear = filterData(linechart_dataset, currentYear-1);
-  let outputFirstYear = filterData(linechart_dataset, currentYear-2);
+  let outputThirdYear = filterData(linechartDataset, currentYear);
+  let outputSecondYear = filterData(linechartDataset, currentYear-1);
+  let outputFirstYear = filterData(linechartDataset, currentYear-2);
 
   let generateDatasets = (dataset) => {
     let datasetDummy = [null, null, null, null, null, null, null, null, null, null, null, null];
@@ -102,6 +105,6 @@ Highcharts.chart('container', {
     }, 
             ]
   });
-  
   };
+  
 });

@@ -78,9 +78,10 @@ class Data
     public static function sendToJs($data_body)
     {
         $reshuffled_data = array(
-            'l10n_print_after' => 'linechart_dataset = ' . json_encode($data_body) . ';'
+            'l10n_print_after' => 'linechartDataset = ' . json_encode($data_body) . ';'
         );
-        wp_localize_script('index-js', 'linechart_dataset', $reshuffled_data);
+        wp_localize_script('index-js', 'linechartDataset', $reshuffled_data);
+        var_dump($reshuffled_data);
         return $data_body;
     }
 

@@ -15,7 +15,7 @@ module.exports = (env, argv) => {
             highcharts,
         },
         output: {
-            filename: "[name].js",
+            filename: "[name]Index.js",
             clean: true,
         },
         optimization: {
