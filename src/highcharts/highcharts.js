@@ -1,5 +1,4 @@
 import { __, _x, _n, sprintf } from "@wordpress/i18n";
-var linechartDataset;
 let currentYear = new Date().getFullYear();
 //const { __, _x, _n, sprintf } = wp.i18n;
 /*

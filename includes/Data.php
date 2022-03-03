@@ -77,12 +77,13 @@ class Data
 
     public static function sendToJs($data_body)
     {
-        $reshuffled_data = array(
-            'l10n_print_after' => 'linechartDataset = ' . json_encode($data_body) . ';'
-        );
-        wp_localize_script('index-js', 'linechartDataset', array('hello','world'));
-        var_dump($reshuffled_data);
+        $json_data = json_encode($data_body);
+        $script = 'const linechartDataset ='.$json_data.';';
+
+        wp_add_inline_script('index-js', $script, 'before');
+        var_dump($script);
         return $data_body;
+	
     }
 
     public static function fetchLast24Months($url)
