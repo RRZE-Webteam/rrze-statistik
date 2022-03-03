@@ -37,7 +37,6 @@ class Highcharts
             plugin()->getVersion(),
             true
         );
-        wp_set_script_translations('index-js', 'rrze-statistik');
 
         $modules = ['accessibility', 'data', 'export-data', 'exporting'];
         foreach ($modules as $val) {
@@ -60,12 +59,16 @@ class Highcharts
                 true
             );
         }
+
+
+        wp_set_script_translations('index-js', 'rrze-statistik');
     }
 
     public function loadHighcharts()
     {
         add_action('wp_enqueue_scripts', array($this, 'statistik_enqueue_script'));
         add_action('admin_enqueue_scripts', array($this, 'statistik_enqueue_script'));
+;
     }
 
     public function lineplot()
