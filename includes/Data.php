@@ -81,7 +81,6 @@ class Data
         $script = 'const linechartDataset ='.$json_data.';';
 
         wp_add_inline_script('index-js', $script, 'before');
-        var_dump($script);
         return $data_body;
 	
     }
