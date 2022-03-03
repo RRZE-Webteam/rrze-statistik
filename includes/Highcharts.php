@@ -26,14 +26,14 @@ class Highcharts
         wp_enqueue_script(
             'highcharts-js', 
             plugins_url('assets/js/highcharts/9.3.3/highcharts.js', plugin()->getBasename()),
-            array('jquery'), 
+            array(), 
             plugin()->getVersion(),
             true
         );
         wp_enqueue_script(
             'index-js', 
             plugins_url('dist/highchartsIndex.js', plugin()->getBasename()),
-            array('jquery', 'wp-i18n'), 
+            array(), 
             plugin()->getVersion(),
             true
         );
@@ -44,7 +44,7 @@ class Highcharts
             wp_enqueue_script(
                 'highcharts-module-' . $val, 
                 plugins_url('assets/js/highcharts/9.3.3/modules/' . $val . '.js', plugin()->getBasename()),
-                array('jquery'), 
+                array(), 
                 plugin()->getVersion(), 
                 true
             );
@@ -55,7 +55,7 @@ class Highcharts
             wp_enqueue_script(
                 'highcharts-module-' . $val, 
                 plugins_url('assets/js/highcharts/9.3.3/modules/' . $val . '.js.map', plugin()->getBasename()),
-                array('jquery'), 
+                array(), 
                 plugin()->getVersion(),
                 true
             );

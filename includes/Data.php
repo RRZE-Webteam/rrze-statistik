@@ -80,7 +80,7 @@ class Data
         $reshuffled_data = array(
             'l10n_print_after' => 'linechartDataset = ' . json_encode($data_body) . ';'
         );
-        wp_localize_script('index-js', 'linechartDataset', $reshuffled_data);
+        wp_localize_script('index-js', 'linechartDataset', array('hello','world'));
         var_dump($reshuffled_data);
         return $data_body;
     }
