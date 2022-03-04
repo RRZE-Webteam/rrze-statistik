@@ -4,8 +4,9 @@
   "description": "Anzeige der Statistik von Webauftritten in der Dashboard",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --mode=development --watch",
-    "build": "webpack --mode=production",
+    "webpack": "webpack",
+    "dev": "npm run webpack -- --mode development --watch",
+    "prod": "npm run webpack -- --mode production",
     "clean": "rm -rf dist/"
   },
   "repository": {
