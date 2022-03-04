@@ -75,7 +75,7 @@ class Highcharts
         if ($data === false) {
             $output = "No data points available.";
         } else {
-            var_dump($data);
+           //
         }
 
         return  '<div class="rrze-statistik"><figure class="highcharts-figure">
