@@ -70,10 +70,17 @@ class Highcharts
 
     public function lineplot()
     {
+        $data = get_option('rrze_statistik_webalizer_hist_data');
+        
+        if ($data === false) {
+            $output = "No data points available.";
+        } else {
+            var_dump($data);
+        }
+
         return  '<div class="rrze-statistik"><figure class="highcharts-figure">
         <div id="container"></div>
-        <p class="highcharts-description">
-          Die Besuche der letzten 24 Monate.
+        <p class="highcharts-description">'."Hier Datentabelle einfügen".'
         </p>
       </figure></div>';
     }
