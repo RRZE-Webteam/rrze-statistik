@@ -44,7 +44,7 @@ Highcharts.chart('container', {
       type: 'areaspline'
     },
     title: {
-      text: 'Seitenbesucher der letzten 24 Monate'
+      text: headlineDescriptiontext
     },
     legend: {
       layout: 'vertical',
@@ -58,29 +58,16 @@ Highcharts.chart('container', {
         Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
     },
     xAxis: {
-      categories: [
-        __('Jan', 'rrze-statistik'),
-        __('Feb', 'rrze-statistik'),
-        __('März', 'rrze-statistik'),
-        __('April', 'rrze-statistik'),
-        __('Mai', 'rrze-statistik'),
-        __('Juni', 'rrze-statistik'),
-        __('Juli', 'rrze-statistik'),
-        __('Aug', 'rrze-statistik'),
-        __('Sep', 'rrze-statistik'),
-        __('Okt', 'rrze-statistik'),
-        __('Nov', 'rrze-statistik'),
-        __('Dez', 'rrze-statistik'),      
-      ],
+      categories: abscissaDescriptiontext,
     },
     yAxis: {
       title: {
-        text: __('Besucher', 'rrze-statistik')
+        text: ordinateDescriptiontext
       }
     },
     tooltip: {
       shared: true,
-      valueSuffix: __(' Besucher/Monat', 'rrze-statistik')
+      valueSuffix: tooltipDesc
     },
     credits: {
       enabled: false

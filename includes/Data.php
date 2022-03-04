@@ -75,23 +75,50 @@ class Data
         return $output;
         }
 
-    public static function sendToJs($data_body)
+    public static function sendToJs($data_body, $abscissa_desc, $ordinate_desc, $headline_chart, $tooltip_desc)
     {
         $json_data = json_encode($data_body);
         $script = 'const linechartDataset ='.$json_data.';';
+        $script .= 'const abscissaDescriptiontext ='.json_encode($abscissa_desc).';';
+        $script .= 'const ordinateDescriptiontext ='.json_encode($ordinate_desc).';';
+        $script .= 'const headlineDescriptiontext ='.json_encode($headline_chart).';';
+        $script .= 'const tooltipDesc ='.json_encode($tooltip_desc).';';
 
         wp_add_inline_script('index-js', $script, 'before');
         return $data_body;
 	
     }
 
+    public static function getMonthDesc(){
+        return array(
+            __('Jan', 'rrze-statistik'),
+            __('Feb', 'rrze-statistik'),
+            __('März', 'rrze-statistik'),
+            __('April', 'rrze-statistik'),
+            __('Mai', 'rrze-statistik'),
+            __('Juni', 'rrze-statistik'),
+            __('Juli', 'rrze-statistik'),
+            __('Aug', 'rrze-statistik'),
+            __('Sep', 'rrze-statistik'),
+            __('Okt', 'rrze-statistik'),
+            __('Nov', 'rrze-statistik'),
+            __('Dez', 'rrze-statistik'),      
+        );
+    }
+
     public static function fetchLast24Months($url)
     {
+        $abscissa_desc = Self::getMonthDesc();
+        $ordinate_desc = __('Besucher', 'rrze-statistik');
+        $headline_chart = __('Seitenbesucher der letzten 24 Monate', 'rrze-statistik');
+        $tooltip_desc = __(' Besucher/Monat', 'rrze-statistik');
+
+
         $data = get_option('rrze_statistik_webalizer_hist_data');
         if ($data === false) {
             return 'forbidden';
         } else {
-            Self::sendToJs($data);
+            Self::sendToJs($data, $abscissa_desc, $ordinate_desc, $headline_chart, $tooltip_desc);
             return $data;
         }
     }
