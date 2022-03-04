@@ -55,14 +55,14 @@ class Data
     {
         /* DATA STRUCTURE */
         $keymap = array(
-            'monat',
-            'jahr',
+            'month',
+            'year',
             'hits',
             'files',
             'hosts',
             'kbytes',
-            'anzahl_monate',
-            'aufgezeichnete_tage',
+            'month_count',
+            'recorded_days',
             'pages',
             'visits',
         );

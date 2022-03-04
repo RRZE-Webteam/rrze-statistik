@@ -16,7 +16,7 @@ console.log(linechartDataset);
     console.log(linechartDataset);
   let filterData = (dataset, year) => {
     let output = dataset.filter(data => {
-      return data.jahr === year.toString();
+      return data.year === year.toString();
     });
     return output;
   }
@@ -29,7 +29,7 @@ console.log(linechartDataset);
     let datasetDummy = [null, null, null, null, null, null, null, null, null, null, null, null];
     let datasetOutput = datasetDummy;
     dataset.forEach(data => {
-      datasetOutput[parseInt(data.monat)-1] = parseInt(data.visits);
+      datasetOutput[parseInt(data.month)-1] = parseInt(data.visits);
     });
     return datasetOutput;
   }
