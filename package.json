@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/RRZE-Webteam/rrze-statistik#readme",
   "dependencies": {
-    "@wordpress/i18n": "^4.3.1",
     "jquery": "^3.6.0"
   },
   "devDependencies": {
