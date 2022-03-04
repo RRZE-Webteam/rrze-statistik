@@ -5,10 +5,15 @@ namespace RRZE\Statistik;
 defined('ABSPATH') || exit;
 
 /**
- * Collects data from statistiken.rrze.fau.de
+ * Collects and processes data
  */
 class Data
 {
+    /**
+     * Function for Cron Job
+     *
+     * @return array
+     */
     public static function updateData()
     {
         // Get the data from the API.
@@ -25,6 +30,12 @@ class Data
         }
     }
 
+    /**
+     * Fetches body $url from statistiken.rrze.fau.de
+     *
+     * @param string $url
+     * @return string
+     */
     public static function fetchDataBody($url)
     {
         $cachable = wp_remote_get(esc_url_raw($url));
@@ -35,25 +46,33 @@ class Data
         return $cachable_body;
     }
 
+    /**
+     * Evaluates if fetch was successful
+     *
+     * @param string $data_body
+     * @return boolean
+     */
     public static function validateData($data_body)
     {
         if (strpos($data_body, "Forbidden") !== false) {
-            wp_localize_script('index-js', 'ready_check', 'forbidden');
             return false;
         } else if (strlen($data_body) === 0) {
-            wp_localize_script('index-js', 'ready_check', 'forbidden');
             return false;
         } else if (strpos($data_body, "could not be found on this server") !== false) {
-            wp_localize_script('index-js', 'ready_check', 'forbidden');
             return false;
         } else {
             return true;
         }
     }
 
+    /**
+     * Transforms webalizer.hist into Array and keys it with associated keymap.
+     *
+     * @param string $data_body
+     * @return array
+     */
     public static function processDataBody($data_body)
     {
-        /* DATA STRUCTURE */
         $keymap = array(
             'month',
             'year',
@@ -75,6 +94,16 @@ class Data
         return $output;
         }
 
+    /**
+     * Sends all parameters to JS
+     *
+     * @param array $data_body
+     * @param array $abscissa_desc
+     * @param string $ordinate_desc
+     * @param string $headline_chart
+     * @param string $tooltip_desc
+     * @return void
+     */
     public static function sendToJs($data_body, $abscissa_desc, $ordinate_desc, $headline_chart, $tooltip_desc)
     {
         $json_data = json_encode($data_body);
@@ -105,7 +134,14 @@ class Data
         );
     }
 
-    public static function fetchLast24Months($url)
+    /**
+     * Uses a set of functions to fetch webalizer.hist, process the data, set description 
+     * tags for the charts and send the combined information to the JS file
+     *
+     * @param string $url
+     * @return string returns 'forbidden' or the saved dataset
+     */
+    public static function processLinechartDataset($url)
     {
         $abscissa_desc = Self::getMonthDesc();
         $ordinate_desc = __('Visitors', 'rrze-statistik');

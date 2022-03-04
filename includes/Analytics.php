@@ -5,7 +5,7 @@ namespace RRZE\Statistik;
 defined('ABSPATH') || exit;
 
 /**
- * Combines raw data & Highcharts plots
+ * Pulls processed data & initiates Highchart plots
  */
 class Analytics
 {
@@ -38,7 +38,7 @@ class Analytics
         $url = $this->retrieveSiteUrl(true);
         $remove_char = ["https://", "http://", "/"];
         $site = 'www.' . str_replace($remove_char, "", get_site_url());
-        $ready_check = Data::fetchLast24Months(Self::retrieveSiteUrl(true));
+        $ready_check = Data::processLinechartDataset(Self::retrieveSiteUrl(true));
         if ($ready_check === 'forbidden') {
             return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>'.printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site).'</strong><br />';
         } else {
