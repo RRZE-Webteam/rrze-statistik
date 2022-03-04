@@ -15,7 +15,7 @@ class Dashboard
     {
         global $wp_meta_boxes;
 
-        wp_add_dashboard_widget('custom_help_widget', __('Seitenbesucher der letzten 24 Monate', 'rrze-statistik'), [$this, 'custom_dashboard_help'], 'column3');
+        wp_add_dashboard_widget('custom_help_widget', __('Site visitors (last 24 months)', 'rrze-statistik'), [$this, 'custom_dashboard_help'], 'column3');
     }
 
     function custom_dashboard_help()

@@ -1,9 +1,9 @@
 <?php
 
 /*
-Plugin Name:     RRZE Statistik
+Plugin Name:     RRZE Statistics
 Plugin URI:      https://github.com/rrze-webteam/rrze-statistik
-Description:     Anzeige der Statistiken im Dashboard
+Description:     Displays monthly statistics from https://statistiken.rrze.fau.de within your Dashboard.
 Version:         0.0.1
 Author:          RRZE Webteam
 Author URI:      https://blogs.fau.de/webworking/

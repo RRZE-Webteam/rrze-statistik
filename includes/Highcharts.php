@@ -59,9 +59,6 @@ class Highcharts
                 true
             );
         }
-
-
-        wp_set_script_translations('index-js', 'rrze-statistik', dirname(plugin_basename(__FILE__ )) . '/languages/');
     }
 
     public function loadHighcharts()

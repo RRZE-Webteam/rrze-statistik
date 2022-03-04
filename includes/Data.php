@@ -93,25 +93,25 @@ class Data
         return array(
             __('Jan', 'rrze-statistik'),
             __('Feb', 'rrze-statistik'),
-            __('März', 'rrze-statistik'),
-            __('April', 'rrze-statistik'),
-            __('Mai', 'rrze-statistik'),
-            __('Juni', 'rrze-statistik'),
-            __('Juli', 'rrze-statistik'),
+            __('Mar', 'rrze-statistik'),
+            __('Apr', 'rrze-statistik'),
+            __('May', 'rrze-statistik'),
+            __('Jun', 'rrze-statistik'),
+            __('Jul', 'rrze-statistik'),
             __('Aug', 'rrze-statistik'),
             __('Sep', 'rrze-statistik'),
-            __('Okt', 'rrze-statistik'),
+            __('Oct', 'rrze-statistik'),
             __('Nov', 'rrze-statistik'),
-            __('Dez', 'rrze-statistik'),      
+            __('Dec', 'rrze-statistik'),      
         );
     }
 
     public static function fetchLast24Months($url)
     {
         $abscissa_desc = Self::getMonthDesc();
-        $ordinate_desc = __('Besucher', 'rrze-statistik');
-        $headline_chart = __('Seitenbesucher der letzten 24 Monate', 'rrze-statistik');
-        $tooltip_desc = __(' Besucher/Monat', 'rrze-statistik');
+        $ordinate_desc = __('Visitors', 'rrze-statistik');
+        $headline_chart = __('Visitors (last 24 months)', 'rrze-statistik');
+        $tooltip_desc = __(' Visitors / Month', 'rrze-statistik');
 
 
         $data = get_option('rrze_statistik_webalizer_hist_data');

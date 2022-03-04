@@ -2,20 +2,20 @@
 # This file is distributed under the GNU General Public License v2.
 msgid ""
 msgstr ""
-"Project-Id-Version: RRZE Statistik 0.0.1\n"
+"Project-Id-Version: RRZE Statistics 0.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-statistik\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-02T12:56:10+00:00\n"
+"POT-Creation-Date: 2022-03-04T13:43:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: rrze-statistik\n"
 
 #. Plugin Name of the plugin
-msgid "RRZE Statistik"
+msgid "RRZE Statistics"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -23,7 +23,7 @@ msgid "https://github.com/rrze-webteam/rrze-statistik"
 msgstr ""
 
 #. Description of the plugin
-msgid "Anzeige der Statistiken im Dashboard"
+msgid "Displays monthly statistics from https://statistiken.rrze.fau.de within your Dashboard."
 msgstr ""
 
 #. Author of the plugin
@@ -34,16 +34,72 @@ msgstr ""
 msgid "https://blogs.fau.de/webworking/"
 msgstr ""
 
-#: includes/Analytics.php:41
-msgid "Es kann einige Tage dauern, bevor die Statistiken zu Ihrer Webseite ("
-msgstr ""
-
-#: includes/Analytics.php:41
-msgid ") im Dashboard dargestellt werden."
+#: includes/Analytics.php:43
+msgid "It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard."
 msgstr ""
 
 #: includes/Dashboard.php:18
-msgid "Seitenbesucher der letzten 24 Monate"
+msgid "Site visitors (last 24 months)"
+msgstr ""
+
+#: includes/Data.php:94
+msgid "Jan"
+msgstr ""
+
+#: includes/Data.php:95
+msgid "Feb"
+msgstr ""
+
+#: includes/Data.php:96
+msgid "Mar"
+msgstr ""
+
+#: includes/Data.php:97
+msgid "Apr"
+msgstr ""
+
+#: includes/Data.php:98
+msgid "May"
+msgstr ""
+
+#: includes/Data.php:99
+msgid "Jun"
+msgstr ""
+
+#: includes/Data.php:100
+msgid "Jul"
+msgstr ""
+
+#: includes/Data.php:101
+msgid "Aug"
+msgstr ""
+
+#: includes/Data.php:102
+msgid "Sep"
+msgstr ""
+
+#: includes/Data.php:103
+msgid "Oct"
+msgstr ""
+
+#: includes/Data.php:104
+msgid "Nov"
+msgstr ""
+
+#: includes/Data.php:105
+msgid "Dec"
+msgstr ""
+
+#: includes/Data.php:112
+msgid "Visitors"
+msgstr ""
+
+#: includes/Data.php:113
+msgid "Visitors (last 24 months)"
+msgstr ""
+
+#: includes/Data.php:114
+msgid " Visitors / Month"
 msgstr ""
 
 #. translators: 1: Server PHP version number, 2: Required PHP version number.
@@ -60,60 +116,4 @@ msgstr ""
 #: rrze-statistik.php:97
 #: rrze-statistik.php:146
 msgid "Plugins: %1$s: %2$s"
-msgstr ""
-
-#: assets/js/index.js:61
-msgid "Jan"
-msgstr ""
-
-#: assets/js/index.js:62
-msgid "Feb"
-msgstr ""
-
-#: assets/js/index.js:63
-msgid "März"
-msgstr ""
-
-#: assets/js/index.js:64
-msgid "April"
-msgstr ""
-
-#: assets/js/index.js:65
-msgid "Mai"
-msgstr ""
-
-#: assets/js/index.js:66
-msgid "Juni"
-msgstr ""
-
-#: assets/js/index.js:67
-msgid "Juli"
-msgstr ""
-
-#: assets/js/index.js:68
-msgid "Aug"
-msgstr ""
-
-#: assets/js/index.js:69
-msgid "Sep"
-msgstr ""
-
-#: assets/js/index.js:70
-msgid "Okt"
-msgstr ""
-
-#: assets/js/index.js:71
-msgid "Nov"
-msgstr ""
-
-#: assets/js/index.js:72
-msgid "Dez"
-msgstr ""
-
-#: assets/js/index.js:77
-msgid "Besucher"
-msgstr ""
-
-#: assets/js/index.js:82
-msgid " Besucher/Monat"
 msgstr ""

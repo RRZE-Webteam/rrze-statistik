@@ -40,7 +40,7 @@ class Analytics
         $site = 'www.' . str_replace($remove_char, "", get_site_url());
         $ready_check = Data::fetchLast24Months(Self::retrieveSiteUrl(true));
         if ($ready_check === 'forbidden') {
-            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>'.__('Es kann einige Tage dauern, bevor die Statistiken zu Ihrer Webseite (', 'rrze-statistik') . $site . __(') im Dashboard dargestellt werden.', 'rrze-statistik').'</strong><br/>';
+            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>'.printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site).'</strong><br />';
         } else {
             return $this->highcharts->lineplot();
         };

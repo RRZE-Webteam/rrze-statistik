@@ -22,9 +22,4 @@ class Shortcode
         $analytics = new Analytics();
         return $analytics->getLinechart($url);
     }
-
-    public function getContent()
-    {
-        return '<p>Testoutput RRZE Statistik</p>';
-    }
 }
