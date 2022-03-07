@@ -1,5 +1,5 @@
 Highcharts.theme = {
-    colors: ['#648fff', '#dc267f', '#fe6100', '#785ef0', '#ffb000'],
+    colors: ['#648fff', '#dc267f', '#ffb000', '#fe6100', '#785ef0'],
     chart: {
         backgroundColor: {
             linearGradient: [0, 0, 500, 500],
