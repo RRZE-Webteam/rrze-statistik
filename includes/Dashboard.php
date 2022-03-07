@@ -12,22 +12,31 @@ class Dashboard
         
     }
 
+    /**
+     * Adds the Dashboard Widget
+     *
+     * @return void
+     */
     public function add_rrze_statistik_dashboard_widget()
     {
-        wp_add_dashboard_widget('rrze_statistik_widget', __('Site visitors (last 24 months)', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_content'], [$this, 'customize_rrze_statistik_dashboard']);
+        wp_add_dashboard_widget('rrze_statistik_widget', __('Site visitors (last 24 months)', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_content']);
     }
 
+    /**
+     * Defines Content of Dashboard Widget
+     *
+     * @return void
+     */
     function load_rrze_statistik_dashboard_content()
     {
+        if(is_active_widget( 'rrze_statistik_widget' )===false){
+            echo('hier');
+        } else {
+            echo('da');
+
         $analytics = new Analytics();
         echo ($analytics->getLinechart(get_site_url()));
+        }
     }
 
-    function default_rrze_statistik_dashboard(){
-
-    }
-
-    function customize_rrze_statistik_dashboard() {
-
-    }
 }
