@@ -8,21 +8,26 @@ class Dashboard
 {
     public function __construct()
     {
-        add_action('wp_dashboard_setup', [$this, 'my_custom_dashboard_widgets']);
+        add_action('wp_dashboard_setup', [$this, 'add_rrze_statistik_dashboard_widget']);
+        
     }
 
-    public function my_custom_dashboard_widgets()
+    public function add_rrze_statistik_dashboard_widget()
     {
-        global $wp_meta_boxes;
-
-        wp_add_dashboard_widget('custom_help_widget', __('Site visitors (last 24 months)', 'rrze-statistik'), [$this, 'custom_dashboard_help'], 'column3');
+        wp_add_dashboard_widget('rrze_statistik_widget', __('Site visitors (last 24 months)', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_content'], [$this, 'customize_rrze_statistik_dashboard']);
     }
 
-    function custom_dashboard_help()
+    function load_rrze_statistik_dashboard_content()
     {
         $analytics = new Analytics();
         echo ($analytics->getLinechart(get_site_url()));
-        
-        
+    }
+
+    function default_rrze_statistik_dashboard(){
+
+    }
+
+    function customize_rrze_statistik_dashboard() {
+
     }
 }
