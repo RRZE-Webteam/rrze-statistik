@@ -27,20 +27,21 @@ class Analytics
             $remove_char = ["https://", "http://", "/"];
             $url = 'www.' . str_replace($remove_char, "", get_site_url());
         } else {
-            $url = "www.wordpress.rrze.fau.de";
+            $url = "www.fau.de";
         }
-        return 'https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist';
+        $output = 'https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist';
+        return $output;
     }
 
     public function getLinechart()
     {
         //set value of $url to true while debugging..
-        $url = $this->retrieveSiteUrl(true);
+        //$url = $this->retrieveSiteUrl(true);
         $remove_char = ["https://", "http://", "/"];
         $site = 'www.' . str_replace($remove_char, "", get_site_url());
         $ready_check = Data::processLinechartDataset(Self::retrieveSiteUrl(true));
-        if ($ready_check === 'forbidden') {
-            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><strong>'.printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site).'</strong><br />';
+        if ($ready_check === false) {
+            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><br /><strong>'.printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site).'</strong><br />';
         } else {
             return $this->highcharts->lineplot();
         };

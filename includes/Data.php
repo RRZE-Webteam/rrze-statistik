@@ -10,9 +10,9 @@ defined('ABSPATH') || exit;
 class Data
 {
     /**
-     * Function for Cron Job
+     * Function for Cron Job. Returns true if successful
      *
-     * @return array
+     * @return boolen
      */
     public static function updateData()
     {
@@ -22,11 +22,11 @@ class Data
         $validation = Self::validateData($data_body);
 
         if ($validation === false) {
-            return 'forbidden';
+            return false;
         } else {
             $data = Self::processDataBody($data_body);
             update_option('rrze_statistik_webalizer_hist_data', $data);
-            return $data;
+            return true;
         }
     }
 
@@ -56,6 +56,7 @@ class Data
     {
         if (strpos($data_body, "Forbidden") !== false) {
             return false;
+
         } else if (strlen($data_body) === 0) {
             return false;
         } else if (strpos($data_body, "could not be found on this server") !== false) {
@@ -139,7 +140,7 @@ class Data
      * tags for the charts and send the combined information to the JS file
      *
      * @param string $url
-     * @return string returns 'forbidden' or the saved dataset
+     * @return boolean returns true if successful.
      */
     public static function processLinechartDataset($url)
     {
@@ -148,13 +149,14 @@ class Data
         $headline_chart = __('Visitors (last 24 months)', 'rrze-statistik');
         $tooltip_desc = __(' Visitors / Month', 'rrze-statistik');
 
-
         $data = get_option('rrze_statistik_webalizer_hist_data');
+
         if ($data === false) {
-            return 'forbidden';
+            Self::sendToJs('undefined', 'undefined', 'undefined', 'undefined', 'undefined');
+            return false;
         } else {
             Self::sendToJs($data, $abscissa_desc, $ordinate_desc, $headline_chart, $tooltip_desc);
-            return $data;
+            return true;
         }
     }
 }

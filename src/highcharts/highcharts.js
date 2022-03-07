@@ -6,14 +6,10 @@ Datenstruktur:
 ...
 */
 document.addEventListener("DOMContentLoaded", function(event) {
-
-console.log(linechartDataset);
-  if (linechartDataset === undefined){
+  if (linechartDataset === 'undefined'){
     console.log("Data could not be retrieved");
-    console.log(linechartDataset);
   } else {
-    console.log("else");
-    console.log(linechartDataset);
+    console.log("Dataset successfully loaded");
   let filterData = (dataset, year) => {
     let output = dataset.filter(data => {
       return data.year === year.toString();
@@ -37,6 +33,10 @@ console.log(linechartDataset);
   let datasetFirstYear = generateDatasets(outputFirstYear);
   let datasetSecondYear = generateDatasets(outputSecondYear);
   let datasetThirdYear = generateDatasets(outputThirdYear);
+
+  console.log(outputThirdYear);
+  console.log(outputSecondYear);
+  console.log(outputFirstYear);
   
 Highcharts.chart('container', {
     chart: {
