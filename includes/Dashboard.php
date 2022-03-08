@@ -9,7 +9,6 @@ class Dashboard
     public function __construct()
     {
         add_action('wp_dashboard_setup', [$this, 'add_rrze_statistik_dashboard_widget']);
-        
     }
 
     /**
@@ -29,14 +28,7 @@ class Dashboard
      */
     function load_rrze_statistik_dashboard_content()
     {
-        if(is_active_widget( 'rrze_statistik_widget' )===false){
-            echo('hier');
-        } else {
-            echo('da');
-
         $analytics = new Analytics();
         echo ($analytics->getLinechart(get_site_url()));
-        }
     }
-
 }

@@ -33,10 +33,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let datasetFirstYear = generateDatasets(outputFirstYear);
   let datasetSecondYear = generateDatasets(outputSecondYear);
   let datasetThirdYear = generateDatasets(outputThirdYear);
-
-  console.log(outputThirdYear);
-  console.log(outputSecondYear);
-  console.log(outputFirstYear);
   
 Highcharts.chart('container', {
     chart: {
