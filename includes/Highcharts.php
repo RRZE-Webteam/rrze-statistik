@@ -68,7 +68,7 @@ class Highcharts
 ;
     }
 
-    public function lineplot()
+    public function lineplot($container)
     {
         $data = get_option('rrze_statistik_webalizer_hist_data');
         
@@ -79,9 +79,9 @@ class Highcharts
         }
 
         return  '<div class="rrze-statistik"><figure class="highcharts-figure">
-        <div id="container"></div>
+        <div id="'.$container.'"></div>
         <p class="highcharts-description">'."Hier Datentabelle einfügen".'
         </p>
-      </figure></div>';
+        </figure></div>';
     }
 }

@@ -7,7 +7,8 @@
   \**************************************/
 /***/ (() => {
 
-var currentYear = new Date().getFullYear(); //const { __, _x, _n, sprintf } = wp.i18n;
+var currentYear = new Date().getFullYear();
+var datatypes = ["visits"]; //const { __, _x, _n, sprintf } = wp.i18n;
 
 /*
 Datenstruktur:
@@ -16,88 +17,86 @@ Datenstruktur:
 */
 
 document.addEventListener("DOMContentLoaded", function (event) {
-  if (linechartDataset === 'undefined') {
+  if (linechartDataset === "undefined") {
     console.log("Data could not be retrieved");
   } else {
     console.log("Dataset successfully loaded");
+    datatypes.forEach(function (datatype) {
+      console.log(datatype);
 
-    var filterData = function filterData(dataset, year) {
-      var output = dataset.filter(function (data) {
-        return data.year === year.toString();
-      });
-      return output;
-    };
+      var filterData = function filterData(dataset, year) {
+        var output = dataset.filter(function (data) {
+          return data.year === year.toString();
+        });
+        return output;
+      };
 
-    var outputThirdYear = filterData(linechartDataset, currentYear);
-    var outputSecondYear = filterData(linechartDataset, currentYear - 1);
-    var outputFirstYear = filterData(linechartDataset, currentYear - 2);
+      var outputThirdYear = filterData(linechartDataset, currentYear);
+      var outputSecondYear = filterData(linechartDataset, currentYear - 1);
+      var outputFirstYear = filterData(linechartDataset, currentYear - 2);
 
-    var generateDatasets = function generateDatasets(dataset) {
-      var datasetDummy = [null, null, null, null, null, null, null, null, null, null, null, null];
-      var datasetOutput = datasetDummy;
-      dataset.forEach(function (data) {
-        datasetOutput[parseInt(data.month) - 1] = parseInt(data.visits);
-      });
-      return datasetOutput;
-    };
+      var generateDatasets = function generateDatasets(dataset) {
+        var datasetDummy = [null, null, null, null, null, null, null, null, null, null, null, null];
+        var datasetOutput = datasetDummy;
+        dataset.forEach(function (data) {
+          datasetOutput[parseInt(data.month) - 1] = parseInt(data[datatype]);
+        });
+        return datasetOutput;
+      };
 
-    var datasetFirstYear = generateDatasets(outputFirstYear);
-    var datasetSecondYear = generateDatasets(outputSecondYear);
-    var datasetThirdYear = generateDatasets(outputThirdYear);
-    console.log(outputThirdYear);
-    console.log(outputSecondYear);
-    console.log(outputFirstYear);
-    Highcharts.chart('container', {
-      chart: {
-        type: 'areaspline'
-      },
-      title: {
-        text: headlineDescriptiontext
-      },
-      legend: {
-        layout: 'vertical',
-        align: 'left',
-        verticalAlign: 'top',
-        x: 150,
-        y: 100,
-        floating: true,
-        borderWidth: 1,
-        backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF'
-      },
-      xAxis: {
-        categories: abscissaDescriptiontext
-      },
-      yAxis: {
+      var datasetFirstYear = generateDatasets(outputFirstYear);
+      var datasetSecondYear = generateDatasets(outputSecondYear);
+      var datasetThirdYear = generateDatasets(outputThirdYear);
+      Highcharts.chart(datatype, {
+        chart: {
+          type: "areaspline"
+        },
         title: {
-          text: ordinateDescriptiontext
-        }
-      },
-      tooltip: {
-        shared: true,
-        valueSuffix: tooltipDesc
-      },
-      credits: {
-        enabled: false
-      },
-      plotOptions: {
-        areaspline: {
-          fillOpacity: 0.3
-        }
-      },
-      series: [{
-        name: (currentYear - 2).toString(),
-        data: datasetFirstYear
-      }, {
-        name: (currentYear - 1).toString(),
-        data: datasetSecondYear
-      }, {
-        name: currentYear,
-        data: datasetThirdYear
-      }]
+          text: headlineDescriptiontext
+        },
+        legend: {
+          layout: "vertical",
+          align: "left",
+          verticalAlign: "top",
+          x: 150,
+          y: 100,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || "#FFFFFF"
+        },
+        xAxis: {
+          categories: abscissaDescriptiontext
+        },
+        yAxis: {
+          title: {
+            text: ordinateDescriptiontext
+          }
+        },
+        tooltip: {
+          shared: true,
+          valueSuffix: tooltipDesc
+        },
+        credits: {
+          enabled: false
+        },
+        plotOptions: {
+          areaspline: {
+            fillOpacity: 0.3
+          }
+        },
+        series: [{
+          name: (currentYear - 2).toString(),
+          data: datasetFirstYear
+        }, {
+          name: (currentYear - 1).toString(),
+          data: datasetSecondYear
+        }, {
+          name: currentYear,
+          data: datasetThirdYear
+        }]
+      });
     });
   }
-
-  ;
 });
 
 /***/ }),

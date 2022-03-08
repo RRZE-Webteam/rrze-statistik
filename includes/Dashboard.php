@@ -29,6 +29,6 @@ class Dashboard
     function load_rrze_statistik_dashboard_content()
     {
         $analytics = new Analytics();
-        echo ($analytics->getLinechart(get_site_url()));
+        echo ($analytics->getLinechart('visits'));
     }
 }

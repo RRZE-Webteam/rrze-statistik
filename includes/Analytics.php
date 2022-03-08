@@ -33,7 +33,7 @@ class Analytics
         return $output;
     }
 
-    public function getLinechart()
+    public function getLinechart($container)
     {
         //set value of $url to true while debugging..
         //$url = $this->retrieveSiteUrl(true);
@@ -43,7 +43,7 @@ class Analytics
         if ($ready_check === false) {
             return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><br /><strong>'.printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site).'</strong><br />';
         } else {
-            return $this->highcharts->lineplot();
+            return $this->highcharts->lineplot($container);
         };
     }
 }
