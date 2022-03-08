@@ -8,7 +8,7 @@
 /***/ (() => {
 
 var currentYear = new Date().getFullYear();
-var datatypes = ["visits"]; //const { __, _x, _n, sprintf } = wp.i18n;
+var datatypes = ["visits", "hits"]; //const { __, _x, _n, sprintf } = wp.i18n;
 
 /*
 Datenstruktur:

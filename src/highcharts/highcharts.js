@@ -1,5 +1,5 @@
 let currentYear = new Date().getFullYear();
-const datatypes = ["visits"];
+const datatypes = ["visits", "hits"];
 //const { __, _x, _n, sprintf } = wp.i18n;
 /*
 Datenstruktur:
