@@ -96,46 +96,6 @@ class Data
         }
 
     /**
-     * Sends all parameters to JS
-     *
-     * @param array $data_body
-     * @param array $abscissa_desc
-     * @param string $ordinate_desc
-     * @param string $headline_chart
-     * @param string $tooltip_desc
-     * @return void
-     */
-    public static function sendToJs($data_body, $abscissa_desc, $ordinate_desc, $headline_chart, $tooltip_desc)
-    {
-        $json_data = json_encode($data_body);
-        $script = 'var linechartDataset ='.$json_data.';';
-        $script .= 'var abscissaDescriptiontext ='.json_encode($abscissa_desc).';';
-        $script .= 'var ordinateDescriptiontext ='.json_encode($ordinate_desc).';';
-        $script .= 'var headlineDescriptiontext ='.json_encode($headline_chart).';';
-        $script .= 'var tooltipDesc ='.json_encode($tooltip_desc).';';
-
-        wp_add_inline_script('index-js', $script, 'before');
-        return $data_body;
-    }
-
-    public static function getMonthDesc(){
-        return array(
-            __('Jan', 'rrze-statistik'),
-            __('Feb', 'rrze-statistik'),
-            __('Mar', 'rrze-statistik'),
-            __('Apr', 'rrze-statistik'),
-            __('May', 'rrze-statistik'),
-            __('Jun', 'rrze-statistik'),
-            __('Jul', 'rrze-statistik'),
-            __('Aug', 'rrze-statistik'),
-            __('Sep', 'rrze-statistik'),
-            __('Oct', 'rrze-statistik'),
-            __('Nov', 'rrze-statistik'),
-            __('Dec', 'rrze-statistik'),      
-        );
-    }
-
-    /**
      * Uses a set of functions to fetch webalizer.hist, process the data, set description 
      * tags for the charts and send the combined information to the JS file
      *
@@ -144,18 +104,13 @@ class Data
      */
     public static function processLinechartDataset($url)
     {
-        $abscissa_desc = Self::getMonthDesc();
-        $ordinate_desc = __('Visitors', 'rrze-statistik');
-        $headline_chart = __('Visitors (last 24 months)', 'rrze-statistik');
-        $tooltip_desc = __(' Visitors / Month', 'rrze-statistik');
-
         $data = get_option('rrze_statistik_webalizer_hist_data');
 
         if ($data === false) {
-            Self::sendToJs('undefined', 'undefined', 'undefined', 'undefined', 'undefined');
+            Transfer::sendToJs('undefined', 'undefined', 'undefined', 'undefined', 'undefined');
             return false;
         } else {
-            Self::sendToJs($data, $abscissa_desc, $ordinate_desc, $headline_chart, $tooltip_desc);
+            Transfer::sendToJs($data, Language::getAbscissa(), Language::getLanguagePackage());
             return true;
         }
     }

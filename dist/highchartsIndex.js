@@ -8,15 +8,17 @@
 /***/ (() => {
 
 var currentYear = new Date().getFullYear();
-var datatypes = ["visits", "hits"]; //const { __, _x, _n, sprintf } = wp.i18n;
-
+var datatypes = ["visits", "hits", "hosts", "files", "kbytes"];
 /*
-Datenstruktur:
-0 {monat: "3", jahr: "2020", hits: "222475", files: "188973", hosts: "2112", …}
+Example Data retrieved from Transfer.php
+linechartDataset: {monat: "3", jahr: "2020", hits: "222475", files: "188973", hosts: "2112", …}
 ...
+languagePackage: {visits: {ordinate_desc: "Seitenbesucher", headline_chart: "Besucher der letzten 24 Monate", tooltip_desc: " Besucher / Monat"}}
 */
 
 document.addEventListener("DOMContentLoaded", function (event) {
+  console.log(languagePackage);
+
   if (linechartDataset === "undefined") {
     console.log("Data could not be retrieved");
   } else {
@@ -52,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           type: "areaspline"
         },
         title: {
-          text: headlineDescriptiontext
+          text: languagePackage[datatype].headline_chart
         },
         legend: {
           layout: "vertical",
@@ -69,12 +71,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         },
         yAxis: {
           title: {
-            text: ordinateDescriptiontext
+            text: languagePackage[datatype].ordinate_desc
           }
         },
         tooltip: {
           shared: true,
-          valueSuffix: tooltipDesc
+          valueSuffix: languagePackage[datatype].tooltip_desc
         },
         credits: {
           enabled: false
