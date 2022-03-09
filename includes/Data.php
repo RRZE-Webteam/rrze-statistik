@@ -41,7 +41,9 @@ class Data
             return false;
         } else {
             $data = substr($data_body, 0, 5000);
-            Self::processUrlDataBody($data);
+            $processed_data = Self::processUrlDataBody($data);
+            update_option('rrze_statistik_url_datset', $processed_data);
+            return true;
         }
     }
 
@@ -114,7 +116,7 @@ class Data
             }
         }
         $output = array_merge(array_slice($sites, 0, 10), array_slice($image_files, 0, 10));
-        var_dump($output);
+        return($output);
     }
 
     /**
