@@ -15,6 +15,6 @@ class Shortcode
     {
         $analytics = new Analytics();
         Analytics::getUrlDatasetTable();
-        return $analytics->getLinechart('visits');
+        return $analytics->getLinechart('visits').$analytics->getUrlDatasetTable();
     }
 }

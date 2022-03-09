@@ -21,9 +21,10 @@ class Analytics
         }
     }
 
-    public static function getDate(){
+    public static function getDate()
+    {
         $raw_date = date("Ym");
-        $new_date = date("Ym", strtotime ( '-1 month' , strtotime ( $raw_date ) )) ;
+        $new_date = date("Ym", strtotime('-1 month', strtotime($raw_date)));
         var_dump($new_date);
         return $new_date;
     }
@@ -37,7 +38,7 @@ class Analytics
             $url = "www.nat.fau.de";
         }
 
-        if ($type === 'webalizer.hist'){
+        if ($type === 'webalizer.hist') {
             $output = 'https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist';
         } else {
             $output = 'https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/url_' . Self::getDate() . '.tab';
@@ -53,19 +54,33 @@ class Analytics
         $site = 'www.' . str_replace($remove_char, "", get_site_url());
         $ready_check = Data::processLinechartDataset(Self::retrieveSiteUrl(true, 'webalizer.hist'));
         if ($ready_check === false) {
-            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><br /><strong>'.printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site).'</strong><br />';
+            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><br /><strong>' . printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site) . '</strong><br />';
         } else {
             return $this->highcharts->lineplot($container);
         };
+    }
+
+    public static function getTwoDimensionalHtmlTable($array, $array_key_1, $array_key_2, $head_desc_1, $head_desc_2){
+
+        $html = "<table class='rrze-statistik-table'><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
+
+        foreach ($array as $value) {
+            $html .= "<tr><td>" . $value[$array_key_1] . '</td><td><a href="'.$value[1].'">' . htmlspecialchars($value[$array_key_2]) . '</a></td></tr>';
+        }
+        $html .= "</table>";
+        return $html;
     }
 
     public static function getUrlDatasetTable()
     {
         $data = get_option('rrze_statistik_url_datset');
         $data_chunks = array_chunk($data, 10);
-        var_dump($data_chunks);
         $top_url = $data_chunks[0];
         $top_images = $data_chunks[1];
-        var_dump($top_images);
+
+        $table1 = Self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
+        $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Images', 'rrze-statistik'));
+
+        return $table1.$table2;
     }
 }
