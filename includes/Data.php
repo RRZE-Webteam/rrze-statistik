@@ -16,8 +16,8 @@ class Data
      */
     public static function updateData()
     {
-        // Get the data from the API.
-        $url = Analytics::retrieveSiteUrl(true);
+        // Fetch Dataset Webalizer.hist
+        $url = Analytics::retrieveSiteUrl(true, 'webalizer.hist');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
 
@@ -27,6 +27,21 @@ class Data
             $data = Self::processDataBody($data_body);
             update_option('rrze_statistik_webalizer_hist_data', $data);
             return true;
+        }
+    }
+
+    public static function updateDataWeekly()
+    {
+        // Fetch Dataset
+        $url = Analytics::retrieveSiteUrl(true, 'url');
+        $data_body = Self::fetchDataBody($url);
+        $validation = Self::validateData($data_body);
+
+        if ($validation === false) {
+            return false;
+        } else {
+            $data = substr($data_body, 0, 5000);
+            Self::processUrlDataBody($data);
         }
     }
 
@@ -64,6 +79,23 @@ class Data
         } else {
             return true;
         }
+    }
+
+    public static function processUrlDataBody($data_body)
+    {
+        $data_trim = rtrim($data_body, " \n\r\t\v");
+        $array = preg_split("/\r\n|\n|\r/", $data_trim);
+
+        $output = [];
+        foreach($array as $value) {
+            $array_splitted = preg_split("/	|( 	)/", $value);
+
+       
+            \array_splice($array_splitted, 1, -1);
+
+            array_push($output, $array_splitted);
+        }
+        var_dump($output);
     }
 
     /**
