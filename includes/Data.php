@@ -71,7 +71,6 @@ class Data
     {
         if (strpos($data_body, "Forbidden") !== false) {
             return false;
-
         } else if (strlen($data_body) === 0) {
             return false;
         } else if (strpos($data_body, "could not be found on this server") !== false) {
@@ -85,17 +84,37 @@ class Data
     {
         $data_trim = rtrim($data_body, " \n\r\t\v");
         $array = preg_split("/\r\n|\n|\r/", $data_trim);
+        $pdf = [];
+        $image_files = [];
+        $sites = [];
 
         $output = [];
-        foreach($array as $value) {
+        foreach ($array as $value) {
             $array_splitted = preg_split("/	|( 	)/", $value);
-
-       
             \array_splice($array_splitted, 1, -1);
 
-            array_push($output, $array_splitted);
+            if (
+                strpos($array_splitted[1], "wp-includes")
+                or strpos($array_splitted[1], "wp-content")
+                or strpos($array_splitted[1], "feed")
+                or strpos($array_splitted[1], "robots")
+                or strpos($array_splitted[1], "wp-admin")
+            ) {
+            } elseif (strpos($array_splitted[1], ".pdf")) {
+                array_push($pdf, $array_splitted);
+            } elseif (
+                strpos($array_splitted[1], ".jpg")
+                or strpos($array_splitted[1], ".jpeg")
+                or strpos($array_splitted[1], ".gif")
+                or strpos($array_splitted[1], ".png")
+                or strpos($array_splitted[1], ".svg")
+            ) {
+                array_push($image_files, $array_splitted);
+            } else {
+                array_push($sites, $array_splitted);
+            }
         }
-        var_dump($output);
+        var_dump($sites);
     }
 
     /**
@@ -125,7 +144,7 @@ class Data
             array_push($output, array_combine($keymap, preg_split("/ /", $value)));
         }
         return $output;
-        }
+    }
 
     /**
      * Uses a set of functions to fetch webalizer.hist, process the data, set description 

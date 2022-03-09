@@ -22,12 +22,10 @@ class Analytics
     }
 
     public static function getDate(){
-        $date = date("Ym");
-        if(substr($date, -2) === '01'){
-            $year = (int)(substr($date, 0, -2))-1;
-            $date = (string)$year . '12';
-        }
-        return $date;
+        $raw_date = date("Ym");
+        $new_date = date("Ym", strtotime ( '-1 month' , strtotime ( $raw_date ) )) ;
+        var_dump($new_date);
+        return $new_date;
     }
 
     public static function retrieveSiteUrl($debug, $type)
@@ -36,7 +34,7 @@ class Analytics
             $remove_char = ["https://", "http://", "/"];
             $url = 'www.' . str_replace($remove_char, "", get_site_url());
         } else {
-            $url = "www.fau.de";
+            $url = "www.nat.fau.de";
         }
 
         if ($type === 'webalizer.hist'){
