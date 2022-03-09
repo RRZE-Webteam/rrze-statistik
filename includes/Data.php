@@ -84,7 +84,6 @@ class Data
     {
         $data_trim = rtrim($data_body, " \n\r\t\v");
         $array = preg_split("/\r\n|\n|\r/", $data_trim);
-        $pdf = [];
         $image_files = [];
         $sites = [];
 
@@ -99,9 +98,9 @@ class Data
                 or strpos($array_splitted[1], "feed")
                 or strpos($array_splitted[1], "robots")
                 or strpos($array_splitted[1], "wp-admin")
+                or strpos($array_splitted[1], '.pdf')
             ) {
-            } elseif (strpos($array_splitted[1], ".pdf")) {
-                array_push($pdf, $array_splitted);
+
             } elseif (
                 strpos($array_splitted[1], ".jpg")
                 or strpos($array_splitted[1], ".jpeg")
@@ -114,7 +113,8 @@ class Data
                 array_push($sites, $array_splitted);
             }
         }
-        var_dump($sites);
+        $output = array_merge(array_slice($sites, 0, 10), array_slice($image_files, 0, 10));
+        var_dump($output);
     }
 
     /**
