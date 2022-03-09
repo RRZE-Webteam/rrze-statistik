@@ -14,8 +14,7 @@ class Shortcode
     public function shortcodeOutput($atts)
     {
         $analytics = new Analytics();
-
-        Data::updateDataWeekly();
+        Analytics::getUrlDatasetTable();
         return $analytics->getLinechart('visits');
     }
 }

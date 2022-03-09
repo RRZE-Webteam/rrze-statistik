@@ -58,4 +58,14 @@ class Analytics
             return $this->highcharts->lineplot($container);
         };
     }
+
+    public static function getUrlDatasetTable()
+    {
+        $data = get_option('rrze_statistik_url_datset');
+        $data_chunks = array_chunk($data, 10);
+        var_dump($data_chunks);
+        $top_url = $data_chunks[0];
+        $top_images = $data_chunks[1];
+        var_dump($top_images);
+    }
 }
