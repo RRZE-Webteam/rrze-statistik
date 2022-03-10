@@ -1,5 +1,10 @@
 Highcharts.theme = {
-    colors: ['#648fff', '#dc267f', '#ffb000', '#fe6100', '#785ef0'],
+    navigator: {
+        series: {
+            color: '#5f98cf',
+            lineColor: '#5f98cf'
+        },
+    },
     chart: {
         backgroundColor: {
             linearGradient: [0, 0, 500, 500],
@@ -12,7 +17,7 @@ Highcharts.theme = {
     title: {
         style: {
             color: '#000',
-            font: 'bold 1.4rem "Roboto", Verdana, sans-serif'
+            font: 'bold 1rem "Roboto", Verdana, sans-serif'
         }
     },
     subtitle: {

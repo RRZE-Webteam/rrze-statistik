@@ -57,62 +57,97 @@ document.addEventListener("DOMContentLoaded", function (event) {
             let datasetSecondYear = generateDatasets(outputSecondYear);
             let datasetThirdYear = generateDatasets(outputThirdYear);
 
+            var colors = Highcharts.getOptions().colors;
+
             Highcharts.chart(datatype, {
                 chart: {
-                    type: "areaspline",
-                    height: (2.5 / 3 * 100) + '%',
+                    type: "spline",
                 },
+
+                legend: {
+                    symbolWidth: 40,
+                },
+
                 title: {
                     text: languagePackage[datatype].headline_chart,
                 },
-                legend: {
-                    layout: "vertical",
-                    align: "left",
-                    verticalAlign: "top",
-                    x: 150,
-                    y: 100,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor:
-                        Highcharts.defaultOptions.legend.backgroundColor ||
-                        "#FFFFFF",
+
+                subtitle: {
+                    text: "Source: WebAIM. Click on points to visit official screen reader website",
                 },
-                xAxis: {
-                    categories: abscissaDescriptiontext,
-                },
+
                 yAxis: {
                     title: {
                         text: languagePackage[datatype].ordinate_desc,
                     },
-                },
-                tooltip: {
-                    shared: true,
-                    valueSuffix: languagePackage[datatype].tooltip_desc,
-                },
-                credits: {
-                    enabled: false,
-                },
-                plotOptions: {
-                    areaspline: {
-                        fillOpacity: 0.3,
+                    accessibility: {
+                        description: languagePackage[datatype].ordinate_desc,
                     },
                 },
+
+                xAxis: {
+                    title: {
+                        text: "Time",
+                    },
+                    accessibility: {
+                        description:
+                            "Time from December 2010 to September 2019",
+                    },
+                    categories: abscissaDescriptiontext,
+                },
+
+                tooltip: {
+                    valueSuffix: languagePackage[datatype].ordinate_desc,
+                },
+
+                plotOptions: {
+                    series: {
+                        point: {
+                            events: {
+                                click: function () {
+                                    window.location.href =
+                                        this.series.options.website;
+                                },
+                            },
+                        },
+                        cursor: "pointer",
+                    },
+                },
+
                 series: [
                     {
                         name: firstYear.toString(),
                         data: datasetFirstYear,
+                        website: "https://www.nvaccess.org",
+                        color: colors[4],
+                        zIndex: 0,
+                        accessibility: {
+                            description:
+                                "This is the most used screen reader in 2019",
+                        },
                     },
                     {
                         name: secondYear.toString(),
                         data: datasetSecondYear,
+                        zIndex: 1,
+                        website:
+                            "https://www.freedomscientific.com/Products/Blindness/JAWS",
+                        dashStyle: "ShortDashDot",
+                        color: colors[1],
                     },
                     {
-                        name: thirdYear,
+                        name: thirdYear.toString(),
                         data: datasetThirdYear,
+                        zIndex: 2,
+                        website:
+                            "http://www.apple.com/accessibility/osx/voiceover",
+                        dashStyle: "ShortDot",
+                        color: colors[2],
                     },
                 ],
             });
-/*
+
+            /*
             let container = document.querySelector(`#${datatype}`);
 
             let html = `<div class="highcharts-description highcharts-linked-description rrze-statistik-table"><table><tr><th>${datatype}/month</th><th>${firstYear}</th><th>${secondYear}</th><th>${thirdYear}</th></tr>`;
@@ -132,6 +167,5 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             container.insertAdjacentHTML("beforeend", html);*/
         });
-        
     }
 });

@@ -52,74 +52,93 @@ document.addEventListener("DOMContentLoaded", function (event) {
       var datasetFirstYear = generateDatasets(outputFirstYear);
       var datasetSecondYear = generateDatasets(outputSecondYear);
       var datasetThirdYear = generateDatasets(outputThirdYear);
+      var colors = Highcharts.getOptions().colors;
       Highcharts.chart(datatype, {
         chart: {
-          type: "areaspline",
-          height: 2.5 / 3 * 100 + '%'
+          type: "spline"
+        },
+        legend: {
+          symbolWidth: 40
         },
         title: {
           text: languagePackage[datatype].headline_chart
         },
-        legend: {
-          layout: "vertical",
-          align: "left",
-          verticalAlign: "top",
-          x: 150,
-          y: 100,
-          floating: true,
-          borderWidth: 1,
-          backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || "#FFFFFF"
-        },
-        xAxis: {
-          categories: abscissaDescriptiontext
+        subtitle: {
+          text: "Source: WebAIM. Click on points to visit official screen reader website"
         },
         yAxis: {
           title: {
             text: languagePackage[datatype].ordinate_desc
+          },
+          accessibility: {
+            description: languagePackage[datatype].ordinate_desc
           }
         },
-        tooltip: {
-          shared: true,
-          valueSuffix: languagePackage[datatype].tooltip_desc
+        xAxis: {
+          title: {
+            text: "Time"
+          },
+          accessibility: {
+            description: "Time from December 2010 to September 2019"
+          },
+          categories: abscissaDescriptiontext
         },
-        credits: {
-          enabled: false
+        tooltip: {
+          valueSuffix: languagePackage[datatype].ordinate_desc
         },
         plotOptions: {
-          areaspline: {
-            fillOpacity: 0.3
+          series: {
+            point: {
+              events: {
+                click: function click() {
+                  window.location.href = this.series.options.website;
+                }
+              }
+            },
+            cursor: "pointer"
           }
         },
         series: [{
           name: firstYear.toString(),
-          data: datasetFirstYear
+          data: datasetFirstYear,
+          website: "https://www.nvaccess.org",
+          color: colors[4],
+          zIndex: 0,
+          accessibility: {
+            description: "This is the most used screen reader in 2019"
+          }
         }, {
           name: secondYear.toString(),
-          data: datasetSecondYear
+          data: datasetSecondYear,
+          zIndex: 1,
+          website: "https://www.freedomscientific.com/Products/Blindness/JAWS",
+          dashStyle: "ShortDashDot",
+          color: colors[1]
         }, {
-          name: thirdYear,
-          data: datasetThirdYear
+          name: thirdYear.toString(),
+          data: datasetThirdYear,
+          zIndex: 2,
+          website: "http://www.apple.com/accessibility/osx/voiceover",
+          dashStyle: "ShortDot",
+          color: colors[2]
         }]
       });
       /*
-                  let container = document.querySelector(`#${datatype}`);
-      
-                  let html = `<div class="highcharts-description highcharts-linked-description rrze-statistik-table"><table><tr><th>${datatype}/month</th><th>${firstYear}</th><th>${secondYear}</th><th>${thirdYear}</th></tr>`;
-      
-                  for (let i = 0; i < 12; i++) {
-                      html += `<tr><td>${abscissaDescriptiontext[i]}</td><td>${datasetFirstYear[i]}</td><td>${datasetSecondYear[i]}</td><td>${datasetThirdYear[i]}</td></tr>`;
-                  }
-                  html += "</table>";
-                  console.log(languagePackage[datatype].ordinate_desc);
+      let container = document.querySelector(`#${datatype}`);
+       let html = `<div class="highcharts-description highcharts-linked-description rrze-statistik-table"><table><tr><th>${datatype}/month</th><th>${firstYear}</th><th>${secondYear}</th><th>${thirdYear}</th></tr>`;
+       for (let i = 0; i < 12; i++) {
+          html += `<tr><td>${abscissaDescriptiontext[i]}</td><td>${datasetFirstYear[i]}</td><td>${datasetSecondYear[i]}</td><td>${datasetThirdYear[i]}</td></tr>`;
+      }
+      html += "</table>";
+      console.log(languagePackage[datatype].ordinate_desc);
       /*
-                  window.addEventListener('resize', function () { 
-                      setTimeout(function(){ 
-                      "use strict";
-                      window.location.reload(); 
-                  }, 2000);
-                  });
-      
-                  container.insertAdjacentHTML("beforeend", html);*/
+      window.addEventListener('resize', function () { 
+          setTimeout(function(){ 
+          "use strict";
+          window.location.reload(); 
+      }, 2000);
+      });
+       container.insertAdjacentHTML("beforeend", html);*/
     });
   }
 });
@@ -133,7 +152,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
 /***/ (() => {
 
 Highcharts.theme = {
-  colors: ['#648fff', '#dc267f', '#ffb000', '#fe6100', '#785ef0'],
+  navigator: {
+    series: {
+      color: '#5f98cf',
+      lineColor: '#5f98cf'
+    }
+  },
   chart: {
     backgroundColor: {
       linearGradient: [0, 0, 500, 500],
@@ -143,7 +167,7 @@ Highcharts.theme = {
   title: {
     style: {
       color: '#000',
-      font: 'bold 1.4rem "Roboto", Verdana, sans-serif'
+      font: 'bold 1rem "Roboto", Verdana, sans-serif'
     }
   },
   subtitle: {
