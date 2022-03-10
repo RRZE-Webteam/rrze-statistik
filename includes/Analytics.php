@@ -35,7 +35,7 @@ class Analytics
             $remove_char = ["https://", "http://", "/"];
             $url = 'www.' . str_replace($remove_char, "", get_site_url());
         } else {
-            $url = "www.nat.fau.de";
+            $url = "www.wordpress.rrze.fau.de";
         }
 
         if ($type === 'webalizer.hist') {
@@ -62,12 +62,12 @@ class Analytics
 
     public static function getTwoDimensionalHtmlTable($array, $array_key_1, $array_key_2, $head_desc_1, $head_desc_2){
 
-        $html = "<table class='rrze-statistik-table'><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
+        $html = "<div class='rrze-statistik-table'><table><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
 
         foreach ($array as $value) {
             $html .= "<tr><td>" . $value[$array_key_1] . '</td><td><a href="'.$value[1].'">' . htmlspecialchars($value[$array_key_2]) . '</a></td></tr>';
         }
-        $html .= "</table>";
+        $html .= "</table></div>";
         return $html;
     }
 

@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     } else {
         console.log("Dataset successfully loaded");
 
+        const firstYear = currentYear - 2;
+        const secondYear = currentYear - 1;
+        const thirdYear = currentYear;
+
         datatypes.forEach((datatype) => {
             console.log(datatype);
             let filterData = (dataset, year) => {
@@ -22,12 +26,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 });
                 return output;
             };
-            let outputThirdYear = filterData(linechartDataset, currentYear);
-            let outputSecondYear = filterData(
-                linechartDataset,
-                currentYear - 1
-            );
-            let outputFirstYear = filterData(linechartDataset, currentYear - 2);
+            let outputThirdYear = filterData(linechartDataset, thirdYear);
+            let outputSecondYear = filterData(linechartDataset, secondYear);
+            let outputFirstYear = filterData(linechartDataset, firstYear);
             let generateDatasets = (dataset) => {
                 let datasetDummy = [
                     null,
@@ -59,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             Highcharts.chart(datatype, {
                 chart: {
                     type: "areaspline",
+                    height: (2.5 / 3 * 100) + '%',
                 },
                 title: {
                     text: languagePackage[datatype].headline_chart,
@@ -97,19 +99,38 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 },
                 series: [
                     {
-                        name: (currentYear - 2).toString(),
+                        name: firstYear.toString(),
                         data: datasetFirstYear,
                     },
                     {
-                        name: (currentYear - 1).toString(),
+                        name: secondYear.toString(),
                         data: datasetSecondYear,
                     },
                     {
-                        name: currentYear,
+                        name: thirdYear,
                         data: datasetThirdYear,
                     },
                 ],
             });
+/*
+            let container = document.querySelector(`#${datatype}`);
+
+            let html = `<div class="highcharts-description highcharts-linked-description rrze-statistik-table"><table><tr><th>${datatype}/month</th><th>${firstYear}</th><th>${secondYear}</th><th>${thirdYear}</th></tr>`;
+
+            for (let i = 0; i < 12; i++) {
+                html += `<tr><td>${abscissaDescriptiontext[i]}</td><td>${datasetFirstYear[i]}</td><td>${datasetSecondYear[i]}</td><td>${datasetThirdYear[i]}</td></tr>`;
+            }
+            html += "</table>";
+            console.log(languagePackage[datatype].ordinate_desc);
+/*
+            window.addEventListener('resize', function () { 
+                setTimeout(function(){ 
+                "use strict";
+                window.location.reload(); 
+            }, 2000);
+            });
+
+            container.insertAdjacentHTML("beforeend", html);*/
         });
         
     }

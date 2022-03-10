@@ -1,15 +1,166 @@
+$color-text: black;
+$color-ContentBorders: #DDDDDD;
+$color-StandardHellgrau: #DDDDDD;
+
+
+.rrze-statistik-table {
+    /*-----------------------------------------------------------------------------------*/
+    /* Tables
+/*-----------------------------------------------------------------------------------*/
+
+    padding-bottom: 15px;
+    table {
+        max-width: 100%;
+        background-color: transparent;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    table td[class*="span"],
+    table th[class*="span"] {
+        display: table-cell;
+        float: none;
+        margin-left: 0;
+    }
+
+    .table-wrapper {
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+        border-right: 1px solid var(--color-ContentBorders);
+
+        .scrollable {
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+    }
+
+    table {
+        border: 0;
+        background: transparent;
+
+        border-top: 1px solid var(--color-ContentBorders);
+        border-bottom: 1px solid var(--color-ContentBorders);
+        margin: 0;
+        width: 100%;
+
+        tbody,
+        tr,
+        th,
+        td {
+            border: 0;
+        }
+
+        th,
+        td {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        th {
+            color: var(--color-Text);
+            background: var(--color-ContentBorders);
+            font-weight: bold;
+            border-top: 1px solid var(--color-ContentBorders);
+            border-bottom: 1px solid var(--color-ContentBorders);
+            text-align: left;
+        }
+        &.sorttable th.header {
+            cursor: pointer;
+        }
+
+        td {
+            border-right: 1px solid var(--color-StandardHellgrau);
+            color: var(--color-Text);
+        }
+
+        tr {
+            border-left: 1px solid var(--color-StandardHellgrau);
+            border-right: 1px solid var(--color-StandardHellgrau);
+        }
+
+        tr:nth-child(odd) td {
+            background: var(--color-StandardHellgrau);
+        }
+
+        ul {
+            li {
+                background-position: left 5px;
+            }
+        }
+
+        &.nooddcolor {
+            tr:nth-child(odd) td {
+                background: transparent;
+            }
+        }
+        &.nobackground {
+            border-top: none;
+            border-bottom: none;
+            th {
+                background: transparent;
+                border-top: none;
+                border-bottom: none;
+            }
+            tr {
+                border-left: none;
+                border-right: none;
+            }
+            tr:nth-child(odd) td {
+                background: transparent;
+            }
+        }
+
+        thead {
+            td {
+                background: var(--color-ContentBorders);
+            }
+        }
+
+        th.small,
+        td.small {
+            font-size: 0.8rem;
+        }
+
+        td.center,
+        th.center {
+            text-align: center;
+        }
+        tr.center {
+            td,
+            th {
+                text-align: center;
+            }
+        }
+        td.right,
+        th.right {
+            text-align: right;
+        }
+        tr.right {
+            td,
+            th {
+                text-align: right;
+            }
+        }
+    }
+
+    .tablesorter-header-inner {
+        display: inline-block;
+    }
+}
+
 #container {
     height: 400px;
-  }
-  
-  .highcharts-figure,
-  .highcharts-data-table table {
+}
+
+.highcharts-figure,
+.highcharts-data-table table {
     min-width: 310px;
     max-width: 100vw;
     margin: 1em auto;
-  }
-  
-  .highcharts-data-table table {
+}
+
+.highcharts-data-table table {
     font-family: Verdana, sans-serif;
     border-collapse: collapse;
     border: 1px solid #ebebeb;
@@ -17,30 +168,30 @@
     text-align: center;
     width: 100%;
     max-width: 500px;
-  }
-  
-  .highcharts-data-table caption {
+}
+
+.highcharts-data-table caption {
     padding: 1em 0;
-    font-size: 1.2em;
+    font-size: 1em;
     color: #555;
-  }
-  
-  .highcharts-data-table th {
+}
+
+.highcharts-data-table th {
     font-weight: 600;
     padding: 0.5em;
-  }
-  
-  .highcharts-data-table td,
-  .highcharts-data-table th,
-  .highcharts-data-table caption {
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
     padding: 0.5em;
-  }
-  
-  .highcharts-data-table thead tr,
-  .highcharts-data-table tr:nth-child(even) {
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
     background: #f8f8f8;
-  }
-  
-  .highcharts-data-table tr:hover {
+}
+
+.highcharts-data-table tr:hover {
     background: #f1f7ff;
-  }
+}
