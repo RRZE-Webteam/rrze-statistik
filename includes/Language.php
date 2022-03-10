@@ -58,4 +58,19 @@ class Language
         );
         return $output;
     }
+
+    public static function getLinechartDescription($type){
+        switch ($type) {
+            case 'visits':
+                return __('Line chart displaying the amount of site visitors during a time period of the last 23 months.', 'rrze-statistik');
+            case 'hits':
+                return __('Line chart displaying the number of hits during a time period of the last 23 months. A hit is a request for a file such as a web page, image, javascript, or CSS hosted on a web server.', 'rrze-statistik');
+            case 'hosts':
+                return __('Line chart displaying the number of hosts during a time period of the last 23 months. A host is a computer or server opening your website. Larger online services are often only displayed as a single host, if they share one server.', 'rrze-statistik');
+            case 'files':
+                return __('Line chart displaying the amount of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files.', 'rrze-statistik');
+            case 'kbytes':
+                return __('Line chart displaying the amount of transferred Data in kBytes over a period of 23 months.', 'rrze-statistik');
+        }
+    }
 }
