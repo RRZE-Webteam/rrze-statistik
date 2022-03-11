@@ -13,12 +13,10 @@ class Shortcode
 
     public function shortcodeOutput($atts)
     {
-        /*
         $analytics = new Analytics();
         Analytics::getUrlDatasetTable();
         return $analytics->getLinechart('visits').$analytics->getUrlDatasetTable();
-        */
-
+        
         /*
         foreach($data as $value){
             if((int)$value['recorded_days']>= 30){

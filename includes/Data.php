@@ -20,13 +20,28 @@ class Data
         $url = Analytics::retrieveSiteUrl(true, 'webalizer.hist');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
-
+        $isOptionSet = get_option('rrze_statistik_webalizer_hist_data');
         if ($validation === false) {
             return false;
-        } else {
+        } else if (!$isOptionSet) {
             $data = Self::processDataBody($data_body);
+            array_pop($data);
             update_option('rrze_statistik_webalizer_hist_data', $data);
             return true;
+        } else {
+            $data = Self::processDataBody($data_body);
+            $isDataRelevant = Analytics::isDateNewer($data_body, $isOptionSet);
+            if($isDataRelevant){
+                if(count($isOptionSet) <= 23){
+                    array_push($isOptionSet, $data[count($data)-2]);
+                    update_option('rrze_statistik_webalizer_hist_data', $isOptionSet);
+                } else {
+                    array_shift($isOptionSet);
+                    array_push($isOptionSet, $data[count($data)-2]);
+                    update_option('rrze_statistik_webalizer_hist_data', $isOptionSet);
+                }
+            } else {
+            }
         }
     }
 
@@ -157,8 +172,8 @@ class Data
      */
     public static function processLinechartDataset($url)
     {
+        //delete_option('rrze_statistik_webalizer_hist_data');
         $data = get_option('rrze_statistik_webalizer_hist_data');
-        var_export($data);
 
         if ($data === false) {
             Transfer::sendToJs('undefined', 'undefined', 'undefined', 'undefined', 'undefined');
