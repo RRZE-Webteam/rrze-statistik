@@ -157,18 +157,6 @@ class Experimente
                 'pages' => '108775',
                 'visits' => '37918',
             ),
-            23 => array(
-                'month' => '3',
-                'year' => '2022',
-                'hits' => '91534',
-                'files' => '74771',
-                'hosts' => '3649',
-                'kbytes' => '3868183',
-                'month_count' => '1',
-                'recorded_days' => '11',
-                'pages' => '32470',
-                'visits' => '11198',
-            ),
         );
         return $dataThisMonth;
     }
@@ -332,7 +320,18 @@ class Experimente
                 'visits' => '22230',
             ),
         );
-        return $dataNextMonth;
-    
+        return $dataNextMonth;     
+    }
+    public static function isDateNewer($array, $arrayRef){
+        $offset = count($array) - 2;
+        $date = $array[$offset]['year'] . sprintf("%02d", $array[$offset]['month']);
+        $dateRef = $arrayRef[count($arrayRef)-1]['year'] . sprintf("%02d", $arrayRef[count($arrayRef)-1]['month']);
+
+        var_dump($date); var_dump($dateRef);
+        if((int)$date > (int)$dateRef){
+            return 'data should be overwritten';
+        } else {
+            return 'date should not be overwritten';
+        }
     }
 }

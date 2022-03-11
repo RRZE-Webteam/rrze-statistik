@@ -13,8 +13,22 @@ class Shortcode
 
     public function shortcodeOutput($atts)
     {
+        /*
         $analytics = new Analytics();
         Analytics::getUrlDatasetTable();
         return $analytics->getLinechart('visits').$analytics->getUrlDatasetTable();
+        */
+
+        /*
+        foreach($data as $value){
+            if((int)$value['recorded_days']>= 30){
+                var_dump($value['recorded_days']);   
+            } elseif ( (int)$value['recorded_days']>=27 && $value['month'] === '2'){
+                var_dump($value['recorded_days']);
+            }
+        }
+        */
+        
+        //var_dump(Experimente::getDummyData());
     }
 }

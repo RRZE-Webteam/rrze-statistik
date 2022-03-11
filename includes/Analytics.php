@@ -25,7 +25,6 @@ class Analytics
     {
         $raw_date = date("Ym");
         $new_date = date("Ym", strtotime('-1 month', strtotime($raw_date)));
-        var_dump($new_date);
         return $new_date;
     }
 
@@ -82,5 +81,18 @@ class Analytics
         $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Images', 'rrze-statistik'));
 
         return $table1.$table2;
+    }
+
+    public static function isDateNewer($array, $arrayRef){
+        $offset = count($array) - 2;
+        $date = $array[$offset]['year'] . sprintf("%02d", $array[$offset]['month']);
+        $dateRef = $arrayRef[count($arrayRef)-1]['year'] . sprintf("%02d", $arrayRef[count($arrayRef)-1]['month']);
+
+        var_dump($date); var_dump($dateRef);
+        if((int)$date > (int)$dateRef){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
