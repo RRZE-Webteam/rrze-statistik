@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         const secondYear = currentYear - 1;
         const thirdYear = currentYear;
 
+        console.log(linechartDataset);
         datatypes.forEach((datatype) => {
-            console.log(datatype);
             let filterData = (dataset, year) => {
                 let output = dataset.filter((data) => {
                     return data.year === year.toString();

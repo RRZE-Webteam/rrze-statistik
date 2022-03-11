@@ -158,6 +158,7 @@ class Data
     public static function processLinechartDataset($url)
     {
         $data = get_option('rrze_statistik_webalizer_hist_data');
+        var_export($data);
 
         if ($data === false) {
             Transfer::sendToJs('undefined', 'undefined', 'undefined', 'undefined', 'undefined');

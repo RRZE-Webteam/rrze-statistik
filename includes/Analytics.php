@@ -35,7 +35,7 @@ class Analytics
             $remove_char = ["https://", "http://", "/"];
             $url = 'www.' . str_replace($remove_char, "", get_site_url());
         } else {
-            $url = "www.wordpress.rrze.fau.de";
+            $url = "www.nat.fau.de";
         }
 
         if ($type === 'webalizer.hist') {
