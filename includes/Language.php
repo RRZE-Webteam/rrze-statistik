@@ -6,7 +6,8 @@ defined('ABSPATH') || exit;
 
 class Language
 {
-    public static function getMonthDesc(){
+    public static function getMonthDesc()
+    {
         return array(
             __('Jan', 'rrze-statistik'),
             __('Feb', 'rrze-statistik'),
@@ -19,16 +20,18 @@ class Language
             __('Sep', 'rrze-statistik'),
             __('Oct', 'rrze-statistik'),
             __('Nov', 'rrze-statistik'),
-            __('Dec', 'rrze-statistik'),      
+            __('Dec', 'rrze-statistik'),
         );
     }
 
-    public static function getAbscissa(){
+    public static function getAbscissa()
+    {
         $abscissa_desc = Self::getMonthDesc();
         return $abscissa_desc;
     }
 
-    public static function getLanguagePackage(){
+    public static function getLanguagePackage()
+    {
         $output = array(
             'visits' => array(
                 'ordinate_desc' => __('Visitors', 'rrze-statistik'),
@@ -59,7 +62,8 @@ class Language
         return $output;
     }
 
-    public static function getLinechartDescription($type){
+    public static function getLinechartDescription($type)
+    {
         switch ($type) {
             case 'visits':
                 return __('Line chart displaying the amount of site visitors during a time period of the last 23 months.', 'rrze-statistik');
@@ -71,6 +75,22 @@ class Language
                 return __('Line chart displaying the amount of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files.', 'rrze-statistik');
             case 'kbytes':
                 return __('Line chart displaying the amount of transferred Data in kBytes over a period of 23 months.', 'rrze-statistik');
+        }
+    }
+
+    public static function getAccessibilityDescriptions($type)
+    {
+        switch ($type) {
+            case 'visits':
+                return __(' ', 'rrze-statistik');
+            case 'hits':
+                return __(' ', 'rrze-statistik');
+            case 'hosts':
+                return __(' ', 'rrze-statistik');
+            case 'files':
+                return __(' ', 'rrze-statistik');
+            case 'kbytes':
+                return __(' ', 'rrze-statistik');
         }
     }
 }

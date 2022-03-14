@@ -14,13 +14,6 @@ class Analytics
         $this->highcharts = new Highcharts();
     }
 
-    public function getImgLink($type)
-    {
-        if ($type === 'forbidden') {
-            return plugin_dir_url(__DIR__) . 'assets/img/no_data.svg';
-        }
-    }
-
     public static function getDate()
     {
         $raw_date = date("Ym");
@@ -53,7 +46,7 @@ class Analytics
         $site = 'www.' . str_replace($remove_char, "", get_site_url());
         $ready_check = Data::processLinechartDataset(Self::retrieveSiteUrl(true, 'webalizer.hist'));
         if ($ready_check === false) {
-            return '<img src="' . $this->getImgLink('forbidden') . '" alt=""><br /><strong>' . printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site) . '</strong><br />';
+            return printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site) . '</strong><br />';
         } else {
             return $this->highcharts->lineplot($container);
         };
@@ -87,8 +80,6 @@ class Analytics
         $offset = count($array) - 2;
         $date = $array[$offset]['year'] . sprintf("%02d", $array[$offset]['month']);
         $dateRef = $arrayRef[count($arrayRef)-1]['year'] . sprintf("%02d", $arrayRef[count($arrayRef)-1]['month']);
-
-        var_dump($date); var_dump($dateRef);
         if((int)$date > (int)$dateRef){
             return true;
         } else {

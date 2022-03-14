@@ -172,7 +172,6 @@ class Data
      */
     public static function processLinechartDataset($url)
     {
-        //delete_option('rrze_statistik_webalizer_hist_data');
         $data = get_option('rrze_statistik_webalizer_hist_data');
 
         if ($data === false) {
