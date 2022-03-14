@@ -30,6 +30,12 @@ class Language
         return $abscissa_desc;
     }
 
+    public static function getSource()
+    {
+        $source_text = __('Source: Statistiken.rrze.fau.de');
+        return $source_text;
+    }
+
     public static function getLanguagePackage()
     {
         $output = array(

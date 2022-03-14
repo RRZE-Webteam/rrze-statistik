@@ -109,6 +109,7 @@ function deactivation()
 {
     //
     delete_option('rrze_statistik_webalizer_hist_data');
+    delete_option('rrze_statistik_url_dataset');
 }
 
 /**

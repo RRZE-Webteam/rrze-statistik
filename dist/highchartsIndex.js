@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           text: languagePackage[datatype].headline_chart
         },
         subtitle: {
-          text: "Source: WebAIM. Click on points to visit official screen reader website"
+          text: sourceText
         },
         yAxis: {
           title: {
