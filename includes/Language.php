@@ -99,4 +99,8 @@ class Language
                 return __(' ', 'rrze-statistik');
         }
     }
+
+    public static function getAccessibilityAbscissa(){
+        return __('Time over the last 23 months', 'rrze-statistik');
+    }
 }
