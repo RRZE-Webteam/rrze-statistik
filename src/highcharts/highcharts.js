@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 },
 
                 tooltip: {
-                    valueSuffix: languagePackage[datatype].ordinate_desc,
+                    valueSuffix: ` ${languagePackage[datatype].ordinate_desc}`,
                 },
 
                 plotOptions: {
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     {
                         name: firstYear.toString(),
                         data: datasetFirstYear,
-                        website: "https://www.nvaccess.org",
+                        website: logsUrl,
                         color: colors[4],
                         zIndex: 0,
                         accessibility: {
@@ -130,8 +130,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         name: secondYear.toString(),
                         data: datasetSecondYear,
                         zIndex: 1,
-                        website:
-                            "https://www.freedomscientific.com/Products/Blindness/JAWS",
+                        website: logsUrl,
                         dashStyle: "ShortDashDot",
                         color: colors[1],
                     },
@@ -139,33 +138,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         name: thirdYear.toString(),
                         data: datasetThirdYear,
                         zIndex: 2,
-                        website:
-                            "http://www.apple.com/accessibility/osx/voiceover",
+                        website: logsUrl,
                         dashStyle: "ShortDot",
                         color: colors[2],
                     },
                 ],
             });
-
-            /*
-            let container = document.querySelector(`#${datatype}`);
-
-            let html = `<div class="highcharts-description highcharts-linked-description rrze-statistik-table"><table><tr><th>${datatype}/month</th><th>${firstYear}</th><th>${secondYear}</th><th>${thirdYear}</th></tr>`;
-
-            for (let i = 0; i < 12; i++) {
-                html += `<tr><td>${abscissaDescriptiontext[i]}</td><td>${datasetFirstYear[i]}</td><td>${datasetSecondYear[i]}</td><td>${datasetThirdYear[i]}</td></tr>`;
-            }
-            html += "</table>";
-            console.log(languagePackage[datatype].ordinate_desc);
-/*
-            window.addEventListener('resize', function () { 
-                setTimeout(function(){ 
-                "use strict";
-                window.location.reload(); 
-            }, 2000);
-            });
-
-            container.insertAdjacentHTML("beforeend", html);*/
         });
     }
 });

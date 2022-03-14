@@ -32,7 +32,10 @@ class Analytics
 
         if ($type === 'webalizer.hist') {
             $output = 'https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/webalizer.hist';
-        } else {
+        } else if($type === 'logs') {
+            $output = 'https://statistiken.rrze.fau.de/webauftritte/logs/' . $url;
+        }
+        else {
             $output = 'https://statistiken.rrze.fau.de/webauftritte/logs/' . $url . '/url_' . Self::getDate() . '.tab';
         }
         return $output;
