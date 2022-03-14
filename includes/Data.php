@@ -57,7 +57,7 @@ class Data
         } else {
             $data = substr($data_body, 0, 5000);
             $processed_data = Self::processUrlDataBody($data);
-            update_option('rrze_statistik_url_datset', $processed_data);
+            update_option('rrze_statistik_url_dataset', $processed_data);
             return true;
         }
     }

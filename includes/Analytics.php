@@ -65,7 +65,10 @@ class Analytics
 
     public static function getUrlDatasetTable()
     {
-        $data = get_option('rrze_statistik_url_datset');
+        $data = get_option('rrze_statistik_url_dataset');
+        if (!$data){
+            return  __('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</strong><br />';
+        } else {
         $data_chunks = array_chunk($data, 10);
         $top_url = $data_chunks[0];
         $top_images = $data_chunks[1];
@@ -74,6 +77,7 @@ class Analytics
         $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Images', 'rrze-statistik'));
 
         return $table1.$table2;
+        }
     }
 
     public static function isDateNewer($array, $arrayRef){
