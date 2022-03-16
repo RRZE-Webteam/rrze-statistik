@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             text: "Time"
           },
           accessibility: {
-            description: "Time from December 2010 to September 2019"
+            description: a11yAbscissa
           },
           categories: abscissaDescriptiontext
         },

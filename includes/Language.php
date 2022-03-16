@@ -32,7 +32,7 @@ class Language
 
     public static function getSource()
     {
-        $source_text = __('Source: Statistiken.rrze.fau.de');
+        $source_text = __('Source: Statistiken.rrze.fau.de', 'rrze-statistik');
         return $source_text;
     }
 
@@ -81,22 +81,6 @@ class Language
                 return __('Line chart displaying the number of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files.', 'rrze-statistik');
             case 'kbytes':
                 return __('Line chart displaying the number of transferred Data in kBytes over several months.', 'rrze-statistik');
-        }
-    }
-
-    public static function getAccessibilityDescriptions($type)
-    {
-        switch ($type) {
-            case 'visits':
-                return __(' ', 'rrze-statistik');
-            case 'hits':
-                return __(' ', 'rrze-statistik');
-            case 'hosts':
-                return __(' ', 'rrze-statistik');
-            case 'files':
-                return __(' ', 'rrze-statistik');
-            case 'kbytes':
-                return __(' ', 'rrze-statistik');
         }
     }
 
