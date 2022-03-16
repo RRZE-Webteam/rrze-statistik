@@ -32,7 +32,7 @@ class Analytics
         $debug = Helper::isDebug();
         if ($debug === false) {
             $remove_char = ["https://", "http://", "/"];
-            $url = 'www.' . str_replace($remove_char, "", get_site_url());
+            $url = str_replace($remove_char, "", get_site_url());
         } else {
             $url = "www.rw.fau.de";
         }
