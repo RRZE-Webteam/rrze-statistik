@@ -80,7 +80,8 @@ class Highcharts
             '<figure class="rrze-statistik highcharts-figure">
             <div id="'.$container.'"></div>
             <p class="highcharts-description">'.Language::getLinechartDescription($container).'</p>
-            </figure>';
+            </figure>
+            <button id="'.$container.'-getcsv">'.Language::getCSVButtonText().'</button>';
         }
 
 

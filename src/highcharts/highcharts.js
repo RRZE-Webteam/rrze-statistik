@@ -59,9 +59,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             var colors = Highcharts.getOptions().colors;
 
-            Highcharts.chart(datatype, {
+            const chart = Highcharts.chart(datatype, {
                 chart: {
                     type: "spline",
+                    renderTo: datatype,
                 },
 
                 legend: {
@@ -121,10 +122,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         website: logsUrl,
                         color: colors[4],
                         zIndex: 0,
-                        accessibility: {
-                            description:
-                                "This is the most used screen reader in 2019",
-                        },
                     },
                     {
                         name: secondYear.toString(),
@@ -143,7 +140,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         color: colors[2],
                     },
                 ],
+                exporting: {
+                    csv: {
+                        dateFormat: '%Y-%m-%d'
+                    }
+                },
+            });
+            console.log(datatype + '-getcsv');
+            document.getElementById(datatype + '-getcsv').addEventListener('click', function () {
+                navigator.clipboard.writeText(chart.getCSV());
             });
         });
-    }
+    };
 });
