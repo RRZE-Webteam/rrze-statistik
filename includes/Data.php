@@ -10,9 +10,9 @@ defined('ABSPATH') || exit;
 class Data
 {
     /**
-     * Function for Cron Job. Returns true if successful
+     * Cron Job, hourly, data for webalizer.hist from statistiken.rrze.fau.de
      *
-     * @return boolen
+     * @return boolean
      */
     public static function updateData()
     {
@@ -31,13 +31,13 @@ class Data
         } else {
             $data = Self::processDataBody($data_body);
             $isDataRelevant = Analytics::isDateNewer($data_body, $isOptionSet);
-            if($isDataRelevant){
-                if(count($isOptionSet) <= 23){
-                    array_push($isOptionSet, $data[count($data)-2]);
+            if ($isDataRelevant) {
+                if (count($isOptionSet) <= 23) {
+                    array_push($isOptionSet, $data[count($data) - 2]);
                     update_option('rrze_statistik_webalizer_hist_data', $isOptionSet);
                 } else {
                     array_shift($isOptionSet);
-                    array_push($isOptionSet, $data[count($data)-2]);
+                    array_push($isOptionSet, $data[count($data) - 2]);
                     update_option('rrze_statistik_webalizer_hist_data', $isOptionSet);
                 }
             } else {
@@ -45,6 +45,11 @@ class Data
         }
     }
 
+    /**
+     * Cron job, weekly, popular sites and image data fetch from statistiken.rrze.fau.de
+     *
+     * @return boolean
+     */
     public static function updateDataWeekly()
     {
         // Fetch Dataset
@@ -79,7 +84,7 @@ class Data
     }
 
     /**
-     * Evaluates if fetch was successful
+     * Evaluates if fetch was successful and if data is usable
      *
      * @param string $data_body
      * @return boolean
@@ -97,6 +102,12 @@ class Data
         }
     }
 
+    /**
+     * Converts .tab separated data in associative array for later use. in Cronjob, weekly
+     *
+     * @param [type] $data_body
+     * @return array
+     */
     public static function processUrlDataBody($data_body)
     {
         $data_trim = rtrim($data_body, " \n\r\t\v");
@@ -117,7 +128,6 @@ class Data
                 or strpos($array_splitted[1], "wp-admin")
                 or strpos($array_splitted[1], '.pdf')
             ) {
-
             } elseif (
                 strpos($array_splitted[1], ".jpg")
                 or strpos($array_splitted[1], ".jpeg")
@@ -131,7 +141,7 @@ class Data
             }
         }
         $output = array_merge(array_slice($sites, 0, 10), array_slice($image_files, 0, 10));
-        return($output);
+        return ($output);
     }
 
     /**

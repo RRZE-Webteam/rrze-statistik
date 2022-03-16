@@ -1,17 +1,14 @@
 let currentYear = new Date().getFullYear();
 const datatypes = ["visits", "hits", "hosts", "files", "kbytes"];
 
-/*
-Example Data retrieved from Transfer.php
-linechartDataset: {monat: "3", jahr: "2020", hits: "222475", files: "188973", hosts: "2112", …}
-...
-languagePackage: {visits: {ordinate_desc: "Seitenbesucher", headline_chart: "Besucher der letzten 24 Monate", tooltip_desc: " Besucher / Monat"}}
-*/
+//data is passed from Transfer.php
+//Check if document is ready
 document.addEventListener("DOMContentLoaded", function (event) {
-    console.log(languagePackage);
+    //Check if data was passed from PHP
     if (linechartDataset === "undefined") {
         console.log("Data could not be retrieved");
     } else {
+        //Process dataset and split it based on the last three years
         console.log("Dataset successfully loaded");
 
         const firstYear = currentYear - 2;
@@ -19,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         const thirdYear = currentYear;
 
         console.log(linechartDataset);
+        
+        //Create the dataset for each datatype
         datatypes.forEach((datatype) => {
             let filterData = (dataset, year) => {
                 let output = dataset.filter((data) => {
@@ -29,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             let outputThirdYear = filterData(linechartDataset, thirdYear);
             let outputSecondYear = filterData(linechartDataset, secondYear);
             let outputFirstYear = filterData(linechartDataset, firstYear);
+
+            //Create an empty dataset array
             let generateDatasets = (dataset) => {
                 let datasetDummy = [
                     null,
@@ -45,6 +46,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     null,
                 ];
                 let datasetOutput = datasetDummy;
+
+                //Fill the empty Array with the length of 12 (one for each month)
                 dataset.forEach((data) => {
                     datasetOutput[parseInt(data.month) - 1] = parseInt(
                         data[datatype]
@@ -53,12 +56,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 return datasetOutput;
             };
 
+            //Create three arrays, one for each year
             let datasetFirstYear = generateDatasets(outputFirstYear);
             let datasetSecondYear = generateDatasets(outputSecondYear);
             let datasetThirdYear = generateDatasets(outputThirdYear);
 
+            //Load the theme colors
             var colors = Highcharts.getOptions().colors;
 
+            //Create the Highcharts container for each datatype
             const chart = Highcharts.chart(datatype, {
                 chart: {
                     type: "spline",
@@ -91,8 +97,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         text: "Time",
                     },
                     accessibility: {
-                        description:
-                            a11yAbscissa,
+                        description: a11yAbscissa,
                     },
                     categories: abscissaDescriptiontext,
                 },
@@ -140,16 +145,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         color: colors[2],
                     },
                 ],
+                //define the Export value
                 exporting: {
                     csv: {
-                        dateFormat: '%Y-%m-%d'
-                    }
+                        dateFormat: "%Y-%m-%d",
+                    },
                 },
             });
-            console.log(datatype + '-getcsv');
-            document.getElementById(datatype + '-getcsv').addEventListener('click', function () {
-                navigator.clipboard.writeText(chart.getCSV());
-            });
+            //Target the copy to clipboard button within the dashboard
+            document
+                .getElementById(datatype + "-getcsv")
+                //Add an onclick listener which stores the CSV information of the chart inside the clipboard.
+                .addEventListener("click", function () {
+                    navigator.clipboard.writeText(chart.getCSV());
+                });
         });
-    };
+    }
 });
