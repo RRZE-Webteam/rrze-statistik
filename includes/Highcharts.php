@@ -1,6 +1,6 @@
 <?php
 
-namespace RRZE\statistik;
+namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 
@@ -9,26 +9,55 @@ defined('ABSPATH') || exit;
  */
 class Highcharts
 {
-    public function __construct($plugin_basename)
+    public function __construct()
     {
-        $this->plugin_basename = $plugin_basename;
         $this->loadHighcharts();
     }
 
     public function statistik_enqueue_script()
     {
-        wp_enqueue_style('highcharts-css', plugins_url('/assets/css/highcharts-style.css', $this->plugin_basename), array(), false, 'all');
-        wp_enqueue_script('highcharts-js', plugins_url('/assets/js/highcharts/9.3.3/highcharts.js', $this->plugin_basename), array('jquery'), false, true);
-        wp_enqueue_script('index-js', plugins_url('/assets/js/index.js', $this->plugin_basename), array('jquery'), false, true);
+        wp_enqueue_style(
+            'highcharts-css', 
+            plugins_url('dist/highcharts.css', plugin()->getBasename()),
+            array(), 
+            plugin()->getVersion(), 
+            'all'
+        );
+        wp_enqueue_script(
+            'highcharts-js', 
+            plugins_url('assets/js/highcharts/9.3.3/highcharts.js', plugin()->getBasename()),
+            array(), 
+            plugin()->getVersion(),
+            true
+        );
+        wp_enqueue_script(
+            'index-js', 
+            plugins_url('dist/highchartsIndex.js', plugin()->getBasename()),
+            array(), 
+            plugin()->getVersion(),
+            true
+        );
 
-        $modules = ['accessibility', 'data', 'export-data', 'exporting'];
+        $modules = ['accessibility', 'data', 'export-data', 'exporting', 'high-contrast-light', 'series-label'];
         foreach ($modules as $val) {
-            wp_enqueue_script('highcharts-module-' . $val, plugins_url('/assets/js/highcharts/9.3.3/modules/' . $val . '.js', $this->plugin_basename), array('jquery'), false, true);
+            wp_enqueue_script(
+                'highcharts-module-' . $val, 
+                plugins_url('assets/js/highcharts/9.3.3/modules/' . $val . '.js', plugin()->getBasename()),
+                array(), 
+                plugin()->getVersion(), 
+                true
+            );
         }
 
-        $maps = ['accessibility', 'data', 'export-data', 'exporting'];
+        $maps = ['accessibility', 'data', 'export-data', 'exporting', 'high-contrast-light', 'series-label'];
         foreach ($maps as $val) {
-            wp_enqueue_script('highcharts-module-' . $val, plugins_url('/assets/js/highcharts/9.3.3/modules/' . $val . '.js.map', $this->plugin_basename), array('jquery'), false, true);
+            wp_enqueue_script(
+                'highcharts-module-' . $val, 
+                plugins_url('assets/js/highcharts/9.3.3/modules/' . $val . '.js.map', plugin()->getBasename()),
+                array(), 
+                plugin()->getVersion(),
+                true
+            );
         }
     }
 
@@ -36,15 +65,25 @@ class Highcharts
     {
         add_action('wp_enqueue_scripts', array($this, 'statistik_enqueue_script'));
         add_action('admin_enqueue_scripts', array($this, 'statistik_enqueue_script'));
+;
     }
 
-    public function lineplot()
+    public function lineplot($container)
     {
-        return  '<div class="rrze-statistik"><figure class="highcharts-figure">
-        <div id="container"></div>
-        <p class="highcharts-description">
-          Die Besuche der letzten 24 Monate.
-        </p>
-      </figure></div>';
+        $data = get_option('rrze_statistik_webalizer_hist_data');
+        
+        if ($data === false) {
+            $output = "No data points available.";
+            return $output;
+        } else {
+            return
+            '<figure class="rrze-statistik highcharts-figure">
+            <div id="'.$container.'"></div>
+            <p class="highcharts-description">'.Language::getLinechartDescription($container).'</p>
+            </figure>
+            <button id="'.$container.'-getcsv">'.Language::getCSVButtonText().'</button>';
+        }
+
+
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /*
-Plugin Name:     RRZE Statistik
+Plugin Name:     RRZE Statistics
 Plugin URI:      https://github.com/rrze-webteam/rrze-statistik
-Description:     Anzeige der Statistiken im Dashboard
+Description:     Displays monthly statistics from https://statistiken.rrze.fau.de within your Dashboard.
 Version:         0.0.1
 Author:          RRZE Webteam
 Author URI:      https://blogs.fau.de/webworking/
@@ -12,18 +12,21 @@ License URI:     http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain:     rrze-statistik
 */
 
-namespace RRZE\statistik;
+namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 
-use RRZE\statistik\Main;
+use RRZE\Statistik\Main;
 
 const RRZE_HIGHCHARTS_VERSION = '9.3.3';
 
 const RRZE_PHP_VERSION = '7.4';
 const RRZE_WP_VERSION = '5.8';
-const RRZE_PLUGIN_FILE = __FILE__;
-
+/**
+ * SPL Autoloader (PSR-4).
+ * @param string $class The fully-qualified class name.
+ * @return void
+ */
 spl_autoload_register(function ($class) {
     $prefix = __NAMESPACE__;
     $base_dir = __DIR__ . '/includes/';
@@ -33,80 +36,124 @@ spl_autoload_register(function ($class) {
         return;
     }
 
-    $relative_class = substr($class, $len);
-    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+    $relativeClass = substr($class, $len);
+    $file = $base_dir . str_replace('\\', '/', $relativeClass) . '.php';
 
     if (file_exists($file)) {
         require $file;
     }
 });
 
+// Register plugin hooks.
 register_activation_hook(__FILE__, __NAMESPACE__ . '\activation');
 register_deactivation_hook(__FILE__, __NAMESPACE__ . '\deactivation');
 
 add_action('plugins_loaded', __NAMESPACE__ . '\loaded');
 
 /**
- * Load Text Domain for Translations
- * @return void
+ * Loads a plugin’s translated strings.
  */
 function loadTextdomain()
 {
-    load_plugin_textdomain('rrze-statistik', false, sprintf('%s/languages/', dirname(plugin_basename(__FILE__))));
+    load_plugin_textdomain('rrze-statistik', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
 
 /**
- * Check for System requirements
- * @return string error message
+ * System requirements verification.
+ * @return string Return an error message.
  */
-function systemRequirements()
+function systemRequirements(): string
 {
+    loadTextdomain();
     $error = '';
     if (version_compare(PHP_VERSION, RRZE_PHP_VERSION, '<')) {
-        $error = sprintf(__('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-statistik'), PHP_VERSION, RRZE_PHP_VERSION);
+        $error = sprintf(
+            /* translators: 1: Server PHP version number, 2: Required PHP version number. */
+            __('The server is running PHP version %1$s. The Plugin requires at least PHP version %2$s.', 'rrze-statistik'),
+            PHP_VERSION,
+            RRZE_PHP_VERSION
+        );
     } elseif (version_compare($GLOBALS['wp_version'], RRZE_WP_VERSION, '<')) {
-        $error = sprintf(__('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-statistik'), $GLOBALS['wp_version'], RRZE_WP_VERSION);
+        $error = sprintf(
+            /* translators: 1: Server WordPress version number, 2: Required WordPress version number. */
+            __('The server is running WordPress version %1$s. The Plugin requires at least WordPress version %2$s.', 'rrze-statistik'),
+            $GLOBALS['wp_version'],
+            RRZE_WP_VERSION
+        );
     }
     return $error;
 }
 
+/**
+ * Activation callback function.
+ */
 function activation()
 {
-    loadTextdomain();
-
     if ($error = systemRequirements()) {
-        deactivate_plugins(plugin_basename(__FILE__), false, true);
-        wp_die($error);
+        deactivate_plugins(plugin_basename(__FILE__));
+        wp_die(
+            sprintf(
+                /* translators: 1: The plugin name, 2: The error string. */
+                __('Plugins: %1$s: %2$s', 'rrze-statistik'),
+                plugin_basename(__FILE__),
+                $error
+            )
+        );
     }
 }
 
 /**
- * Handler for Deactivation
- * @return void
+ * Deactivation callback function.
  */
 function deactivation()
 {
-    flush_rewrite_rules();
+    //
+    delete_option('rrze_statistik_webalizer_hist_data');
+    delete_option('rrze_statistik_url_dataset');
 }
 
 /**
- * Once loaded, run
+ * Instantiate Plugin class.
+ * @return object Plugin
+ */
+function plugin()
+{
+    static $instance;
+    if (null === $instance) {
+        $instance = new Plugin(__FILE__);
+    }
+    return $instance;
+}
+
+/**
+ * Loaded callback function.
+ *
+ * @return void
  */
 function loaded()
 {
-    loadTextdomain();
-
+    add_action('init', __NAMESPACE__ . '\loadTextdomain');
+    plugin()->loaded();
     if ($error = systemRequirements()) {
-        include_once(ABSPATH . 'wp-admin/includes/plugin.php');
-        $plugin_data = get_plugin_data(__FILE__);
-        $plugin_name = $plugin_data['Name'];
-        $tag = is_network_admin() ? 'network_admin_notices' : 'admin_notices';
-        add_action($tag, function () use ($plugin_name, $error) {
-            printf('<div class="notice notice-error"><p>%1$s: %2$s</p></div>', esc_html($plugin_name), esc_html($error));
+        add_action('admin_init', function () use ($error) {
+            if (current_user_can('activate_plugins')) {
+                $pluginData = get_plugin_data(plugin()->getFile());
+                $pluginName = $pluginData['Name'];
+                $tag = is_plugin_active_for_network(plugin()->getBaseName()) ? 'network_admin_notices' : 'admin_notices';
+                add_action($tag, function () use ($pluginName, $error) {
+                    printf(
+                        '<div class="notice notice-error"><p>' .
+                            /* translators: 1: The plugin name, 2: The error string. */
+                            __('Plugins: %1$s: %2$s', 'rrze-statistik') .
+                            '</p></div>',
+                        esc_html($pluginName),
+                        esc_html($error)
+                    );
+                });
+            }
         });
-    } else {
-        // Hauptklasse (Main) wird instanziiert.
-        $main = new Main(plugin_basename(__FILE__));
-        $main->onLoaded();
+        return;
     }
+
+    new Main;
 }

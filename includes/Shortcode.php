@@ -1,18 +1,11 @@
 <?php
 
-namespace RRZE\statistik;
+namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 
 class Shortcode
 {
-    public $plugin_basename;
-
-    public function __construct($plugin_basename)
-    {
-        $this->plugin_basename = $plugin_basename;
-    }
-
     public function onLoaded()
     {
         add_shortcode('rrze_statistik', [$this, 'shortcodeOutput'], 10, 2);
@@ -20,18 +13,20 @@ class Shortcode
 
     public function shortcodeOutput($atts)
     {
-        $shortcode_attr = shortcode_atts(array(
-            'url'           => 'www.wordpress.rrze.fau.de',
-        ), $atts);
-
-        $url = $shortcode_attr['url'];
-
-        $analytics = new Analytics($this->plugin_basename);
-        return $analytics->getLinechart($url);
-    }
-
-    public function getContent()
-    {
-        return '<p>Testoutput RRZE Statistik</p>';
+        $analytics = new Analytics();
+        Analytics::getUrlDatasetTable();
+        return $analytics->getLinechart('visits').$analytics->getUrlDatasetTable();
+        
+        /*
+        foreach($data as $value){
+            if((int)$value['recorded_days']>= 30){
+                var_dump($value['recorded_days']);   
+            } elseif ( (int)$value['recorded_days']>=27 && $value['month'] === '2'){
+                var_dump($value['recorded_days']);
+            }
+        }
+        */
+        
+        //var_dump(Experimente::getDummyData());
     }
 }
