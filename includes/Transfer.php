@@ -19,7 +19,7 @@ class Transfer
     public static function sendToJs($data_body, $abscissa_desc, $languagePackage)
     {
         $json_data = json_encode($data_body);
-        $logs_url = Analytics::retrieveSiteUrl(false, 'logs');
+        $logs_url = Analytics::retrieveSiteUrl('logs');
         $source_Text = Language::getSource();
         $a11y_abscissa = Language::getAccessibilityAbscissa();
 
