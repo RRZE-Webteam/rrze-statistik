@@ -17,7 +17,7 @@ class Data
     public static function updateData()
     {
         // Fetch Dataset Webalizer.hist
-        $url = Analytics::retrieveSiteUrl(true, 'webalizer.hist');
+        $url = Analytics::retrieveSiteUrl('webalizer.hist');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
         $isOptionSet = get_option('rrze_statistik_webalizer_hist_data');
@@ -48,7 +48,7 @@ class Data
     public static function updateDataWeekly()
     {
         // Fetch Dataset
-        $url = Analytics::retrieveSiteUrl(true, 'url');
+        $url = Analytics::retrieveSiteUrl('url');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
 
