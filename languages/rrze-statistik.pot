@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-04T13:43:56+00:00\n"
+"POT-Creation-Date: 2022-03-16T14:08:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: rrze-statistik\n"
@@ -34,72 +34,170 @@ msgstr ""
 msgid "https://blogs.fau.de/webworking/"
 msgstr ""
 
-#: includes/Analytics.php:43
+#: includes/Analytics.php:51
 msgid "It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard."
 msgstr ""
 
-#: includes/Dashboard.php:18
-msgid "Site visitors (last 24 months)"
+#: includes/Analytics.php:72
+msgid "It might take a few weeks until the summary is displayed on your dashboard."
 msgstr ""
 
-#: includes/Data.php:94
+#: includes/Analytics.php:78
+#: includes/Analytics.php:79
+#: includes/Language.php:48
+msgid "Hits"
+msgstr ""
+
+#: includes/Analytics.php:78
+msgid "Sites"
+msgstr ""
+
+#: includes/Analytics.php:79
+msgid "Images"
+msgstr ""
+
+#: includes/Dashboard.php:21
+msgid "Site visitors over time"
+msgstr ""
+
+#: includes/Dashboard.php:22
+#: includes/Language.php:49
+msgid "Hits over time"
+msgstr ""
+
+#: includes/Dashboard.php:23
+#: includes/Language.php:54
+msgid "Hosts over time"
+msgstr ""
+
+#: includes/Dashboard.php:24
+#: includes/Language.php:59
+msgid "Files over time"
+msgstr ""
+
+#: includes/Dashboard.php:25
+#: includes/Language.php:64
+msgid "Kbytes over time"
+msgstr ""
+
+#: includes/Dashboard.php:26
+msgid "Popular Sites and Files over time"
+msgstr ""
+
+#: includes/Language.php:12
 msgid "Jan"
 msgstr ""
 
-#: includes/Data.php:95
+#: includes/Language.php:13
 msgid "Feb"
 msgstr ""
 
-#: includes/Data.php:96
+#: includes/Language.php:14
 msgid "Mar"
 msgstr ""
 
-#: includes/Data.php:97
+#: includes/Language.php:15
 msgid "Apr"
 msgstr ""
 
-#: includes/Data.php:98
+#: includes/Language.php:16
 msgid "May"
 msgstr ""
 
-#: includes/Data.php:99
+#: includes/Language.php:17
 msgid "Jun"
 msgstr ""
 
-#: includes/Data.php:100
+#: includes/Language.php:18
 msgid "Jul"
 msgstr ""
 
-#: includes/Data.php:101
+#: includes/Language.php:19
 msgid "Aug"
 msgstr ""
 
-#: includes/Data.php:102
+#: includes/Language.php:20
 msgid "Sep"
 msgstr ""
 
-#: includes/Data.php:103
+#: includes/Language.php:21
 msgid "Oct"
 msgstr ""
 
-#: includes/Data.php:104
+#: includes/Language.php:22
 msgid "Nov"
 msgstr ""
 
-#: includes/Data.php:105
+#: includes/Language.php:23
 msgid "Dec"
 msgstr ""
 
-#: includes/Data.php:112
+#: includes/Language.php:35
+msgid "Source: Statistiken.rrze.fau.de"
+msgstr ""
+
+#: includes/Language.php:43
 msgid "Visitors"
 msgstr ""
 
-#: includes/Data.php:113
-msgid "Visitors (last 24 months)"
+#: includes/Language.php:44
+msgid "Visitors over time"
 msgstr ""
 
-#: includes/Data.php:114
+#: includes/Language.php:45
 msgid " Visitors / Month"
+msgstr ""
+
+#: includes/Language.php:50
+msgid " Hits / Month"
+msgstr ""
+
+#: includes/Language.php:53
+msgid "Hosts"
+msgstr ""
+
+#: includes/Language.php:55
+msgid " Hosts / Month"
+msgstr ""
+
+#: includes/Language.php:58
+msgid "Files"
+msgstr ""
+
+#: includes/Language.php:60
+msgid " Files / Month"
+msgstr ""
+
+#: includes/Language.php:63
+msgid "Kbytes"
+msgstr ""
+
+#: includes/Language.php:65
+msgid " Kbytes / Month"
+msgstr ""
+
+#: includes/Language.php:75
+msgid "Line chart displaying the number of site visitors over several months."
+msgstr ""
+
+#: includes/Language.php:77
+msgid "Line chart displaying the number of hits over several months. A hit is a request for a file such as a web page, image, javascript, or CSS hosted on a web server. A single visitor can generate plenty of hits."
+msgstr ""
+
+#: includes/Language.php:79
+msgid "Line chart displaying the number of hosts over several months. A host is a computer or server opening your website. Larger online services are often only displayed as a single host if they share one server."
+msgstr ""
+
+#: includes/Language.php:81
+msgid "Line chart displaying the number of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files."
+msgstr ""
+
+#: includes/Language.php:83
+msgid "Line chart displaying the number of transferred Data in kBytes over several months."
+msgstr ""
+
+#: includes/Language.php:88
+msgid "Time over the last 23 months"
 msgstr ""
 
 #. translators: 1: Server PHP version number, 2: Required PHP version number.
@@ -114,6 +212,6 @@ msgstr ""
 
 #. translators: 1: The plugin name, 2: The error string.
 #: rrze-statistik.php:97
-#: rrze-statistik.php:146
+#: rrze-statistik.php:147
 msgid "Plugins: %1$s: %2$s"
 msgstr ""
