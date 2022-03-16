@@ -21,8 +21,9 @@ class Analytics
         return $new_date;
     }
 
-    public static function retrieveSiteUrl($debug, $type)
+    public static function retrieveSiteUrl($type)
     {
+        $debug = Helper::isDebug();
         if ($debug === false) {
             $remove_char = ["https://", "http://", "/"];
             $url = 'www.' . str_replace($remove_char, "", get_site_url());
@@ -43,11 +44,9 @@ class Analytics
 
     public function getLinechart($container)
     {
-        //set value of $url to true while debugging..
-        //$url = $this->retrieveSiteUrl(true);
         $remove_char = ["https://", "http://", "/"];
         $site = 'www.' . str_replace($remove_char, "", get_site_url());
-        $ready_check = Data::processLinechartDataset(Self::retrieveSiteUrl(true, 'webalizer.hist'));
+        $ready_check = Data::processLinechartDataset(Self::retrieveSiteUrl('webalizer.hist'));
         if ($ready_check === false) {
             return printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site) . '</strong><br />';
         } else {
