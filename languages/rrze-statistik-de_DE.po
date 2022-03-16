@@ -1,8 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RRZE Statistics\n"
-"POT-Creation-Date: 2022-03-16 14:26+0100\n"
-"PO-Revision-Date: 2022-03-16 15:09+0100\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-statistik\n"
+"POT-Creation-Date: 2022-03-16 16:58+0100\n"
+"PO-Revision-Date: 2022-03-16 16:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -22,7 +23,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: node_modules\n"
 
-#: includes/Analytics.php:51
+#: includes/Analytics.php:62
 #, php-format
 msgid ""
 "It might take a few days until personal statistics for your website ( %1$s ) "
@@ -31,7 +32,7 @@ msgstr ""
 "Es kann mehrere Tage dauern, bevor persönliche Statistiken Ihrer Webseite "
 "( %1$s ) im Dashboard dargestellt werden."
 
-#: includes/Analytics.php:72
+#: includes/Analytics.php:99
 #, fuzzy
 msgid ""
 "It might take a few weeks until the summary is displayed on your dashboard."
@@ -39,144 +40,145 @@ msgstr ""
 "Es kann einige Wochen dauern, bis die Zusammenfassung auf Ihrem Dashboard "
 "angezeigt wird."
 
-#: includes/Analytics.php:78 includes/Analytics.php:79 includes/Language.php:48
+#: includes/Analytics.php:105 includes/Analytics.php:106
+#: includes/Language.php:51
 msgid "Hits"
 msgstr "Hits"
 
-#: includes/Analytics.php:78
+#: includes/Analytics.php:105
 msgid "Sites"
 msgstr "Seiten"
 
-#: includes/Analytics.php:79
+#: includes/Analytics.php:106
 msgid "Images"
 msgstr "Bilder"
 
-#: includes/Dashboard.php:21
+#: includes/Dashboard.php:24
 msgid "Site visitors over time"
 msgstr "Website-Besucher über Zeit"
 
-#: includes/Dashboard.php:22 includes/Language.php:49
+#: includes/Dashboard.php:25 includes/Language.php:52
 msgid "Hits over time"
 msgstr "Hits über Zeit"
 
-#: includes/Dashboard.php:23 includes/Language.php:54
+#: includes/Dashboard.php:26 includes/Language.php:57
 msgid "Hosts over time"
 msgstr "Hosts über Zeit"
 
-#: includes/Dashboard.php:24 includes/Language.php:59
+#: includes/Dashboard.php:27 includes/Language.php:62
 msgid "Files over time"
 msgstr "Dateien über Zeit"
 
-#: includes/Dashboard.php:25 includes/Language.php:64
+#: includes/Dashboard.php:28 includes/Language.php:67
 msgid "Kbytes over time"
 msgstr "Kbytes über Zeit"
 
-#: includes/Dashboard.php:26
+#: includes/Dashboard.php:29
 msgid "Popular Sites and Files over time"
 msgstr "Beliebte Websites und Dateien des letzten Monats"
 
-#: includes/Language.php:12
+#: includes/Language.php:15
 msgid "Jan"
 msgstr "Jan"
 
-#: includes/Language.php:13
+#: includes/Language.php:16
 msgid "Feb"
 msgstr "Feb"
 
-#: includes/Language.php:14
+#: includes/Language.php:17
 msgid "Mar"
 msgstr "März"
 
-#: includes/Language.php:15
+#: includes/Language.php:18
 msgid "Apr"
 msgstr "April"
 
-#: includes/Language.php:16
+#: includes/Language.php:19
 msgid "May"
 msgstr "Mai"
 
-#: includes/Language.php:17
+#: includes/Language.php:20
 msgid "Jun"
 msgstr "Juni"
 
-#: includes/Language.php:18
+#: includes/Language.php:21
 msgid "Jul"
 msgstr "Juli"
 
-#: includes/Language.php:19
+#: includes/Language.php:22
 msgid "Aug"
 msgstr "Aug"
 
-#: includes/Language.php:20
+#: includes/Language.php:23
 msgid "Sep"
 msgstr "Sep"
 
-#: includes/Language.php:21
+#: includes/Language.php:24
 msgid "Oct"
 msgstr "Okt"
 
-#: includes/Language.php:22
+#: includes/Language.php:25
 msgid "Nov"
 msgstr "Nov"
 
-#: includes/Language.php:23
+#: includes/Language.php:26
 msgid "Dec"
 msgstr "Dez"
 
-#: includes/Language.php:35
+#: includes/Language.php:38
 msgid "Source: Statistiken.rrze.fau.de"
 msgstr "Quelle: Statistiken.rrze.fau.de"
 
-#: includes/Language.php:43
+#: includes/Language.php:46
 msgid "Visitors"
 msgstr "Seitenbesucher"
 
-#: includes/Language.php:44
+#: includes/Language.php:47
 msgid "Visitors over time"
 msgstr "Besucher über Zeit"
 
-#: includes/Language.php:45
+#: includes/Language.php:48
 msgid " Visitors / Month"
 msgstr " Besucher / Monat"
 
-#: includes/Language.php:50
+#: includes/Language.php:53
 #, fuzzy
 msgid " Hits / Month"
 msgstr " Hits / Monat"
 
-#: includes/Language.php:53
+#: includes/Language.php:56
 msgid "Hosts"
 msgstr "Hosts"
 
-#: includes/Language.php:55
+#: includes/Language.php:58
 msgid " Hosts / Month"
 msgstr " Hosts / Monat"
 
-#: includes/Language.php:58
+#: includes/Language.php:61
 msgid "Files"
 msgstr "Dateien"
 
-#: includes/Language.php:60
+#: includes/Language.php:63
 #, fuzzy
 msgid " Files / Month"
 msgstr " Dateien / Monat"
 
-#: includes/Language.php:63
+#: includes/Language.php:66
 msgid "Kbytes"
 msgstr "KBytes"
 
-#: includes/Language.php:65
+#: includes/Language.php:68
 #, fuzzy
 msgid " Kbytes / Month"
 msgstr " Kbytes / Monat"
 
-#: includes/Language.php:75
+#: includes/Language.php:78
 msgid "Line chart displaying the number of site visitors over several months."
 msgstr ""
 "Das Liniendiagramm zeigt die Anzahl der Website-Besucher über die letzten "
 "Monate."
 
-#: includes/Language.php:77
+#: includes/Language.php:80
 msgid ""
 "Line chart displaying the number of hits over several months. A hit is a "
 "request for a file such as a web page, image, javascript, or CSS hosted on a "
@@ -187,7 +189,7 @@ msgstr ""
 "auf einem Webserver gehostet wird. Ein einzelner Besucher kann also viele "
 "Hits generieren."
 
-#: includes/Language.php:79
+#: includes/Language.php:82
 msgid ""
 "Line chart displaying the number of hosts over several months. A host is a "
 "computer or server opening your website. Larger online services are often "
@@ -198,7 +200,7 @@ msgstr ""
 "Dienste werden oft nur dann als einzelner Host angezeigt, wenn ein Server "
 "geteilt wird."
 
-#: includes/Language.php:81
+#: includes/Language.php:84
 msgid ""
 "Line chart displaying the number of successful loaded files from your "
 "domain. This includes all documents, css-files, scripts and media-files."
@@ -206,7 +208,7 @@ msgstr ""
 "Liniendiagramm mit der Anzahl der erfolgreich geladenen Dateien für Ihre "
 "Domain. Dazu gehören alle Dokumente, CSS-Dateien, Skripte und Mediendateien."
 
-#: includes/Language.php:83
+#: includes/Language.php:86
 msgid ""
 "Line chart displaying the number of transferred Data in kBytes over several "
 "months."
@@ -214,11 +216,11 @@ msgstr ""
 "Liniendiagramm, das die Anzahl der übertragenen Daten in kByte über mehrere "
 "Monate darstellt."
 
-#: includes/Language.php:88
+#: includes/Language.php:92
 msgid "Time over the last 23 months"
 msgstr "Zeit über die letzten 23 Monate"
 
-#: includes/Language.php:92
+#: includes/Language.php:97
 msgid "Copy CSV to clipboard"
 msgstr "Als CSV in Zwischenablage kopieren"
 
