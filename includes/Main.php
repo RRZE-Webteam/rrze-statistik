@@ -6,10 +6,6 @@ defined('ABSPATH') || exit;
 
 class Main
 {
-    /**
-     * Variablen Werte zuweisen.
-     * @param string $pluginFile Path and file name of plugin
-     */
     public function __construct()
     {
         new Helper();
@@ -17,9 +13,6 @@ class Main
         $highcharts->loadHighcharts();
 
         new Dashboard();
-
-        $shortcode = new Shortcode();
-        $shortcode->onLoaded();
 
         Cron::init();
     }

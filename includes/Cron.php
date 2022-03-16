@@ -44,7 +44,7 @@ class Cron
         Data::updateData();
     }
 
-        /**
+    /**
      * activateScheduledEventsWeekly
      * Activate all scheduled events.
      */

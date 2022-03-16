@@ -4,6 +4,9 @@ namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 
+/**
+ * Inititalizes the dashboard plugins and their basic behavior
+ */
 class Dashboard
 {
     public function __construct()

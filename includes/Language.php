@@ -4,6 +4,9 @@ namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 
+/**
+ * Collects Translations in one place.
+ */
 class Language
 {
     public static function getMonthDesc()
@@ -84,11 +87,13 @@ class Language
         }
     }
 
-    public static function getAccessibilityAbscissa(){
+    public static function getAccessibilityAbscissa()
+    {
         return __('Time over the last 23 months', 'rrze-statistik');
     }
 
-    public static function getCSVButtonText(){
+    public static function getCSVButtonText()
+    {
         return __('Copy CSV to clipboard', 'rrze_statistik');
     }
 }
