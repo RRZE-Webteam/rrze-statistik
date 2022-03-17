@@ -79,10 +79,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     text: languagePackage[datatype].headline_chart,
                 },
 
-                subtitle: {
-                    text: sourceText,
-                },
-
                 yAxis: {
                     title: {
                         text: languagePackage[datatype].ordinate_desc,
@@ -108,14 +104,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
                 plotOptions: {
                     series: {
-                        point: {
-                            events: {
-                                click: function () {
-                                    window.location.href =
-                                        this.series.options.website;
-                                },
-                            },
-                        },
                         cursor: "pointer",
                     },
                 },
@@ -124,7 +112,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     {
                         name: firstYear.toString(),
                         data: datasetFirstYear,
-                        website: logsUrl,
                         color: colors[4],
                         zIndex: 0,
                     },
@@ -132,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         name: secondYear.toString(),
                         data: datasetSecondYear,
                         zIndex: 1,
-                        website: logsUrl,
                         dashStyle: "ShortDashDot",
                         color: colors[1],
                     },
@@ -140,7 +126,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         name: thirdYear.toString(),
                         data: datasetThirdYear,
                         zIndex: 2,
-                        website: logsUrl,
                         dashStyle: "ShortDot",
                         color: colors[2],
                     },
