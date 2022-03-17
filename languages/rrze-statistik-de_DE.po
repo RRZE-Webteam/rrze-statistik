@@ -1,9 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RRZE Statistics\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-statistik\n"
-"POT-Creation-Date: 2022-03-16 16:58+0100\n"
-"PO-Revision-Date: 2022-03-16 16:59+0100\n"
+"POT-Creation-Date: 2022-03-17 09:21+0100\n"
+"PO-Revision-Date: 2022-03-17 09:22+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -33,7 +32,6 @@ msgstr ""
 "( %1$s ) im Dashboard dargestellt werden."
 
 #: includes/Analytics.php:99
-#, fuzzy
 msgid ""
 "It might take a few weeks until the summary is displayed on your dashboard."
 msgstr ""
@@ -142,7 +140,6 @@ msgid " Visitors / Month"
 msgstr " Besucher / Monat"
 
 #: includes/Language.php:53
-#, fuzzy
 msgid " Hits / Month"
 msgstr " Hits / Monat"
 
@@ -159,7 +156,6 @@ msgid "Files"
 msgstr "Dateien"
 
 #: includes/Language.php:63
-#, fuzzy
 msgid " Files / Month"
 msgstr " Dateien / Monat"
 
@@ -168,7 +164,6 @@ msgid "Kbytes"
 msgstr "KBytes"
 
 #: includes/Language.php:68
-#, fuzzy
 msgid " Kbytes / Month"
 msgstr " Kbytes / Monat"
 
@@ -250,7 +245,7 @@ msgstr ""
 "benötigt mindestens die WordPress-Version %2$s."
 
 #. translators: 1: The plugin name, 2: The error string.
-#: rrze-statistik.php:97 rrze-statistik.php:147
+#: rrze-statistik.php:97 rrze-statistik.php:149
 #, php-format
 msgid "Plugins: %1$s: %2$s"
 msgstr "Plugins: %1$s: %2$s"
@@ -260,7 +255,6 @@ msgid "RRZE Statistics"
 msgstr "RRZE Statistik"
 
 #. Plugin URI of the plugin/theme
-#, fuzzy
 msgid "https://github.com/rrze-webteam/rrze-statistik"
 msgstr "https://github.com/rrze-webteam/rrze-statistik"
 
@@ -273,11 +267,9 @@ msgstr ""
 "Dashboard an."
 
 #. Author of the plugin/theme
-#, fuzzy
 msgid "RRZE Webteam"
 msgstr "RRZE Webteam"
 
 #. Author URI of the plugin/theme
-#, fuzzy
 msgid "https://blogs.fau.de/webworking/"
 msgstr "https://blogs.fau.de/webworking/"
