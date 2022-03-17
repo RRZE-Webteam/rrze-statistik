@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RRZE Statistics\n"
-"POT-Creation-Date: 2022-03-17 09:21+0100\n"
-"PO-Revision-Date: 2022-03-17 09:22+0100\n"
+"POT-Creation-Date: 2022-03-17 11:12+0100\n"
+"PO-Revision-Date: 2022-03-17 11:20+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -74,6 +74,10 @@ msgstr "Kbytes über Zeit"
 #: includes/Dashboard.php:29
 msgid "Popular Sites and Files over time"
 msgstr "Beliebte Websites und Dateien des letzten Monats"
+
+#: includes/Highcharts.php:89
+msgid "Source: www.statistiken.rrze.fau.de"
+msgstr "Quelle: Statistiken.rrze.fau.de"
 
 #: includes/Language.php:15
 msgid "Jan"
@@ -170,7 +174,7 @@ msgstr " Kbytes / Monat"
 #: includes/Language.php:78
 msgid "Line chart displaying the number of site visitors over several months."
 msgstr ""
-"Das Liniendiagramm zeigt die Anzahl der Website-Besucher über die letzten "
+"Das Liniendiagramm zeigt die Anzahl der Webseiten-Besucher über die letzten "
 "Monate."
 
 #: includes/Language.php:80
@@ -180,9 +184,9 @@ msgid ""
 "web server. A single visitor can generate plenty of hits."
 msgstr ""
 "Das Liniendiagramm zeigt die Hits über die letzten Monate. Ein Hit ist ein "
-"Dateiaufruf für einen HTML-File, ein Bild, Javascript oder CSS-File, welche "
-"auf einem Webserver gehostet wird. Ein einzelner Besucher kann also viele "
-"Hits generieren."
+"Dateiaufruf für eine HTML-, Medien-, Javascript- oder CSS-Datei, welche auf "
+"einem Webserver gehostet wird. Ein einzelner Besucher kann während einem "
+"Seitenaufruf also viele Hits generieren."
 
 #: includes/Language.php:82
 msgid ""
@@ -190,10 +194,10 @@ msgid ""
 "computer or server opening your website. Larger online services are often "
 "only displayed as a single host if they share one server."
 msgstr ""
-"Liniendiagramm, das die Anzahl der Hosts über mehrere Monate anzeigt. Ein "
-"Host ist ein Computer oder Server, der Ihre Website öffnet. Größere Online-"
-"Dienste werden oft nur dann als einzelner Host angezeigt, wenn ein Server "
-"geteilt wird."
+"Das Liniendiagramm zeigt die Anzahl der Hosts über einen Zeitraum von "
+"mehreren Monaten. Ein Host ist ein Computer oder Server, der Ihre Website "
+"öffnet. Größere Online-Dienste werden oft als einzelner Host angezeigt, wenn "
+"ein Server geteilt wurde."
 
 #: includes/Language.php:84
 msgid ""
@@ -208,8 +212,8 @@ msgid ""
 "Line chart displaying the number of transferred Data in kBytes over several "
 "months."
 msgstr ""
-"Liniendiagramm, das die Anzahl der übertragenen Daten in kByte über mehrere "
-"Monate darstellt."
+"Das Liniendiagramm zeigt die Größe der übertragenen Datenpakete in kByte "
+"über einen Zeitraum von mehreren Monaten."
 
 #: includes/Language.php:92
 msgid "Time over the last 23 months"
