@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
                 xAxis: {
                     title: {
-                        text: "Time",
+                        text: abscissaTitle,
                     },
                     accessibility: {
                         description: a11yAbscissa,

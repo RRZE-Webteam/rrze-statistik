@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RRZE Statistics\n"
-"POT-Creation-Date: 2022-03-17 11:12+0100\n"
-"PO-Revision-Date: 2022-03-17 11:20+0100\n"
+"POT-Creation-Date: 2022-03-17 12:51+0100\n"
+"PO-Revision-Date: 2022-03-17 12:51+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -215,11 +215,15 @@ msgstr ""
 "Das Liniendiagramm zeigt die Größe der übertragenen Datenpakete in kByte "
 "über einen Zeitraum von mehreren Monaten."
 
-#: includes/Language.php:92
+#: includes/Language.php:91
+msgid "Time"
+msgstr "Zeit"
+
+#: includes/Language.php:96
 msgid "Time over the last 23 months"
 msgstr "Zeit über die letzten 23 Monate"
 
-#: includes/Language.php:97
+#: includes/Language.php:101
 msgid "Copy CSV to clipboard"
 msgstr "Als CSV in Zwischenablage kopieren"
 
