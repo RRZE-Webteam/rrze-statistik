@@ -56,7 +56,7 @@ class Analytics
     public function getLinechart($container)
     {
         $remove_char = ["https://", "http://", "/"];
-        $site = 'www.' . str_replace($remove_char, "", get_site_url());
+        $site = str_replace($remove_char, "", get_site_url());
         $ready_check = Data::processLinechartDataset(Self::retrieveSiteUrl('webalizer.hist'));
         if ($ready_check === false) {
             return printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site) . '</strong><br />';
