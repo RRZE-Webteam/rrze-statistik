@@ -94,6 +94,6 @@ class Language
 
     public static function getCSVButtonText()
     {
-        return __('Copy CSV to clipboard', 'rrze_statistik');
+        return __('Copy CSV to clipboard', 'rrze-statistik');
     }
 }
