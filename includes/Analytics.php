@@ -34,7 +34,7 @@ class Analytics
             $remove_char = ["https://", "http://", "/"];
             $url = str_replace($remove_char, "", get_site_url());
         } else {
-            $url = "www.rw.fau.de";
+            $url = "www.wordpress.rrze.fau.de";
         }
 
         if ($type === 'webalizer.hist') {
@@ -118,12 +118,15 @@ class Analytics
      */
     public static function isDateNewer($array, $arrayRef)
     {
+        if (is_array($array) && is_array($arrayRef)){
         $offset = count($array) - 2;
         $date = $array[$offset]['year'] . sprintf("%02d", $array[$offset]['month']);
         $dateRef = $arrayRef[count($arrayRef) - 1]['year'] . sprintf("%02d", $arrayRef[count($arrayRef) - 1]['month']);
         if ((int)$date > (int)$dateRef) {
             return true;
         } else {
+            return false;
+        }} else {
             return false;
         }
     }
