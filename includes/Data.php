@@ -30,7 +30,7 @@ class Data
             return true;
         } else {
             $data = Self::processDataBody($data_body);
-            $isDataRelevant = Analytics::isDateNewer($data_body, $isOptionSet);
+            $isDataRelevant = Analytics::isDateNewer($data, $isOptionSet);
             if ($isDataRelevant) {
                 if (count($isOptionSet) <= 23) {
                     array_push($isOptionSet, $data[count($data) - 2]);
