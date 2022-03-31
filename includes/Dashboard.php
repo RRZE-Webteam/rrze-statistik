@@ -12,6 +12,7 @@ class Dashboard
     public function __construct()
     {
         add_action('wp_dashboard_setup', [$this, 'add_rrze_statistik_dashboard_widget']);
+
     }
 
     /**

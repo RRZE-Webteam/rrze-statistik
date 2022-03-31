@@ -11,7 +11,7 @@ class Analytics
 {
     public function __construct()
     {
-        $this->highcharts = new Highcharts();
+        
     }
 
     public static function getDate()
@@ -61,6 +61,7 @@ class Analytics
         if ($ready_check === false) {
             return printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site) . '</strong><br />';
         } else {
+            $this->highcharts = new Highcharts();
             return $this->highcharts->lineplot($container);
         };
     }
