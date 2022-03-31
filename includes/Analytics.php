@@ -100,13 +100,21 @@ class Analytics
             return  __('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</strong><br />';
         } else {
             $data_chunks = array_chunk($data, 10);
-            $top_url = $data_chunks[0];
-            $top_images = $data_chunks[1];
+            
+            //if data_chunks is set, create the table
 
-            $table1 = Self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
-            $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Images', 'rrze-statistik'));
+            if(array_key_exists(0, $data_chunks)){
+                $top_url = $data_chunks[0];
+                $table1 = Self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
+                $output = $table1;
+            }
+            if(array_key_exists(1, $data_chunks)){
+                $top_images = $data_chunks[1];
+                $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Images', 'rrze-statistik'));
+                $output .= $table2;
+            }
 
-            return $table1 . $table2;
+            return $output;
         }
     }
 
