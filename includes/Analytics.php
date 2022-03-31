@@ -101,8 +101,6 @@ class Analytics
         } else {
             $data_chunks = array_chunk($data, 10);
             
-            //if data_chunks is set, create the table
-
             if(array_key_exists(0, $data_chunks)){
                 $top_url = $data_chunks[0];
                 $table1 = Self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
