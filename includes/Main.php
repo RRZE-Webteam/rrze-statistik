@@ -9,11 +9,10 @@ class Main
     public function __construct()
     {
         new Helper();
-        $highcharts = new Highcharts();
-        $highcharts->loadHighcharts();
-
         new Dashboard();
 
+        $highcharts = new Highcharts();
+        $highcharts->loadHighcharts();
         Cron::init();
     }
 }
