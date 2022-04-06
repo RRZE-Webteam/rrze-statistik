@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2.
 msgid ""
 msgstr ""
-"Project-Id-Version: RRZE Statistics 1.0.0\n"
+"Project-Id-Version: RRZE Statistics 1.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-statistik\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-03-17T11:50:35+00:00\n"
+"POT-Creation-Date: 2022-04-06T13:35:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: rrze-statistik\n"
@@ -38,12 +38,13 @@ msgstr ""
 msgid "It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard."
 msgstr ""
 
-#: includes/Analytics.php:99
+#: includes/Analytics.php:100
 msgid "It might take a few weeks until the summary is displayed on your dashboard."
 msgstr ""
 
 #: includes/Analytics.php:105
-#: includes/Analytics.php:106
+#: includes/Analytics.php:112
+#: includes/Analytics.php:119
 #: includes/Language.php:51
 msgid "Hits"
 msgstr ""
@@ -52,39 +53,48 @@ msgstr ""
 msgid "Sites"
 msgstr ""
 
-#: includes/Analytics.php:106
-msgid "Images"
+#: includes/Analytics.php:112
+msgid "Media"
 msgstr ""
 
-#: includes/Dashboard.php:24
-msgid "Site visitors over time"
+#: includes/Analytics.php:119
+msgid "Documents"
 msgstr ""
 
 #: includes/Dashboard.php:25
+msgid "Site visitors over time"
+msgstr ""
+
+#: includes/Dashboard.php:26
 #: includes/Language.php:52
 msgid "Hits over time"
 msgstr ""
 
-#: includes/Dashboard.php:26
+#: includes/Dashboard.php:27
 #: includes/Language.php:57
 msgid "Hosts over time"
 msgstr ""
 
-#: includes/Dashboard.php:27
+#: includes/Dashboard.php:28
 #: includes/Language.php:62
 msgid "Files over time"
 msgstr ""
 
-#: includes/Dashboard.php:28
+#: includes/Dashboard.php:29
 #: includes/Language.php:67
 msgid "Kbytes over time"
 msgstr ""
 
-#: includes/Dashboard.php:29
+#: includes/Dashboard.php:30
 msgid "Popular Sites and Files over time"
 msgstr ""
 
-#: includes/Highcharts.php:89
+#: includes/Dashboard.php:75
+#: includes/Language.php:38
+msgid "Source: Statistiken.rrze.fau.de"
+msgstr ""
+
+#: includes/Highcharts.php:88
 msgid "Source: www.statistiken.rrze.fau.de"
 msgstr ""
 
@@ -134,10 +144,6 @@ msgstr ""
 
 #: includes/Language.php:26
 msgid "Dec"
-msgstr ""
-
-#: includes/Language.php:38
-msgid "Source: Statistiken.rrze.fau.de"
 msgstr ""
 
 #: includes/Language.php:46
