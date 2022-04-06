@@ -78,14 +78,19 @@ class Analytics
      */
     public static function getTwoDimensionalHtmlTable($array, $array_key_1, $array_key_2, $head_desc_1, $head_desc_2)
     {
+        //check if $array is an Array
+        if (!is_array($array)) {
+            return __('No data available.', 'rrze-statistik');
+        } else {
+            $html = "<div class='rrze-statistik-table'><table><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
 
-        $html = "<div class='rrze-statistik-table'><table><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
-
-        foreach ($array as $value) {
-            $html .= "<tr><td>" . $value[$array_key_1] . '</td><td><a href="' . $value[1] . '">' . htmlspecialchars($value[$array_key_2]) . '</a></td></tr>';
+            foreach ($array as $value) {
+                $html .= "<tr><td>" . $value[$array_key_1] . '</td><td><a href="' . $value[1] . '">' . htmlspecialchars($value[$array_key_2]) . '</a></td></tr>';
+            }
+            $html .= "</table></div>";
+            return $html;
         }
-        $html .= "</table></div>";
-        return $html;
+
     }
 
     /**
