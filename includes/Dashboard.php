@@ -68,5 +68,11 @@ class Dashboard
     function load_rrze_statistik_dashboard_urls()
     {
         echo (Analytics::getUrlDatasetTable());
+        $source_link_target = Analytics::retrieveSiteURL('');
+        $source_link_target = substr($source_link_target, 0, -4);
+
+        if (!empty($source_link_target)) {
+            echo ('<p><a href="' . $source_link_target . '.html' . '" target="_blank">' . __('Source: Statistiken.rrze.fau.de', 'rrze-statistik') . '</a></p>');
+        }
     }
 }

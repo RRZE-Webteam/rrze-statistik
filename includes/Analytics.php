@@ -34,7 +34,7 @@ class Analytics
             $remove_char = ["https://", "http://", "/"];
             $url = str_replace($remove_char, "", get_site_url());
         } else {
-            $url = "www.wordpress.rrze.fau.de";
+            $url = "www.informatik.studium.fau.de";
         }
 
         if ($type === 'webalizer.hist') {
@@ -99,17 +99,26 @@ class Analytics
         if (!$data) {
             return  __('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</strong><br />';
         } else {
-            $data_chunks = array_chunk($data, 10);
-            
-            if(array_key_exists(0, $data_chunks)){
-                $top_url = $data_chunks[0];
+            if(array_key_exists(0, $data)){
+                $top_url = $data[0];
+                if(!empty($top_url)){
                 $table1 = Self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
                 $output = $table1;
+                }
             }
-            if(array_key_exists(1, $data_chunks)){
-                $top_images = $data_chunks[1];
-                $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Images', 'rrze-statistik'));
+            if(array_key_exists(1, $data)){
+                $top_images = $data[1];
+                if(!empty($top_images)){
+                $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Media', 'rrze-statistik'));
                 $output .= $table2;
+                }
+            }
+            if(array_key_exists(2, $data)){
+                $top_pdf = $data[2];
+                if(!empty($top_pdf)){
+                    $table3 = Self::getTwoDimensionalHtmlTable($top_pdf, 0, 1, __('Hits', 'rrze-statistik'), __('Documents', 'rrze-statistik'));
+                    $output .= $table3;
+                }
             }
 
             return $output;
