@@ -85,7 +85,10 @@ class Analytics
             $html = "<div class='rrze-statistik-table'><table><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
 
             foreach ($array as $value) {
-                $html .= "<tr><td>" . $value[$array_key_1] . '</td><td><a href="' . $value[1] . '">' . htmlspecialchars($value[$array_key_2]) . '</a></td></tr>';
+                //only execute if $value or $value[array_key_1] or $value[array_key_2] isn't empty
+                if (!empty($value) && !empty($value[$array_key_1]) && !empty($value[$array_key_2])) {
+                    $html .= '<tr><td>' . $value[$array_key_1] . '</td><td>' . $value[$array_key_2] . '</td></tr>';
+                }
             }
             $html .= "</table></div>";
             return $html;
