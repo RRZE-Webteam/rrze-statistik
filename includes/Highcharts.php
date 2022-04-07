@@ -12,8 +12,6 @@ class Highcharts
     public function __construct()
     {
         $this->loadHighcharts();
-        $data = new Data();
-        add_action( 'admin_init', 'data::setTransients()' );
     }
 
     public function statistik_enqueue_script()

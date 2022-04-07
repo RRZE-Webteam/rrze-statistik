@@ -9,10 +9,6 @@ defined('ABSPATH') || exit;
  */
 class Analytics
 {
-    public function __construct()
-    {
-        
-    }
 
     public static function getDate()
     {

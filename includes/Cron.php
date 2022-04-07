@@ -67,7 +67,7 @@ class Cron
      */
     public static function runEventsWeekly()
     {
-        Data::updateDataWeekly();
+        Data::updateUrlData();
     }
 
     /**

@@ -9,6 +9,12 @@ defined('ABSPATH') || exit;
  */
 class Data
 {
+
+    public function __construct()
+    {        
+        add_action( 'admin_init',  [$this, 'setTransients'] );
+    }
+
     public static function setTransients()
     {
         if (is_admin()) {
@@ -57,6 +63,7 @@ class Data
         $url = Analytics::retrieveSiteUrl('url');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
+        var_dump($validation);
 
         if ($validation === false) {
             return false;

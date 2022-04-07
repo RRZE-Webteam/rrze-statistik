@@ -10,6 +10,7 @@ class Main
     {
         new Helper();
         new Dashboard();
+        new Data();
 
         $highcharts = new Highcharts();
         $highcharts->loadHighcharts();
