@@ -17,6 +17,9 @@ class Data
                 if(!get_transient('rrze_statistik_data_webalizer_hist')) {
                     Self:: updateData();
                 }
+                if(!get_transient('rrze_statistik_data_url')) {
+                    Self:: updateUrlData();
+                }
             }
         }
     }
@@ -48,7 +51,7 @@ class Data
      *
      * @return boolean
      */
-    public static function updateDataWeekly()
+    public static function updateUrlData()
     {
         // Fetch Dataset
         $url = Analytics::retrieveSiteUrl('url');
@@ -61,7 +64,7 @@ class Data
             $data = substr($data_body, 0, 9999);
 
             $processed_data = Self::processUrlDataBody($data);
-            update_option('rrze_statistik_url_dataset', $processed_data);
+            set_transient('rrze_statistik_data_url', $processed_data, 12 * HOUR_IN_SECONDS);
             return true;
         }
     }

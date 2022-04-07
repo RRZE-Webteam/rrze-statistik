@@ -103,7 +103,7 @@ class Analytics
      */
     public static function getUrlDatasetTable()
     {
-        $data = get_option('rrze_statistik_url_dataset');
+        $data = get_transient('rrze_statistik_data_url');
         if (!$data) {
             return  __('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</strong><br />';
         } else {
