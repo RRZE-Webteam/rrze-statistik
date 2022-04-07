@@ -9,6 +9,19 @@ defined('ABSPATH') || exit;
  */
 class Data
 {
+    public static function setTransients()
+    {
+        if (is_admin()) {
+            $screen = get_current_screen();
+            if ($screen->id == "dashboard") {
+                if(!get_transient('rrze_statistik_data_webalizer_hist')) {
+                    Self:: updateData();
+                }
+            }
+        }
+    }
+
+
     /**
      * Cron Job, hourly, data for webalizer.hist from statistiken.rrze.fau.de
      *
@@ -20,29 +33,14 @@ class Data
         $url = Analytics::retrieveSiteUrl('webalizer.hist');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
-        $isOptionSet = get_option('rrze_statistik_webalizer_hist_data');
         if ($validation === false) {
             return false;
-        } else if (!$isOptionSet) {
-            $data = Self::processDataBody($data_body);
-            array_pop($data);
-            update_option('rrze_statistik_webalizer_hist_data', $data);
-            return true;
         } else {
             $data = Self::processDataBody($data_body);
-            $isDataRelevant = Analytics::isDateNewer($data, $isOptionSet);
-            if ($isDataRelevant) {
-                if (count($isOptionSet) <= 23) {
-                    array_push($isOptionSet, $data[count($data) - 2]);
-                    update_option('rrze_statistik_webalizer_hist_data', $isOptionSet);
-                } else {
-                    array_shift($isOptionSet);
-                    array_push($isOptionSet, $data[count($data) - 2]);
-                    update_option('rrze_statistik_webalizer_hist_data', $isOptionSet);
-                }
-            } else {
-            }
-        }
+            array_pop($data);
+            set_transient('rrze_statistik_data_webalizer_hist', $data, 6 * HOUR_IN_SECONDS);
+            return true;
+        } 
     }
 
     /**
@@ -216,7 +214,7 @@ class Data
      */
     public static function processLinechartDataset($url)
     {
-        $data = get_option('rrze_statistik_webalizer_hist_data');
+        $data = get_transient('rrze_statistik_data_webalizer_hist');
 
         if ($data === false) {
             Transfer::sendToJs('undefined', 'undefined', 'undefined', 'undefined', 'undefined');

@@ -12,6 +12,7 @@ class Highcharts
     public function __construct()
     {
         $this->loadHighcharts();
+        Data::setTransients();
     }
 
     public function statistik_enqueue_script()
@@ -74,7 +75,7 @@ class Highcharts
      */
     public function lineplot($container)
     {
-        $data = get_option('rrze_statistik_webalizer_hist_data');
+        $data = get_transient('rrze_statistik_data_webalizer_hist');
 
         if ($data === false) {
             $output = "No data points available.";
