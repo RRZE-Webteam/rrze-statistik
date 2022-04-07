@@ -87,7 +87,7 @@ class Analytics
             foreach ($array as $value) {
                 //only execute if $value or $value[array_key_1] or $value[array_key_2] isn't empty
                 if (!empty($value) && !empty($value[$array_key_1]) && !empty($value[$array_key_2])) {
-                    $html .= '<tr><td>' . $value[$array_key_1] . '</td><td>' . $value[$array_key_2] . '</td></tr>';
+                    $html .= '<tr><td>' . $value[$array_key_1] . '</td><td>' . '<a href="' . $value[$array_key_2] . '">' . $value[$array_key_2] . '</a>' . '</td></tr>';
                 }
             }
             $html .= "</table></div>";
