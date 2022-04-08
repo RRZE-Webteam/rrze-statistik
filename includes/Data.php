@@ -12,7 +12,7 @@ class Data
 
     public function __construct()
     {        
-        add_action( 'admin_init',  [$this, 'setTransients'] );
+        add_action( 'current_screen',  [$this, 'setTransients'] );
     }
 
     public static function setTransients()
@@ -102,6 +102,8 @@ class Data
         } else if (strlen($data_body) === 0) {
             return false;
         } else if (strpos($data_body, "could not be found on this server") !== false) {
+            return false;
+        } else if (strpos($data_body, "not found") !== false) {
             return false;
         } else {
             return true;
