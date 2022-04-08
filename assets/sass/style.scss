@@ -46,7 +46,12 @@
 }
 
 .rrze-statistik-table{
-    word-wrap: break-word;
+    table{
+        width: 100%;
+        a{
+            word-break: break-all;
+        }
+    }
     font-size: 1em;
     th {
         text-align: left;

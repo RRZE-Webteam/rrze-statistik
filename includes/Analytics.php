@@ -30,7 +30,7 @@ class Analytics
             $remove_char = ["https://", "http://", "/"];
             $url = str_replace($remove_char, "", get_site_url());
         } else {
-            $url = "www.geographie.nat.fau.de";
+            $url = "www.med.fau.de";
         }
 
         if ($type === 'webalizer.hist') {
