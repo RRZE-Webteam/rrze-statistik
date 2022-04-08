@@ -22,5 +22,7 @@ class Cron
     {
         wp_clear_scheduled_hook(self::ACTION_HOOK);
         wp_clear_scheduled_hook(self::ACTION_HOOK_WEEKLY);
+        delete_option('rrze_statistik_webalizer_hist_data');
+        delete_option('rrze_statistik_url_dataset');
     }
 }
