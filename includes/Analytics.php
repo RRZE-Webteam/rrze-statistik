@@ -9,10 +9,6 @@ defined('ABSPATH') || exit;
  */
 class Analytics
 {
-    public function __construct()
-    {
-        
-    }
 
     public static function getDate()
     {
@@ -78,14 +74,22 @@ class Analytics
      */
     public static function getTwoDimensionalHtmlTable($array, $array_key_1, $array_key_2, $head_desc_1, $head_desc_2)
     {
+        //check if $array is an Array
+        if (!is_array($array)) {
+            return __('No data available.', 'rrze-statistik');
+        } else {
+            $html = "<div class='rrze-statistik-table'><table><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
 
-        $html = "<div class='rrze-statistik-table'><table><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
-
-        foreach ($array as $value) {
-            $html .= "<tr><td>" . $value[$array_key_1] . '</td><td><a href="' . $value[1] . '">' . htmlspecialchars($value[$array_key_2]) . '</a></td></tr>';
+            foreach ($array as $value) {
+                //only execute if $value or $value[array_key_1] or $value[array_key_2] isn't empty
+                if (!empty($value) && !empty($value[$array_key_1]) && !empty($value[$array_key_2])) {
+                    $html .= '<tr><td>' . $value[$array_key_1] . '</td><td>' . '<a href="' . $value[$array_key_2] . '">' . $value[$array_key_2] . '</a>' . '</td></tr>';
+                }
+            }
+            $html .= "</table></div>";
+            return $html;
         }
-        $html .= "</table></div>";
-        return $html;
+
     }
 
     /**
@@ -95,21 +99,30 @@ class Analytics
      */
     public static function getUrlDatasetTable()
     {
-        $data = get_option('rrze_statistik_url_dataset');
+        $data = get_transient('rrze_statistik_data_url');
         if (!$data) {
             return  __('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</strong><br />';
         } else {
-            $data_chunks = array_chunk($data, 10);
-            
-            if(array_key_exists(0, $data_chunks)){
-                $top_url = $data_chunks[0];
+            if(array_key_exists(0, $data)){
+                $top_url = $data[0];
+                if(!empty($top_url)){
                 $table1 = Self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
                 $output = $table1;
+                }
             }
-            if(array_key_exists(1, $data_chunks)){
-                $top_images = $data_chunks[1];
-                $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Images', 'rrze-statistik'));
+            if(array_key_exists(1, $data)){
+                $top_images = $data[1];
+                if(!empty($top_images)){
+                $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Media', 'rrze-statistik'));
                 $output .= $table2;
+                }
+            }
+            if(array_key_exists(2, $data)){
+                $top_pdf = $data[2];
+                if(!empty($top_pdf)){
+                    $table3 = Self::getTwoDimensionalHtmlTable($top_pdf, 0, 1, __('Hits', 'rrze-statistik'), __('Documents', 'rrze-statistik'));
+                    $output .= $table3;
+                }
             }
 
             return $output;

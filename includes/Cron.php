@@ -11,63 +11,7 @@ class Cron
 
     public static function init()
     {
-        add_action(self::ACTION_HOOK, [__CLASS__, 'runEvents']);
-        add_action('init', [__CLASS__, 'activateScheduledEvents']);
-
-        add_action(self::ACTION_HOOK_WEEKLY, [__CLASS__, 'runEventsWeekly']);
-        add_action('init', [__CLASS__, 'activateScheduledEventsWeekly']);
-    }
-
-    /**
-     * activateScheduledEvents
-     * Activate all scheduled events.
-     */
-    public static function activateScheduledEvents()
-    {
-        if (false === wp_next_scheduled(self::ACTION_HOOK)) {
-            wp_schedule_event(
-                time(),
-                'hourly',
-                self::ACTION_HOOK,
-                [],
-                true
-            );
-        }
-    }
-
-    /**
-     * runEvents
-     * Run the scheduled events.
-     */
-    public static function runEvents()
-    {
-        Data::updateData();
-    }
-
-    /**
-     * activateScheduledEventsWeekly
-     * Activate all scheduled events.
-     */
-    public static function activateScheduledEventsWeekly()
-    {
-        if (false === wp_next_scheduled(self::ACTION_HOOK_WEEKLY)) {
-            wp_schedule_event(
-                time(),
-                'weekly',
-                self::ACTION_HOOK_WEEKLY,
-                [],
-                true
-            );
-        }
-    }
-
-    /**
-     * runEventsWeekly
-     * Run the scheduled events.
-     */
-    public static function runEventsWeekly()
-    {
-        Data::updateDataWeekly();
+        add_action( 'init', [__CLASS__, 'clearSchedule'] ); 
     }
 
     /**
@@ -78,5 +22,7 @@ class Cron
     {
         wp_clear_scheduled_hook(self::ACTION_HOOK);
         wp_clear_scheduled_hook(self::ACTION_HOOK_WEEKLY);
+        delete_option('rrze_statistik_webalizer_hist_data');
+        delete_option('rrze_statistik_url_dataset');
     }
 }

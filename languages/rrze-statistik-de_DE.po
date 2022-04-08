@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RRZE Statistics\n"
-"POT-Creation-Date: 2022-03-17 12:51+0100\n"
-"PO-Revision-Date: 2022-03-17 12:51+0100\n"
+"POT-Creation-Date: 2022-04-06 15:40+0200\n"
+"PO-Revision-Date: 2022-04-06 15:40+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -31,15 +31,15 @@ msgstr ""
 "Es kann mehrere Tage dauern, bevor persönliche Statistiken Ihrer Webseite "
 "( %1$s ) im Dashboard dargestellt werden."
 
-#: includes/Analytics.php:99
+#: includes/Analytics.php:100
 msgid ""
 "It might take a few weeks until the summary is displayed on your dashboard."
 msgstr ""
 "Es kann einige Wochen dauern, bis die Zusammenfassung auf Ihrem Dashboard "
 "angezeigt wird."
 
-#: includes/Analytics.php:105 includes/Analytics.php:106
-#: includes/Language.php:51
+#: includes/Analytics.php:105 includes/Analytics.php:112
+#: includes/Analytics.php:119 includes/Language.php:51
 msgid "Hits"
 msgstr "Hits"
 
@@ -47,35 +47,43 @@ msgstr "Hits"
 msgid "Sites"
 msgstr "Seiten"
 
-#: includes/Analytics.php:106
-msgid "Images"
-msgstr "Bilder"
+#: includes/Analytics.php:112
+msgid "Media"
+msgstr "Mediendateien"
 
-#: includes/Dashboard.php:24
+#: includes/Analytics.php:119
+msgid "Documents"
+msgstr "Dokumente"
+
+#: includes/Dashboard.php:25
 msgid "Site visitors over time"
 msgstr "Website-Besucher über Zeit"
 
-#: includes/Dashboard.php:25 includes/Language.php:52
+#: includes/Dashboard.php:26 includes/Language.php:52
 msgid "Hits over time"
 msgstr "Hits über Zeit"
 
-#: includes/Dashboard.php:26 includes/Language.php:57
+#: includes/Dashboard.php:27 includes/Language.php:57
 msgid "Hosts over time"
 msgstr "Hosts über Zeit"
 
-#: includes/Dashboard.php:27 includes/Language.php:62
+#: includes/Dashboard.php:28 includes/Language.php:62
 msgid "Files over time"
 msgstr "Dateien über Zeit"
 
-#: includes/Dashboard.php:28 includes/Language.php:67
+#: includes/Dashboard.php:29 includes/Language.php:67
 msgid "Kbytes over time"
 msgstr "Kbytes über Zeit"
 
-#: includes/Dashboard.php:29
+#: includes/Dashboard.php:30
 msgid "Popular Sites and Files over time"
-msgstr "Beliebte Websites und Dateien des letzten Monats"
+msgstr "Beliebte Seiten und Mediendateien des letzten Monats"
 
-#: includes/Highcharts.php:89
+#: includes/Dashboard.php:75 includes/Language.php:38
+msgid "Source: Statistiken.rrze.fau.de"
+msgstr "Quelle: Statistiken.rrze.fau.de"
+
+#: includes/Highcharts.php:88
 msgid "Source: www.statistiken.rrze.fau.de"
 msgstr "Quelle: Statistiken.rrze.fau.de"
 
@@ -126,10 +134,6 @@ msgstr "Nov"
 #: includes/Language.php:26
 msgid "Dec"
 msgstr "Dez"
-
-#: includes/Language.php:38
-msgid "Source: Statistiken.rrze.fau.de"
-msgstr "Quelle: Statistiken.rrze.fau.de"
 
 #: includes/Language.php:46
 msgid "Visitors"
@@ -281,3 +285,6 @@ msgstr "RRZE Webteam"
 #. Author URI of the plugin/theme
 msgid "https://blogs.fau.de/webworking/"
 msgstr "https://blogs.fau.de/webworking/"
+
+#~ msgid "Images"
+#~ msgstr "Bilder"

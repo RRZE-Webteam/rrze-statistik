@@ -44,3 +44,16 @@
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+
+.rrze-statistik-table{
+    table{
+        width: 100%;
+        a{
+            word-break: break-all;
+        }
+    }
+    font-size: 1em;
+    th {
+        text-align: left;
+    }
+}

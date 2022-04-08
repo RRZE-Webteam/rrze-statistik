@@ -9,6 +9,28 @@ defined('ABSPATH') || exit;
  */
 class Data
 {
+
+    public function __construct()
+    {        
+        add_action( 'current_screen',  [$this, 'setTransients'] );
+    }
+
+    public static function setTransients()
+    {
+        if (is_admin()) {
+            $screen = get_current_screen();
+            if ($screen->id == "dashboard") {
+                if(!get_transient('rrze_statistik_data_webalizer_hist')) {
+                    Self:: updateData();
+                }
+                if(!get_transient('rrze_statistik_data_url')) {
+                    Self:: updateUrlData();
+                }
+            }
+        }
+    }
+
+
     /**
      * Cron Job, hourly, data for webalizer.hist from statistiken.rrze.fau.de
      *
@@ -20,29 +42,14 @@ class Data
         $url = Analytics::retrieveSiteUrl('webalizer.hist');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
-        $isOptionSet = get_option('rrze_statistik_webalizer_hist_data');
         if ($validation === false) {
             return false;
-        } else if (!$isOptionSet) {
-            $data = Self::processDataBody($data_body);
-            array_pop($data);
-            update_option('rrze_statistik_webalizer_hist_data', $data);
-            return true;
         } else {
             $data = Self::processDataBody($data_body);
-            $isDataRelevant = Analytics::isDateNewer($data, $isOptionSet);
-            if ($isDataRelevant) {
-                if (count($isOptionSet) <= 23) {
-                    array_push($isOptionSet, $data[count($data) - 2]);
-                    update_option('rrze_statistik_webalizer_hist_data', $isOptionSet);
-                } else {
-                    array_shift($isOptionSet);
-                    array_push($isOptionSet, $data[count($data) - 2]);
-                    update_option('rrze_statistik_webalizer_hist_data', $isOptionSet);
-                }
-            } else {
-            }
-        }
+            array_pop($data);
+            set_transient('rrze_statistik_data_webalizer_hist', $data, 6 * HOUR_IN_SECONDS);
+            return true;
+        } 
     }
 
     /**
@@ -50,19 +57,21 @@ class Data
      *
      * @return boolean
      */
-    public static function updateDataWeekly()
+    public static function updateUrlData()
     {
         // Fetch Dataset
         $url = Analytics::retrieveSiteUrl('url');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
+        var_dump($validation);
 
         if ($validation === false) {
             return false;
         } else {
-            $data = substr($data_body, 0, 5000);
+            $data = substr($data_body, 0, 9999);
+
             $processed_data = Self::processUrlDataBody($data);
-            update_option('rrze_statistik_url_dataset', $processed_data);
+            set_transient('rrze_statistik_data_url', $processed_data, 12 * HOUR_IN_SECONDS);
             return true;
         }
     }
@@ -77,9 +86,6 @@ class Data
     {
         $cachable = wp_remote_get(esc_url_raw($url));
         $cachable_body = wp_remote_retrieve_body($cachable);
-        /*if(strlen($cachable_body) !== 0){
-            set_transient('rrze_statistik_webalizer_hist', $cachable_body, 120);
-        }*/
         return $cachable_body;
     }
 
@@ -96,6 +102,8 @@ class Data
         } else if (strlen($data_body) === 0) {
             return false;
         } else if (strpos($data_body, "could not be found on this server") !== false) {
+            return false;
+        } else if (strpos($data_body, "not found") !== false) {
             return false;
         } else {
             return true;
@@ -114,6 +122,7 @@ class Data
         $array = preg_split("/\r\n|\n|\r/", $data_trim);
         $image_files = [];
         $sites = [];
+        $pdf_files = [];
 
         $output = [];
         foreach ($array as $value) {
@@ -123,10 +132,11 @@ class Data
             if (
                 strpos($array_splitted[1], "wp-includes")
                 or strpos($array_splitted[1], "wp-content")
-                or strpos($array_splitted[1], "feed")
                 or strpos($array_splitted[1], "robots")
                 or strpos($array_splitted[1], "wp-admin")
-                or strpos($array_splitted[1], '.pdf')
+                or strpos($array_splitted[1], "xml")
+                or strpos($array_splitted[1], ".css")
+                or strpos($array_splitted[1], "module.php")
             ) {
             } elseif (
                 strpos($array_splitted[1], ".jpg")
@@ -134,13 +144,47 @@ class Data
                 or strpos($array_splitted[1], ".gif")
                 or strpos($array_splitted[1], ".png")
                 or strpos($array_splitted[1], ".svg")
+                or strpos($array_splitted[1], ".webp")
+                or strpos($array_splitted[1], ".ico")
+                or strpos($array_splitted[1], ".bmp")
+                or strpos($array_splitted[1], ".tiff")
+                or strpos($array_splitted[1], ".tif")
+                or strpos($array_splitted[1], ".psd")
+                or strpos($array_splitted[1], ".ai")
+                or strpos($array_splitted[1], ".eps")
             ) {
                 array_push($image_files, $array_splitted);
+            } elseif (
+                strpos($array_splitted[1], ".pdf")
+                or strpos($array_splitted[1], ".docx")
+                or strpos($array_splitted[1], ".ppt")
+                or strpos($array_splitted[1], ".pptx")
+                or strpos($array_splitted[1], ".xls")
+                or strpos($array_splitted[1], ".xlsx")
+                or strpos($array_splitted[1], ".doc")
+                or strpos($array_splitted[1], ".zip")
+                or strpos($array_splitted[1], ".rar")
+                
+            ) {
+                array_push($pdf_files, $array_splitted);
             } else {
                 array_push($sites, $array_splitted);
             }
         }
-        $output = array_merge(array_slice($sites, 0, 10), array_slice($image_files, 0, 10));
+        //if last array item has no trailing slash, remove it
+        if (substr($sites[count($sites) - 1][1], -1) !== "/") {
+            array_pop($sites);
+        }
+        array_pop($image_files);
+        array_pop($pdf_files);
+
+        
+        //check if value isNull
+        is_null($sites) ? $sites = [] : $sites;
+        is_null($image_files) ? $image_files = [] : $image_files;
+        is_null($pdf_files) ? $pdf_files = [] : $pdf_files;
+
+        $output = [array_slice($sites, 0, 10), array_slice($image_files, 0, 10), array_slice($pdf_files, 0, 5)];
         return ($output);
     }
 
@@ -182,7 +226,7 @@ class Data
      */
     public static function processLinechartDataset($url)
     {
-        $data = get_option('rrze_statistik_webalizer_hist_data');
+        $data = get_transient('rrze_statistik_data_webalizer_hist');
 
         if ($data === false) {
             Transfer::sendToJs('undefined', 'undefined', 'undefined', 'undefined', 'undefined');
