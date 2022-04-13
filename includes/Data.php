@@ -63,7 +63,6 @@ class Data
         $url = Analytics::retrieveSiteUrl('url');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
-        var_dump($validation);
 
         if ($validation === false) {
             return false;
