@@ -97,12 +97,16 @@ class Data
     public static function validateData($data_body)
     {
         if (strpos($data_body, "Forbidden") !== false) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de forbidden fetch response body');
             return false;
         } else if (strlen($data_body) === 0) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de empty fetch response body');
             return false;
         } else if (strpos($data_body, "could not be found on this server") !== false) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de fetch response body: Site not found on this server');
             return false;
         } else if (strpos($data_body, "not found") !== false) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de forbidden fetch response body: Site not found on this server');
             return false;
         } else {
             return true;
