@@ -63,7 +63,6 @@ class Data
         $url = Analytics::retrieveSiteUrl('url');
         $data_body = Self::fetchDataBody($url);
         $validation = Self::validateData($data_body);
-        var_dump($validation);
 
         if ($validation === false) {
             return false;
@@ -130,40 +129,40 @@ class Data
             \array_splice($array_splitted, 1, -1);
 
             if (
-                strpos($array_splitted[1], "wp-includes")
-                or strpos($array_splitted[1], "wp-content")
-                or strpos($array_splitted[1], "robots")
-                or strpos($array_splitted[1], "wp-admin")
-                or strpos($array_splitted[1], "xml")
-                or strpos($array_splitted[1], ".css")
-                or strpos($array_splitted[1], "module.php")
+                strpos($array_splitted[1], "wp-includes") !== false
+                || strpos($array_splitted[1], "wp-content") !== false
+                || strpos($array_splitted[1], "robots") !== false
+                || strpos($array_splitted[1], "wp-admin") !== false
+                || strpos($array_splitted[1], "xml") !== false
+                || strpos($array_splitted[1], ".css") !== false
+                || strpos($array_splitted[1], "module.php") !== false
             ) {
             } elseif (
-                strpos($array_splitted[1], ".jpg")
-                or strpos($array_splitted[1], ".jpeg")
-                or strpos($array_splitted[1], ".gif")
-                or strpos($array_splitted[1], ".png")
-                or strpos($array_splitted[1], ".svg")
-                or strpos($array_splitted[1], ".webp")
-                or strpos($array_splitted[1], ".ico")
-                or strpos($array_splitted[1], ".bmp")
-                or strpos($array_splitted[1], ".tiff")
-                or strpos($array_splitted[1], ".tif")
-                or strpos($array_splitted[1], ".psd")
-                or strpos($array_splitted[1], ".ai")
-                or strpos($array_splitted[1], ".eps")
+                strpos($array_splitted[1], ".jpg") !== false
+                || strpos($array_splitted[1], ".jpeg") !== false
+                || strpos($array_splitted[1], ".gif") !== false
+                || strpos($array_splitted[1], ".png") !== false
+                || strpos($array_splitted[1], ".svg") !== false
+                || strpos($array_splitted[1], ".webp") !== false
+                || strpos($array_splitted[1], ".ico") !== false
+                || strpos($array_splitted[1], ".bmp") !== false
+                || strpos($array_splitted[1], ".tiff") !== false
+                || strpos($array_splitted[1], ".tif") !== false
+                || strpos($array_splitted[1], ".psd") !== false
+                || strpos($array_splitted[1], ".ai") !== false
+                || strpos($array_splitted[1], ".eps") !== false
             ) {
                 array_push($image_files, $array_splitted);
             } elseif (
-                strpos($array_splitted[1], ".pdf")
-                or strpos($array_splitted[1], ".docx")
-                or strpos($array_splitted[1], ".ppt")
-                or strpos($array_splitted[1], ".pptx")
-                or strpos($array_splitted[1], ".xls")
-                or strpos($array_splitted[1], ".xlsx")
-                or strpos($array_splitted[1], ".doc")
-                or strpos($array_splitted[1], ".zip")
-                or strpos($array_splitted[1], ".rar")
+                strpos($array_splitted[1], ".pdf") !== false
+                || strpos($array_splitted[1], ".docx") !== false
+                || strpos($array_splitted[1], ".ppt") !== false
+                || strpos($array_splitted[1], ".pptx") !== false
+                || strpos($array_splitted[1], ".xls") !== false
+                || strpos($array_splitted[1], ".xlsx") !== false
+                || strpos($array_splitted[1], ".doc") !== false
+                || strpos($array_splitted[1], ".zip") !== false
+                || strpos($array_splitted[1], ".rar") !== false
                 
             ) {
                 array_push($pdf_files, $array_splitted);
