@@ -92,7 +92,7 @@ class Dashboard
         $options = get_option('rrze_statistik_widget');
 
         if(empty($options)) {
-            $options['display_type'] = 'line';
+            $options['display_type'] = 'spline';
             $options['data_type'] = 'display_all';
 
             update_option('rrze_statistik_widget', $options);
@@ -106,8 +106,10 @@ class Dashboard
                 <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
                 <td>
                     <select name="rrze_statistik_widget[display_type]">
-                        <option value="line" <?php selected($options['display_type'], 'line'); ?>><?php _e('Line chart', 'rrze-statistik'); ?></option>
-                        <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar chart', 'rrze-statistik'); ?></option>
+                        <option value="spline" <?php selected($options['display_type'], 'spline'); ?>><?php _e('Spline', 'rrze-statistik'); ?></option>
+                        <option value="areaspline" <?php selected($options['display_type'], 'areaspline'); ?>><?php _e('Area-spline', 'rrze-statistik'); ?></option>
+                        <option value="column" <?php selected($options['display_type'], 'column'); ?>><?php _e('Column', 'rrze-statistik'); ?></option>
+                        <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar', 'rrze-statistik'); ?></option>
                     </select>
                 </td>
             </tr>
