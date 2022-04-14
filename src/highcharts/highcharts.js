@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             //Create the Highcharts container for each datatype
             const chart = Highcharts.chart(datatype, {
                 chart: {
-                    type: "spline",
+                    type: displayType,
                     renderTo: datatype,
                 },
 
