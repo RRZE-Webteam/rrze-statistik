@@ -31,6 +31,9 @@ class Dashboard
             wp_add_dashboard_widget('rrze_statistik_widget_kbytes', __('Kbytes over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_kbytes'], [$this, 'control_statistik_widgets']);
             wp_add_dashboard_widget('rrze_statistik_widget_urls', __('Popular Sites and Files over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
         }
+        elseif ($option['data_type'] === 'hits'){
+            wp_add_dashboard_widget('rrze_statistik_widget_hits', __('Hits over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
+        }
         else {
             wp_add_dashboard_widget('rrze_statistik_widget_'.$option['data_type'], __($option['data_type']. ' over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_'.$option['data_type']], [$this, 'control_statistik_widgets']);
         }

@@ -1,5 +1,5 @@
 let currentYear = new Date().getFullYear();
-const datatypes = ["visits", "hits", "hosts", "files", "kbytes"];
+const datatypes = dataType;
 
 //data is passed from Transfer.php
 //Check if document is ready
