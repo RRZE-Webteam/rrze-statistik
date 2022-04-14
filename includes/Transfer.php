@@ -25,6 +25,7 @@ class Transfer
         $source_Text = Language::getSource();
         $a11y_abscissa = Language::getAccessibilityAbscissa();
         $abscissa_title = Language::getAbscissaTitle();
+        $display_type = get_option('rrze_statistik_widget')['display_type'];
 
         $script = 'var linechartDataset =' . $json_data . ';';
         $script .= 'var abscissaDescriptiontext =' . json_encode($abscissa_desc) . ';';
@@ -32,6 +33,7 @@ class Transfer
         $script .= 'var abscissaTitle =' .json_encode($abscissa_title) . ';';
         $script .= 'var sourceText = ' . json_encode($source_Text) . ';';
         $script .= 'var a11yAbscissa = ' . json_encode($a11y_abscissa) . ';';
+        $script .= 'var displayType = ' . json_encode($display_type) . ';';
 
         wp_add_inline_script('index-js', $script, 'before');
         return $data_body;
