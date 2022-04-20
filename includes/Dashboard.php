@@ -271,15 +271,12 @@ class Dashboard
     function misha_save_widget()
     {
         // security check
-
-        Helper::debug($_POST);
         check_ajax_referer('edit-dashboard-widget_' . $_POST['widget_id'], 'dashboard-widget-nonce');
 
         $post_id = $_POST['rrze_statistik_widget'];
 
         update_option('rrze_statistik_widget', $post_id);
         Transfer::refreshVariables();
-        Helper::debug(get_option('custom_post'));
 
         if (!empty(get_option('rrze_statistik_widget'))) {
             echo 'Hier kommt der output nach update der Optionen';
