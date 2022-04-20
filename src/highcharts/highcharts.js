@@ -1,35 +1,25 @@
 let currentYear = new Date().getFullYear();
 
-
-
 //data is passed from Transfer.php
-//Check if document is ready
 document.addEventListener("DOMContentLoaded", function (event) {
     //Check if data was passed from PHP
     if (linechartDataset === "undefined") {
-        console.log("Data could not be retrieved");
+        return;
     } else {
-        //read existent datatypes from dom
+        //read needed charts from dom
         dataTypes = ["visits", "hits", "hosts", "files", "kbytes"];
         chartTypes = [];
 
-        //for Each datatype check if it is places as css id in the dom
         dataTypes.forEach( dataType => {
             if (document.getElementById(dataType)) {
-                //if yes, read the data from the dom
                 chartTypes.push(dataType);
             }
         });
-        console.log(chartTypes);
 
         //Process dataset and split it based on the last three years
-        console.log("Dataset successfully loaded");
-
         const firstYear = currentYear - 2;
         const secondYear = currentYear - 1;
         const thirdYear = currentYear;
-
-        console.log(linechartDataset);
         
         //Create the dataset for each datatype
         chartTypes.forEach((datatype) => {
