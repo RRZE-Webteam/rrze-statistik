@@ -38,4 +38,12 @@ class Transfer
         wp_add_inline_script('index-js', $script, 'before');
         return $data_body;
     }
+
+    public static function refreshVariables(){
+        $option = get_option('rrze_statistik_widget');
+        $display_type = $option['display_type'];
+
+        $script = 'var displayType = ' . json_encode($display_type) . ';';
+        wp_add_inline_script('index-js', $script, 'before');
+    }
 }
