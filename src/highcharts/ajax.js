@@ -1,8 +1,10 @@
 jQuery(function($){
 
 	// the Configure link click event
-	$('#misha_dashboard_widget .edit-box.open-box').click(function(){
+	$('[id^="rrze_statistik_widget"] .edit-box.open-box').click(function(){
 		var button = $(this);
+		var selector = $(this).parent().parent().parent().parent().attr('id');
+		console.log(selector);
 		$.ajax({
 			url: ajaxurl, // it is predefined in /wp-admin/
 			type: 'POST',
@@ -15,7 +17,7 @@ jQuery(function($){
 				// remove preloader
 				button.prev().remove();
 				// insert settings form
-				$('#misha_dashboard_widget').find('.inside').html(data);
+				$('#' + selector).find('.inside').html(data);
 			}
 
 		});
@@ -23,7 +25,7 @@ jQuery(function($){
 	});
 		
 	// form submit event
-	$('body').on('submit', '#misha_widget_settings', function(){
+	$('body').on('submit', '#rrze_statistik_settings', function(){
 		var form = $(this);
 		$.ajax({
 			url: ajaxurl,
@@ -34,9 +36,9 @@ jQuery(function($){
 				form.find('.submit').append('<span class="spinner" style="display:inline-block;float:none;visibility:visible;margin:0 0 0 15px"></span>');
 			},
 			success : function( data ){
-				$('#misha_dashboard_widget').find('.inside').html(data);
+				$('[id^="rrze_statistik_widget"]').find('.inside').html(data);
 				// show the Configure link again
-				$('#misha_dashboard_widget .edit-box.open-box').show();
+				$('[id^="rrze_statistik_widget"] .edit-box.open-box').show();
 			}
 		});
 		return false;

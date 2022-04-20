@@ -14,9 +14,9 @@ class Dashboard
         add_action('wp_dashboard_setup', [$this, 'add_rrze_statistik_dashboard_widget']);
 
         //Just for test purposes add a new Dashboard Widget and Ajax-Action Hooks
-        add_action('wp_dashboard_setup', [$this, 'prefix_add_dashboard_widget']);
-        add_action('wp_ajax_widgetsave', [$this, 'misha_save_widget']); // wp_ajax_{ACTION}
-        add_action('wp_ajax_showform', [$this, 'misha_ajax_show_form']); // wp_ajax_{ACTION}
+        //add_action('wp_dashboard_setup', [$this, 'prefix_add_dashboard_widget']);
+        add_action('wp_ajax_widgetsave', [$this, 'rrze_statistik_save_widget']); // wp_ajax_{ACTION}
+        add_action('wp_ajax_showform', [$this, 'rrze_statistik_ajax_show_form']); // wp_ajax_{ACTION}
     }
 
     /**
@@ -144,21 +144,22 @@ class Dashboard
     <?php
     }
 
-    //add misha's dashboard code 1:1
-    function prefix_add_dashboard_widget()
+    //add rrze_statistik_'s dashboard code 1:1
+    /*function prefix_add_dashboard_widget()
     {
         wp_add_dashboard_widget(
-            'misha_dashboard_widget', // widget ID
+            'rrze_statistik__dashboard_widget', // widget ID
             'Custom Dashboard Widget', // widget title
-            [$this, 'misha_dashboard_widget'], // callback #1 to display it
-            [$this, 'misha_process_my_dashboard_widget'] // callback #2 for settings
+            [$this, 'rrze_statistik__dashboard_widget'], // callback #1 to display it
+            [$this, 'rrze_statistik__process_my_dashboard_widget'] // callback #2 for settings
         );
-    }
+    }*/
     /*
      * Callback #1 function
      * Displays widget content
      */
-    function misha_dashboard_widget()
+    /*
+    function rrze_statistik_dashboard_widget()
     {
 
         // if the widget is configured and the post is exists
@@ -169,12 +170,13 @@ class Dashboard
             echo 'Widget is not configured.';
         }
     }
+    */
 
     /*
      * Callback #2 function
      * This function displays your widget settings
      */
-    function misha_process_my_dashboard_widget() {
+    function rrze_statistik_process_my_dashboard_widget() {
     
         // basic checks and save the widget settings here
         if( 'POST' == $_SERVER['REQUEST_METHOD'] 
@@ -198,11 +200,11 @@ class Dashboard
     /*
     * This action hook shows settings form
     */
-    function misha_ajax_show_form()
+    function rrze_statistik_ajax_show_form()
     {
 
         // widget ID should match but it is not required
-        $widget_id = 'misha_dashboard_widget';
+        $widget_id = 'rrze_statistik_dashboard_widget';
         if (!empty($_POST['rrze_statistik_widget'])) {
             $control_list = array(
                 'display_type' => @$_POST['rrze_statistik_widget']['display_type'],
@@ -223,7 +225,7 @@ class Dashboard
             update_option('rrze_statistik_widget', $options);
         }
         ?>
-            <form method="post" id="misha_widget_settings">
+            <form method="post" id="rrze_statistik_settings">
                 <table class="form-table">
                     <tr>
                         <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
@@ -268,7 +270,7 @@ class Dashboard
     /*
     * This action hook saves the settings and displays the widget content
     */
-    function misha_save_widget()
+    function rrze_statistik_save_widget()
     {
         // security check
         check_ajax_referer('edit-dashboard-widget_' . $_POST['widget_id'], 'dashboard-widget-nonce');
