@@ -22,6 +22,12 @@ class Dashboard
      */
     public function add_rrze_statistik_dashboard_widget()
     {
+        //Just for test purposes add a new Dashboard Widget and Ajax-Action Hooks
+        add_action( 'wp_dashboard_setup', [$this, 'prefix_add_dashboard_widget'] );
+        add_action('admin_enqueue_scripts', [$this, 'enqueueScripts']);
+        add_action( 'wp_ajax_widgetsave', [$this, 'misha_save_widget'] ); // wp_ajax_{ACTION}
+        add_action( 'wp_ajax_showform', [$this, 'misha_ajax_show_form'] ); // wp_ajax_{ACTION}
+
         $option = get_option('rrze_statistik_widget');
         if(empty($option) || $option['data_type'] === 'display_all'){ 
             wp_add_dashboard_widget('rrze_statistik_widget_visits', __('Site visitors over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
@@ -30,6 +36,7 @@ class Dashboard
             wp_add_dashboard_widget('rrze_statistik_widget_files', __('Files over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_files'], [$this, 'control_statistik_widgets']);
             wp_add_dashboard_widget('rrze_statistik_widget_kbytes', __('Kbytes over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_kbytes'], [$this, 'control_statistik_widgets']);
             wp_add_dashboard_widget('rrze_statistik_widget_urls', __('Popular Sites and Files over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
+
         }
         elseif ($option['data_type'] === 'hits'){
             wp_add_dashboard_widget('rrze_statistik_widget_hits', __('Hits over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
