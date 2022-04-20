@@ -133,6 +133,10 @@ class Dashboard
                         <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
                         <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
                         <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites and Files', 'rrze-statistik'); ?>
+                        </option>
+                    </select>
+                </td>
+            </tr>
         </table>
         <?php
     }
