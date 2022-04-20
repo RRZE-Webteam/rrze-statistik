@@ -253,7 +253,7 @@ class Dashboard
                     </tr>
                     <tr>
                         <td>
-                            <input type="hidden" name="action" value="widgetsave" /><input type="hidden" name="widget_id" value="' . $widget_id . '">
+                            <input type="hidden" name="action" value="widgetsave" /><input type="hidden" name="widget_id" value="<?php echo $widget_id; ?>">
                             <?php wp_nonce_field('edit-dashboard-widget_' . $widget_id, 'dashboard-widget-nonce', true, false); ?>
                             <p class="submit"><input type="submit" name="submit" id="submit" style="display:inline-block" class="button button-primary" value="Submit"></p>
                         </td>
@@ -271,15 +271,16 @@ class Dashboard
     function misha_save_widget()
     {
         // security check
+        Helper::debug($_POST);
         check_ajax_referer('edit-dashboard-widget_' . $_POST['widget_id'], 'dashboard-widget-nonce');
 
         $post_id = $_POST['rrze_statistik_widget'];
 
-        update_option('custom_post', $post_id);
+        update_option('rrze_statistik_widget', $post_id);
         Helper::debug(get_option('custom_post'));
 
-        if (!empty(get_option('custom_post'))) {
-            echo 'hi';
+        if (!empty(get_option('rrze_statistik_widget'))) {
+            echo 'Hier kommt der output nach update der Optionen';
         } else {
             echo 'Widget is not configured.';
         }
