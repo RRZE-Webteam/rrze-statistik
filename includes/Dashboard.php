@@ -12,30 +12,29 @@ class Dashboard
     public function __construct()
     {
         add_action('wp_dashboard_setup', [$this, 'add_rrze_statistik_dashboard_widget']);
-
+        add_action('wp_ajax_widgetsave', [$this, 'rrze_statistik_save_widget']);
+        add_action('wp_ajax_showform', [$this, 'rrze_statistik_ajax_show_form']);
     }
 
     /**
-     * Adds the Dashboard Widget
+     * Adds the Dashboard Widgets
      *
      * @return void
      */
     public function add_rrze_statistik_dashboard_widget()
     {
         $option = get_option('rrze_statistik_widget');
-        if(empty($option) || $option['data_type'] === 'display_all'){ 
+        if (empty($option) || $option['data_type'] === 'display_all') {
             wp_add_dashboard_widget('rrze_statistik_widget_visits', __('Site visitors over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
             wp_add_dashboard_widget('rrze_statistik_widget_hits', __('Hits over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
             wp_add_dashboard_widget('rrze_statistik_widget_hosts', __('Hosts over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_hosts'], [$this, 'control_statistik_widgets']);
             wp_add_dashboard_widget('rrze_statistik_widget_files', __('Files over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_files'], [$this, 'control_statistik_widgets']);
             wp_add_dashboard_widget('rrze_statistik_widget_kbytes', __('Kbytes over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_kbytes'], [$this, 'control_statistik_widgets']);
             wp_add_dashboard_widget('rrze_statistik_widget_urls', __('Popular Sites and Files over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
-        }
-        elseif ($option['data_type'] === 'hits'){
+        } elseif ($option['data_type'] === 'hits') {
             wp_add_dashboard_widget('rrze_statistik_widget_hits', __('Hits over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
-        }
-        else {
-            wp_add_dashboard_widget('rrze_statistik_widget_'.$option['data_type'], __($option['data_type']. ' over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_'.$option['data_type']], [$this, 'control_statistik_widgets']);
+        } else {
+            wp_add_dashboard_widget('rrze_statistik_widget_' . $option['data_type'], __($option['data_type'] . ' over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_' . $option['data_type']], [$this, 'control_statistik_widgets']);
         }
     }
 
@@ -85,7 +84,13 @@ class Dashboard
         }
     }
 
-    function control_statistik_widgets(){
+    /**
+     * Static Settings for Dashboard Widget
+     *
+     * @return void
+     */
+    function control_statistik_widgets()
+    {
 
         if (!empty($_POST['rrze_statistik_widget'])) {
             $control_list = array(
@@ -96,11 +101,11 @@ class Dashboard
             update_option('rrze_statistik_widget', $control_list);
         }
 
-    
+
 
         $options = get_option('rrze_statistik_widget');
 
-        if(empty($options)) {
+        if (empty($options)) {
             $options['display_type'] = 'spline';
             $options['data_type'] = 'display_all';
 
@@ -108,8 +113,8 @@ class Dashboard
         }
 
         Helper::debug($options);
-        
-        ?>
+
+?>
         <table class="form-table">
             <tr>
                 <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
@@ -138,6 +143,105 @@ class Dashboard
                 </td>
             </tr>
         </table>
-        <?php
+    <?php
+    }
+
+    /**
+     * Ajax Widget Settings Action. Ajax Script inside ../src/highcharts/ajax.js
+     *
+     * @return void
+     */
+    function rrze_statistik_ajax_show_form()
+    {
+        $widget_id = 'rrze_statistik_dashboard_widget';
+        if (!empty($_POST['rrze_statistik_widget'])) {
+            $control_list = array(
+                'display_type' => @$_POST['rrze_statistik_widget']['display_type'],
+                'data_type' => @$_POST['rrze_statistik_widget']['data_type'],
+            );
+
+            update_option('rrze_statistik_widget', $control_list);
+        }
+
+        $options = get_option('rrze_statistik_widget');
+
+        if (empty($options)) {
+            $options['display_type'] = 'spline';
+            $options['data_type'] = 'display_all';
+
+            update_option('rrze_statistik_widget', $options);
+        }
+    ?>
+        <form method="post" id="rrze_statistik_settings">
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
+                    <td>
+                        <select name="rrze_statistik_widget[display_type]">
+                            <option value="spline" <?php selected($options['display_type'], 'spline'); ?>><?php _e('Spline', 'rrze-statistik'); ?></option>
+                            <option value="areaspline" <?php selected($options['display_type'], 'areaspline'); ?>><?php _e('Area-spline', 'rrze-statistik'); ?></option>
+                            <option value="column" <?php selected($options['display_type'], 'column'); ?>><?php _e('Column', 'rrze-statistik'); ?></option>
+                            <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar', 'rrze-statistik'); ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
+                    <td>
+                        <select name="rrze_statistik_widget[data_type]">
+                            <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
+                            <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
+                            <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
+                            <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
+                            <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
+                            <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
+                            <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites and Files', 'rrze-statistik'); ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="action" value="widgetsave" /><input type="hidden" name="widget_id" value="<?php echo $widget_id; ?>">
+                        <?php echo wp_nonce_field('edit-dashboard-widget_' . $widget_id, 'dashboard-widget-nonce', true, false); ?>
+                        <p class="submit"><input type="submit" name="submit" id="submit" style="display:inline-block" class="button button-primary" value="Submit"></p>
+                    </td>
+                </tr>
+            </table>
+        </form>
+<?php
+
+        die;
+    }
+
+    /**
+     * Ajax Widgetsave Action. Ajax Script inside ../src/highcharts/ajax.js
+     *
+     * @return void
+     */
+    function rrze_statistik_save_widget()
+    {
+        // security check
+        check_ajax_referer('edit-dashboard-widget_' . $_POST['widget_id'], 'dashboard-widget-nonce');
+
+        // if $update_settings are not empty, then update the settings
+        if (!empty($_POST['widget_id'])) {
+            $updated_settings = $_POST['rrze_statistik_widget'];
+            update_option('rrze_statistik_widget', $updated_settings);
+        } else {
+            do_action('rrze.log.info', _('No widget_id in POST-Array for RRZE Statistik Widget', 'rrze-statistik'));
+        }
+
+        if (!empty(get_option('rrze_statistik_widget'))) {
+            $selector = $_POST['selector'];
+            $selectorDataType = substr($selector, 15);
+
+            $analytics = new Analytics();
+            echo ($analytics->getLinechart($selectorDataType));
+        } else {
+            _e('No settings found.', 'rrze-statistik');
+            do_action('rrze.log.info', _('No settings found for rrze-statistik dashboard display after AJAX request.', 'rrze-statistik'));
+        }
+
+        die;
     }
 }

@@ -3,14 +3,14 @@ let currentYear = new Date().getFullYear();
 //data is passed from Transfer.php
 document.addEventListener("DOMContentLoaded", function (event) {
     //Check if data was passed from PHP
-    if (linechartDataset === "undefined") {
+    if (RRZESTATISTIKTRANSFER.linechartDataset === "undefined") {
         return;
     } else {
         //read needed charts from dom
         dataTypes = ["visits", "hits", "hosts", "files", "kbytes"];
         chartTypes = [];
 
-        dataTypes.forEach( dataType => {
+        dataTypes.forEach((dataType) => {
             if (document.getElementById(dataType)) {
                 chartTypes.push(dataType);
             }
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         const firstYear = currentYear - 2;
         const secondYear = currentYear - 1;
         const thirdYear = currentYear;
-        
+
         //Create the dataset for each datatype
         chartTypes.forEach((datatype) => {
             let filterData = (dataset, year) => {
@@ -29,9 +29,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 });
                 return output;
             };
-            let outputThirdYear = filterData(linechartDataset, thirdYear);
-            let outputSecondYear = filterData(linechartDataset, secondYear);
-            let outputFirstYear = filterData(linechartDataset, firstYear);
+            let outputThirdYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                thirdYear
+            );
+            let outputSecondYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                secondYear
+            );
+            let outputFirstYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                firstYear
+            );
 
             //Create an empty dataset array
             let generateDatasets = (dataset) => {
@@ -71,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             //Create the Highcharts container for each datatype
             const chart = Highcharts.chart(datatype, {
                 chart: {
-                    type: displayType,
+                    type: RRZESTATISTIKTRANSFER.displayType,
                     renderTo: datatype,
                 },
 
@@ -80,30 +89,34 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 },
 
                 title: {
-                    text: languagePackage[datatype].headline_chart,
+                    text: RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                        .headline_chart,
                 },
 
                 yAxis: {
                     title: {
-                        text: languagePackage[datatype].ordinate_desc,
+                        text: RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                            .ordinate_desc,
                     },
                     accessibility: {
-                        description: languagePackage[datatype].ordinate_desc,
+                        description:
+                            RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                                .ordinate_desc,
                     },
                 },
 
                 xAxis: {
                     title: {
-                        text: abscissaTitle,
+                        text: RRZESTATISTIKTRANSFER.abscissaTitle,
                     },
                     accessibility: {
-                        description: a11yAbscissa,
+                        description: RRZESTATISTIKTRANSFER.a11yAbscissa,
                     },
-                    categories: abscissaDescriptiontext,
+                    categories: RRZESTATISTIKTRANSFER.abscissaDescriptiontext,
                 },
 
                 tooltip: {
-                    valueSuffix: ` ${languagePackage[datatype].ordinate_desc}`,
+                    valueSuffix: ` ${RRZESTATISTIKTRANSFER.languagePackage[datatype].ordinate_desc}`,
                 },
 
                 plotOptions: {

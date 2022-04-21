@@ -87,7 +87,8 @@ class Language
         }
     }
 
-    public static function getAbscissaTitle(){
+    public static function getAbscissaTitle()
+    {
         return __('Time', 'rrze-statistik');
     }
 
