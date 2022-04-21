@@ -26,7 +26,7 @@ class Transfer
         $a11y_abscissa = Language::getAccessibilityAbscissa();
         $abscissa_title = Language::getAbscissaTitle();
         $option = get_option('rrze_statistik_widget');
-        $display_type = $option['display_type'];
+        $display_type = $option['display_type'] ?? 'Spline';
 
         $script = 'var linechartDataset =' . $json_data . ';';
         $script .= 'var abscissaDescriptiontext =' . json_encode($abscissa_desc) . ';';
