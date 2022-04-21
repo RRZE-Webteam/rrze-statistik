@@ -202,6 +202,7 @@ class Dashboard
     */
     function rrze_statistik_ajax_show_form()
     {
+        Helper::debug($_POST);
 
         // widget ID should match but it is not required
         $widget_id = 'rrze_statistik_dashboard_widget';
@@ -272,6 +273,7 @@ class Dashboard
     */
     function rrze_statistik_save_widget()
     {
+        Helper::debug($_POST);
         // security check
         check_ajax_referer('edit-dashboard-widget_' . $_POST['widget_id'], 'dashboard-widget-nonce');
 
@@ -281,7 +283,12 @@ class Dashboard
         Transfer::refreshVariables();
 
         if (!empty(get_option('rrze_statistik_widget'))) {
-            echo 'Hier kommt der output nach update der Optionen';
+                $selector = $_POST['selector'];
+                $selectorDataType = substr($selector, 15);
+                Helper::debug($selector);
+                
+                $analytics = new Analytics();
+                echo ($analytics->getLinechart($selectorDataType));
         } else {
             echo 'Widget is not configured.';
         }
