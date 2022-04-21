@@ -280,10 +280,7 @@ class Dashboard
         $post_id = $_POST['rrze_statistik_widget'];
 
         update_option('rrze_statistik_widget', $post_id);
-        $data = get_transient('rrze_statistik_data_webalizer_hist');
-        Transfer::sendToJs($data, Language::getAbscissa(), Language::getLanguagePackage());
-        Helper::debug('loaded');
-
+        
         if (!empty(get_option('rrze_statistik_widget'))) {
                 $selector = $_POST['selector'];
                 $selectorDataType = substr($selector, 15);

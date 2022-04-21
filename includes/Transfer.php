@@ -31,16 +31,7 @@ class Transfer
         $rrze_statistik_transfer_nonce = wp_create_nonce( "rrze_statistik_transfer");
         $ajax_url = admin_url('admin-ajax.php');
         
-
-        $script = 'var linechartDataset =' . $json_data . ';';
-        $script .= 'var abscissaDescriptiontext =' . json_encode($abscissa_desc) . ';';
-        $script .= 'var languagePackage =' . json_encode($languagePackage) . ';';
-        $script .= 'var abscissaTitle =' .json_encode($abscissa_title) . ';';
-        $script .= 'var sourceText = ' . json_encode($source_Text) . ';';
-        $script .= 'var a11yAbscissa = ' . json_encode($a11y_abscissa) . ';';
-        $script .= 'var displayType = ' . json_encode($display_type) . ';';
-        //wp_add_inline_script('index-js', $script, 'before');
-        wp_add_inline_script('index-js', 'const RRZESTATISTIKTRANSFER =' .json_encode([
+        wp_add_inline_script('index-js', 'var RRZESTATISTIKTRANSFER =' .json_encode([
             'nonce' => $rrze_statistik_transfer_nonce,
             'ajaxurl' => $ajax_url,
             'linechartDataset' => json_decode($json_data),

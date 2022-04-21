@@ -37,6 +37,7 @@ jQuery(function($){
 				$('[id^="rrze_statistik_widget"]').find('.inside').html(data);
 				// show the Configure link again
 				$('[id^="rrze_statistik_widget"] .edit-box.open-box').show();
+				window.location.reload();
 			}
 		});
 		return false;
