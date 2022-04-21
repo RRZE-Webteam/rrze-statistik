@@ -45,4 +45,8 @@
   background: #f1f7ff;
 }
 
+.edit-box.open-box{
+	transition: opacity .2s;
+}
+
 /*# sourceMappingURL=highcharts-style.css.map */

@@ -1,5 +1,4 @@
 let currentYear = new Date().getFullYear();
-console.log( RRZESTATISTIKTRANSFER.linechartDataset );
 
 //data is passed from Transfer.php
 document.addEventListener("DOMContentLoaded", function (event) {
@@ -11,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         dataTypes = ["visits", "hits", "hosts", "files", "kbytes"];
         chartTypes = [];
 
-        dataTypes.forEach( dataType => {
+        dataTypes.forEach((dataType) => {
             if (document.getElementById(dataType)) {
                 chartTypes.push(dataType);
             }
@@ -21,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         const firstYear = currentYear - 2;
         const secondYear = currentYear - 1;
         const thirdYear = currentYear;
-        
+
         //Create the dataset for each datatype
         chartTypes.forEach((datatype) => {
             let filterData = (dataset, year) => {
@@ -30,9 +29,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 });
                 return output;
             };
-            let outputThirdYear = filterData(RRZESTATISTIKTRANSFER.linechartDataset, thirdYear);
-            let outputSecondYear = filterData(RRZESTATISTIKTRANSFER.linechartDataset, secondYear);
-            let outputFirstYear = filterData(RRZESTATISTIKTRANSFER.linechartDataset, firstYear);
+            let outputThirdYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                thirdYear
+            );
+            let outputSecondYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                secondYear
+            );
+            let outputFirstYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                firstYear
+            );
 
             //Create an empty dataset array
             let generateDatasets = (dataset) => {
@@ -81,15 +89,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 },
 
                 title: {
-                    text: RRZESTATISTIKTRANSFER.languagePackage[datatype].headline_chart,
+                    text: RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                        .headline_chart,
                 },
 
                 yAxis: {
                     title: {
-                        text: RRZESTATISTIKTRANSFER.languagePackage[datatype].ordinate_desc,
+                        text: RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                            .ordinate_desc,
                     },
                     accessibility: {
-                        description: RRZESTATISTIKTRANSFER.languagePackage[datatype].ordinate_desc,
+                        description:
+                            RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                                .ordinate_desc,
                     },
                 },
 

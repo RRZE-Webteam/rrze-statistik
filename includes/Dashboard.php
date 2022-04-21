@@ -12,15 +12,12 @@ class Dashboard
     public function __construct()
     {
         add_action('wp_dashboard_setup', [$this, 'add_rrze_statistik_dashboard_widget']);
-
-        //Just for test purposes add a new Dashboard Widget and Ajax-Action Hooks
-        //add_action('wp_dashboard_setup', [$this, 'prefix_add_dashboard_widget']);
-        add_action('wp_ajax_widgetsave', [$this, 'rrze_statistik_save_widget']); // wp_ajax_{ACTION}
-        add_action('wp_ajax_showform', [$this, 'rrze_statistik_ajax_show_form']); // wp_ajax_{ACTION}
+        add_action('wp_ajax_widgetsave', [$this, 'rrze_statistik_save_widget']);
+        add_action('wp_ajax_showform', [$this, 'rrze_statistik_ajax_show_form']);
     }
 
     /**
-     * Adds the Dashboard Widget
+     * Adds the Dashboard Widgets
      *
      * @return void
      */
@@ -87,6 +84,11 @@ class Dashboard
         }
     }
 
+    /**
+     * Static Settings for Dashboard Widget
+     *
+     * @return void
+     */
     function control_statistik_widgets()
     {
 
@@ -144,67 +146,13 @@ class Dashboard
     <?php
     }
 
-    //add rrze_statistik_'s dashboard code 1:1
-    /*function prefix_add_dashboard_widget()
-    {
-        wp_add_dashboard_widget(
-            'rrze_statistik__dashboard_widget', // widget ID
-            'Custom Dashboard Widget', // widget title
-            [$this, 'rrze_statistik__dashboard_widget'], // callback #1 to display it
-            [$this, 'rrze_statistik__process_my_dashboard_widget'] // callback #2 for settings
-        );
-    }*/
-    /*
-     * Callback #1 function
-     * Displays widget content
+    /**
+     * Ajax Widget Settings Action. Ajax Script inside ../src/highcharts/ajax.js
+     *
+     * @return void
      */
-    /*
-    function rrze_statistik_dashboard_widget()
-    {
-
-        // if the widget is configured and the post is exists
-        if ($post = get_post(get_option('custom_post'))) {
-            $c = do_shortcode(html_entity_decode($post->post_content));
-            echo "<h2>{$post->post_title}</h2><p>{$c}</p>";
-        } else {
-            echo 'Widget is not configured.';
-        }
-    }
-    */
-
-    /*
-     * Callback #2 function
-     * This function displays your widget settings
-     */
-    function rrze_statistik_process_my_dashboard_widget() {
-    
-        // basic checks and save the widget settings here
-        if( 'POST' == $_SERVER['REQUEST_METHOD'] 
-        && isset( $_POST['my_custom_post'] ) ) {
-            update_option( 'custom_post', absint($_POST['my_custom_post']) );
-        }
-    
-        echo '<h3>Select a page that will be displayed in this widget</h3>'
-        . wp_dropdown_pages( array(
-            'post_type' => 'page',
-            'selected' => get_option( 'custom_post' ),
-            'name' => 'my_custom_post',
-            'id' => 'my_custom_post',
-            'show_option_none' => '- Select -',
-            'echo' => false
-        ) );
-    
-    }
-
-    //add ajax relevant code from step 2 with adjustments:
-    /*
-    * This action hook shows settings form
-    */
     function rrze_statistik_ajax_show_form()
     {
-        Helper::debug($_POST);
-
-        // widget ID should match but it is not required
         $widget_id = 'rrze_statistik_dashboard_widget';
         if (!empty($_POST['rrze_statistik_widget'])) {
             $control_list = array(
@@ -215,8 +163,6 @@ class Dashboard
             update_option('rrze_statistik_widget', $control_list);
         }
 
-
-
         $options = get_option('rrze_statistik_widget');
 
         if (empty($options)) {
@@ -225,71 +171,75 @@ class Dashboard
 
             update_option('rrze_statistik_widget', $options);
         }
-        ?>
-            <form method="post" id="rrze_statistik_settings">
-                <table class="form-table">
-                    <tr>
-                        <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
-                        <td>
-                            <select name="rrze_statistik_widget[display_type]">
-                                <option value="spline" <?php selected($options['display_type'], 'spline'); ?>><?php _e('Spline', 'rrze-statistik'); ?></option>
-                                <option value="areaspline" <?php selected($options['display_type'], 'areaspline'); ?>><?php _e('Area-spline', 'rrze-statistik'); ?></option>
-                                <option value="column" <?php selected($options['display_type'], 'column'); ?>><?php _e('Column', 'rrze-statistik'); ?></option>
-                                <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar', 'rrze-statistik'); ?></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
-                        <td>
-                            <select name="rrze_statistik_widget[data_type]">
-                                <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
-                                <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
-                                <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
-                                <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
-                                <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
-                                <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
-                                <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites and Files', 'rrze-statistik'); ?>
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="hidden" name="action" value="widgetsave" /><input type="hidden" name="widget_id" value="<?php echo $widget_id; ?>">
-                            <?php echo wp_nonce_field('edit-dashboard-widget_' . $widget_id, 'dashboard-widget-nonce', true, false); ?>
-                            <p class="submit"><input type="submit" name="submit" id="submit" style="display:inline-block" class="button button-primary" value="Submit"></p>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-    <?php
+    ?>
+        <form method="post" id="rrze_statistik_settings">
+            <table class="form-table">
+                <tr>
+                    <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
+                    <td>
+                        <select name="rrze_statistik_widget[display_type]">
+                            <option value="spline" <?php selected($options['display_type'], 'spline'); ?>><?php _e('Spline', 'rrze-statistik'); ?></option>
+                            <option value="areaspline" <?php selected($options['display_type'], 'areaspline'); ?>><?php _e('Area-spline', 'rrze-statistik'); ?></option>
+                            <option value="column" <?php selected($options['display_type'], 'column'); ?>><?php _e('Column', 'rrze-statistik'); ?></option>
+                            <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar', 'rrze-statistik'); ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
+                    <td>
+                        <select name="rrze_statistik_widget[data_type]">
+                            <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
+                            <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
+                            <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
+                            <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
+                            <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
+                            <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
+                            <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites and Files', 'rrze-statistik'); ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="hidden" name="action" value="widgetsave" /><input type="hidden" name="widget_id" value="<?php echo $widget_id; ?>">
+                        <?php echo wp_nonce_field('edit-dashboard-widget_' . $widget_id, 'dashboard-widget-nonce', true, false); ?>
+                        <p class="submit"><input type="submit" name="submit" id="submit" style="display:inline-block" class="button button-primary" value="Submit"></p>
+                    </td>
+                </tr>
+            </table>
+        </form>
+<?php
 
         die;
     }
 
-    /*
-    * This action hook saves the settings and displays the widget content
-    */
+    /**
+     * Ajax Widgetsave Action. Ajax Script inside ../src/highcharts/ajax.js
+     *
+     * @return void
+     */
     function rrze_statistik_save_widget()
     {
-        Helper::debug($_POST);
         // security check
         check_ajax_referer('edit-dashboard-widget_' . $_POST['widget_id'], 'dashboard-widget-nonce');
 
-        $post_id = $_POST['rrze_statistik_widget'];
-
-        update_option('rrze_statistik_widget', $post_id);
-        
-        if (!empty(get_option('rrze_statistik_widget'))) {
-                $selector = $_POST['selector'];
-                $selectorDataType = substr($selector, 15);
-                Helper::debug($selector);
-                
-                $analytics = new Analytics();
-                echo ($analytics->getLinechart($selectorDataType));
+        // if $update_settings are not empty, then update the settings
+        if (!empty($_POST['widget_id'])) {
+            $updated_settings = $_POST['rrze_statistik_widget'];
+            update_option('rrze_statistik_widget', $updated_settings);
         } else {
-            echo 'Widget is not configured.';
+            do_action('rrze.log.info', _('No widget_id in POST-Array for RRZE Statistik Widget', 'rrze-statistik'));
+        }
+
+        if (!empty(get_option('rrze_statistik_widget'))) {
+            $selector = $_POST['selector'];
+            $selectorDataType = substr($selector, 15);
+
+            $analytics = new Analytics();
+            echo ($analytics->getLinechart($selectorDataType));
+        } else {
+            _e('No settings found.', 'rrze-statistik');
+            do_action('rrze.log.info', _('No settings found for rrze-statistik dashboard display after AJAX request.', 'rrze-statistik'));
         }
 
         die;

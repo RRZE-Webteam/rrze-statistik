@@ -28,10 +28,10 @@ class Transfer
         $option = get_option('rrze_statistik_widget');
         $display_type = $option['display_type'];
 
-        $rrze_statistik_transfer_nonce = wp_create_nonce( "rrze_statistik_transfer");
+        $rrze_statistik_transfer_nonce = wp_create_nonce("rrze_statistik_transfer");
         $ajax_url = admin_url('admin-ajax.php');
-        
-        wp_add_inline_script('index-js', 'var RRZESTATISTIKTRANSFER =' .json_encode([
+
+        wp_add_inline_script('index-js', 'var RRZESTATISTIKTRANSFER =' . json_encode([
             'nonce' => $rrze_statistik_transfer_nonce,
             'ajaxurl' => $ajax_url,
             'linechartDataset' => json_decode($json_data),
@@ -46,7 +46,8 @@ class Transfer
         return $data_body;
     }
 
-    public static function refreshVariables(){
+    public static function refreshVariables()
+    {
         $option = get_option('rrze_statistik_widget');
         $display_type = $option['display_type'];
 

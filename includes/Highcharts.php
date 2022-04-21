@@ -82,10 +82,10 @@ class Highcharts
         } else {
             $logs_url = Analytics::retrieveSiteUrl('logs');
             return
-                '<figure class="rrze-statistik highcharts-figure">
+            '<figure class="rrze-statistik highcharts-figure">
             <div id="' . $container . '"></div>
             <p class="highcharts-description">' . Language::getLinechartDescription($container) . '</p><hr />
-            <a href='.$logs_url.'>'.__('Source: www.statistiken.rrze.fau.de', 'rrze-statistik').'</a><hr />
+            <a href=' . $logs_url . '>' . __('Source: www.statistiken.rrze.fau.de', 'rrze-statistik') . '</a><hr />
             </figure>
             <button id="' . $container . '-getcsv">' . Language::getCSVButtonText() . '</button>';
         }
