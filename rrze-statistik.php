@@ -4,7 +4,7 @@
 Plugin Name:     RRZE Statistics
 Plugin URI:      https://github.com/rrze-webteam/rrze-statistik
 Description:     Displays monthly statistics from https://statistiken.rrze.fau.de within your Dashboard.
-Version:         1.0.3
+Version:         1.0.4
 Author:          RRZE Webteam
 Author URI:      https://blogs.fau.de/webworking/
 License:         GNU General Public License v2
