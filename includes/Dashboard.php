@@ -17,6 +17,23 @@ class Dashboard
     }
 
     /**
+     * Checks if Options are empty and sets default values
+     *
+     * @return void
+     */
+    public static function prefill_options()
+    {
+        $options = get_option('rrze_statistik_widget');
+
+        if (empty($options)) {
+            $options['display_type'] = 'spline';
+            $options['data_type'] = 'visits_and_sites';
+
+            update_option('rrze_statistik_widget', $options);
+        }
+    }
+
+    /**
      * Adds the Dashboard Widgets
      *
      * @return void
@@ -110,13 +127,6 @@ class Dashboard
 
         $options = get_option('rrze_statistik_widget');
 
-        if (empty($options)) {
-            $options['display_type'] = 'spline';
-            $options['data_type'] = 'visits_and_sites';
-
-            update_option('rrze_statistik_widget', $options);
-        }
-
         Helper::debug($options);
 
 ?>
@@ -171,12 +181,6 @@ class Dashboard
 
         $options = get_option('rrze_statistik_widget');
 
-        if (empty($options)) {
-            $options['display_type'] = 'spline';
-            $options['data_type'] = 'visits_and_sites';
-
-            update_option('rrze_statistik_widget', $options);
-        }
     ?>
         <form method="post" id="rrze_statistik_settings">
             <table class="form-table">
