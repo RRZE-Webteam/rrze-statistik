@@ -24,18 +24,23 @@ class Dashboard
     public function add_rrze_statistik_dashboard_widget()
     {
         $option = get_option('rrze_statistik_widget');
-        if (empty($option) || $option['data_type'] === 'display_all') {
-            wp_add_dashboard_widget('rrze_statistik_widget_visits', Language::dashboardWidgetTitle('visits'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_hits', Language::dashboardWidgetTitle('hits'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_hosts', Language::dashboardWidgetTitle('hosts'), [$this, 'load_rrze_statistik_dashboard_hosts'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_files', Language::dashboardWidgetTitle('files'), [$this, 'load_rrze_statistik_dashboard_files'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_kbytes', Language::dashboardWidgetTitle('kbytes'), [$this, 'load_rrze_statistik_dashboard_kbytes'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_urls', Language::dashboardWidgetTitle('urls'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
-        } elseif ($option['data_type'] === 'hits') {
-            wp_add_dashboard_widget('rrze_statistik_widget_hits', Language::dashboardWidgetTitle('hits'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
-        } else {
-            wp_add_dashboard_widget('rrze_statistik_widget_' . $option['data_type'], Language::dashboardWidgetTitle($option['data_type']), [$this, 'load_rrze_statistik_dashboard_' . $option['data_type']], [$this, 'control_statistik_widgets']);
-        }
+        switch ($option['data_type']) {
+            case 'display_all':
+                wp_add_dashboard_widget('rrze_statistik_widget_visits', Language::dashboardWidgetTitle('visits'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
+                wp_add_dashboard_widget('rrze_statistik_widget_hits', Language::dashboardWidgetTitle('hits'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
+                wp_add_dashboard_widget('rrze_statistik_widget_hosts', Language::dashboardWidgetTitle('hosts'), [$this, 'load_rrze_statistik_dashboard_hosts'], [$this, 'control_statistik_widgets']);
+                wp_add_dashboard_widget('rrze_statistik_widget_files', Language::dashboardWidgetTitle('files'), [$this, 'load_rrze_statistik_dashboard_files'], [$this, 'control_statistik_widgets']);
+                wp_add_dashboard_widget('rrze_statistik_widget_kbytes', Language::dashboardWidgetTitle('kbytes'), [$this, 'load_rrze_statistik_dashboard_kbytes'], [$this, 'control_statistik_widgets']);
+                wp_add_dashboard_widget('rrze_statistik_widget_urls', Language::dashboardWidgetTitle('urls'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
+                break;
+            case 'visits_and_sites':
+                wp_add_dashboard_widget('rrze_statistik_widget_visits', Language::dashboardWidgetTitle('visits'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
+                wp_add_dashboard_widget('rrze_statistik_widget_urls', Language::dashboardWidgetTitle('urls'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
+                break;
+            default:
+                wp_add_dashboard_widget('rrze_statistik_widget_' . $option['data_type'], Language::dashboardWidgetTitle($option['data_type']), [$this, 'load_rrze_statistik_dashboard_' . $option['data_type']], [$this, 'control_statistik_widgets']);
+                break;
+            }
     }
 
     /**
@@ -107,7 +112,7 @@ class Dashboard
 
         if (empty($options)) {
             $options['display_type'] = 'spline';
-            $options['data_type'] = 'visits';
+            $options['data_type'] = 'visits_and_sites';
 
             update_option('rrze_statistik_widget', $options);
         }
@@ -131,13 +136,14 @@ class Dashboard
                 <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
                 <td>
                     <select name="rrze_statistik_widget[data_type]">
+                        <option value="visits_and_sites" <?php selected($options['data_type'], 'visits_and_sites'); ?>><?php _e('visits and Popular sites and files', 'rrze-statistik'); ?></option>
                         <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
                         <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
                         <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
                         <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
                         <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
                         <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
-                        <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites and Files', 'rrze-statistik'); ?>
+                        <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular sites and files', 'rrze-statistik'); ?>
                         </option>
                     </select>
                 </td>
@@ -167,7 +173,7 @@ class Dashboard
 
         if (empty($options)) {
             $options['display_type'] = 'spline';
-            $options['data_type'] = 'visits';
+            $options['data_type'] = 'visits_and_sites';
 
             update_option('rrze_statistik_widget', $options);
         }
@@ -189,6 +195,7 @@ class Dashboard
                     <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
                     <td>
                         <select name="rrze_statistik_widget[data_type]">
+                            <option value="visits_and_sites" <?php selected($options['data_type'], 'visits_and_sites'); ?>><?php _e('Visits and Popular sites and files', 'rrze-statistik'); ?></option>
                             <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
                             <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
                             <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
