@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: RRZE Statistics\n"
-"POT-Creation-Date: 2022-04-22 07:36+0200\n"
-"PO-Revision-Date: 2022-04-22 07:37+0200\n"
+"POT-Creation-Date: 2022-04-22 10:05+0200\n"
+"PO-Revision-Date: 2022-04-22 10:05+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -44,7 +44,7 @@ msgstr ""
 
 #: includes/Analytics.php:108 includes/Analytics.php:115
 #: includes/Analytics.php:122 includes/Dashboard.php:136
-#: includes/Dashboard.php:194 includes/Language.php:51
+#: includes/Dashboard.php:193 includes/Language.php:51
 msgid "Hits"
 msgstr "Hits"
 
@@ -68,19 +68,19 @@ msgstr "Quelle: Statistiken.rrze.fau.de"
 msgid "Display type"
 msgstr "Darstellungsart"
 
-#: includes/Dashboard.php:123 includes/Dashboard.php:181
+#: includes/Dashboard.php:123
 msgid "Spline"
 msgstr "Liniendiagramm"
 
-#: includes/Dashboard.php:124 includes/Dashboard.php:182
+#: includes/Dashboard.php:124
 msgid "Area-spline"
 msgstr "Flächendiagramm"
 
-#: includes/Dashboard.php:125 includes/Dashboard.php:183
+#: includes/Dashboard.php:125
 msgid "Column"
 msgstr "Balkendiagramm"
 
-#: includes/Dashboard.php:126 includes/Dashboard.php:184
+#: includes/Dashboard.php:126
 msgid "Bar"
 msgstr "Säulendiagramm"
 
@@ -88,32 +88,48 @@ msgstr "Säulendiagramm"
 msgid "Data type"
 msgstr "Datentyp"
 
-#: includes/Dashboard.php:134 includes/Dashboard.php:192
+#: includes/Dashboard.php:134 includes/Dashboard.php:198
 msgid "Display all"
 msgstr "Alle anzeigen"
 
-#: includes/Dashboard.php:135 includes/Dashboard.php:193
+#: includes/Dashboard.php:135 includes/Dashboard.php:192
 msgid "Visits"
 msgstr "Seitenbesuche"
 
-#: includes/Dashboard.php:137 includes/Dashboard.php:195
+#: includes/Dashboard.php:137 includes/Dashboard.php:194
 #: includes/Language.php:56
 msgid "Hosts"
 msgstr "Hosts"
 
-#: includes/Dashboard.php:138 includes/Dashboard.php:196
+#: includes/Dashboard.php:138 includes/Dashboard.php:195
 #: includes/Language.php:61
 msgid "Files"
 msgstr "Dateien"
 
-#: includes/Dashboard.php:139 includes/Dashboard.php:197
+#: includes/Dashboard.php:139 includes/Dashboard.php:196
 #: includes/Language.php:66
 msgid "Kbytes"
 msgstr "KBytes"
 
-#: includes/Dashboard.php:140 includes/Dashboard.php:198
+#: includes/Dashboard.php:140 includes/Dashboard.php:197
 msgid "Popular Sites and Files"
 msgstr "Beliebte Seiten und Mediendateien des letzten Monats"
+
+#: includes/Dashboard.php:181 includes/Language.php:106
+msgid "Line chart"
+msgstr "Liniendiagramm"
+
+#: includes/Dashboard.php:182 includes/Language.php:109
+msgid "Area chart"
+msgstr "Flächendiagramm"
+
+#: includes/Dashboard.php:183 includes/Language.php:112
+msgid "Column chart"
+msgstr "Säulendiagramm"
+
+#: includes/Dashboard.php:184 includes/Language.php:103
+msgid "Bar chart"
+msgstr "Balkendiagramm"
 
 #: includes/Dashboard.php:206
 msgid "submit"
@@ -242,58 +258,66 @@ msgstr "Beliebte Seiten und Mediendateien des letzten Monats"
 msgid "Unknown container"
 msgstr "Unbekannter Datentyp"
 
-#: includes/Language.php:98
-msgid "Chart displaying the number of site visitors over several months."
-msgstr ""
-"Das Diagramm zeigt die Anzahl der Webseiten-Besucher über die letzten Monate."
+#: includes/Language.php:116
+msgid "Chart"
+msgstr "Diagramm"
 
-#: includes/Language.php:100
-msgid ""
-"Chart displaying the number of hits over several months. A hit is a request "
-"for a file such as a web page, image, javascript, or CSS hosted on a web "
-"server. A single visitor can generate plenty of hits."
+#: includes/Language.php:122
+#, php-format
+msgid "%s displaying the number of site visitors over several months."
 msgstr ""
-"Das Diagramm zeigt die Hits über die letzten Monate. Ein Hit ist ein "
-"Dateiaufruf für eine HTML-, Medien-, Javascript- oder CSS-Datei, welche auf "
-"einem Webserver gehostet wird. Ein einzelner Besucher kann während einem "
+"Das %s zeigt die Anzahl der Webseiten-Besucher über die letzten Monate."
+
+#: includes/Language.php:124
+#, php-format
+msgid ""
+"%s displaying the number of hits over several months. A hit is a request for "
+"a file such as a web page, image, javascript, or CSS hosted on a web server. "
+"A single visitor can generate plenty of hits."
+msgstr ""
+"Das %s zeigt die Hits über die letzten Monate. Ein Hit ist ein Dateiaufruf "
+"für eine HTML-, Medien-, Javascript- oder CSS-Datei, welche auf einem "
+"Webserver gehostet wird. Ein einzelner Besucher kann während einem "
 "Seitenaufruf also viele Hits generieren."
 
-#: includes/Language.php:102
+#: includes/Language.php:126
+#, php-format
 msgid ""
-"Chart displaying the number of hosts over several months. A host is a "
-"computer or server opening your website. Larger online services are often "
-"only displayed as a single host if they share one server."
+"%s displaying the number of hosts over several months. A host is a computer "
+"or server opening your website. Larger online services are often only "
+"displayed as a single host if they share one server."
 msgstr ""
-"Das Diagramm zeigt die Anzahl der Hosts über einen Zeitraum von mehreren "
-"Monaten. Ein Host ist ein Computer oder Server, der Ihre Website öffnet. "
-"Größere Online-Dienste werden oft als einzelner Host angezeigt, wenn ein "
-"Server geteilt wurde."
+"Das %s zeigt die Anzahl der Hosts über einen Zeitraum von mehreren Monaten. "
+"Ein Host ist ein Computer oder Server, der Ihre Website öffnet. Größere "
+"Online-Dienste werden oft als einzelner Host angezeigt, wenn ein Server "
+"geteilt wurde."
 
-#: includes/Language.php:104
+#: includes/Language.php:128
+#, php-format
 msgid ""
-"Chart displaying the number of successful loaded files from your domain. "
-"This includes all documents, css-files, scripts and media-files."
+"%s displaying the number of successful loaded files from your domain. This "
+"includes all documents, css-files, scripts and media-files."
 msgstr ""
-"Diagramm mit der Anzahl der erfolgreich geladenen Dateien für Ihre Domain. "
-"Dazu gehören alle Dokumente, CSS-Dateien, Skripte und Mediendateien."
+"%s mit der Anzahl der erfolgreich geladenen Dateien für Ihre Domain. Dazu "
+"gehören alle Dokumente, CSS-Dateien, Skripte und Mediendateien."
 
-#: includes/Language.php:106
+#: includes/Language.php:130
+#, php-format
 msgid ""
-"Chart displaying the number of transferred Data in kBytes over several "
-"months."
+"%s displaying the number of transferred Data in kBytes over several months."
 msgstr ""
-"Das Diagramm zeigt die Größe der übertragenen Datenpakete in kByte über "
-"einen Zeitraum von mehreren Monaten."
+"Das %s zeigt die Größe der übertragenen Datenpakete in kByte über einen "
+"Zeitraum von mehreren Monaten."
 
-#: includes/Language.php:112
+#: includes/Language.php:137
 msgid "Time"
 msgstr "Zeit"
 
-#: includes/Language.php:117
+#: includes/Language.php:142
 msgid "Time over the last 23 months"
 msgstr "Zeit über die letzten 23 Monate"
 
-#: includes/Language.php:122
+#: includes/Language.php:147
 msgid "Copy CSV to clipboard"
 msgstr "Als CSV in Zwischenablage kopieren"
 

@@ -93,18 +93,41 @@ class Language
 
     public static function getLinechartDescription($type)
     {
+        $options = get_option('rrze_statistik_widget');
+        $display_type = $options['display_type'] ?? '';
+
+        switch ($display_type){
+            case 'bar':
+                $display_type_description = __('Bar chart', 'rrze-statistik');
+                break;
+            case 'spline':
+                $display_type_description = __('Line chart', 'rrze-statistik');
+                break;
+            case 'areaspline':
+                $display_type_description = __('Area chart', 'rrze-statistik');
+                break;
+            case 'column':
+                $display_type_description = __('Column chart', 'rrze-statistik');
+                break;
+            
+            default: 
+                $display_type_description = __('Chart', 'rrze-statistik');
+                break;
+        }
+
         switch ($type) {
             case 'visits':
-                return __('Chart displaying the number of site visitors over several months.', 'rrze-statistik');
+                return sprintf(__('%s displaying the number of site visitors over several months.', 'rrze-statistik'), $display_type_description);
             case 'hits':
-                return __('Chart displaying the number of hits over several months. A hit is a request for a file such as a web page, image, javascript, or CSS hosted on a web server. A single visitor can generate plenty of hits.', 'rrze-statistik');
+                return sprintf(__('%s displaying the number of hits over several months. A hit is a request for a file such as a web page, image, javascript, or CSS hosted on a web server. A single visitor can generate plenty of hits.', 'rrze-statistik'), $display_type_description);
             case 'hosts':
-                return __('Chart displaying the number of hosts over several months. A host is a computer or server opening your website. Larger online services are often only displayed as a single host if they share one server.', 'rrze-statistik');
+                return sprintf(__('%s displaying the number of hosts over several months. A host is a computer or server opening your website. Larger online services are often only displayed as a single host if they share one server.', 'rrze-statistik'), $display_type_description);
             case 'files':
-                return __('Chart displaying the number of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files.', 'rrze-statistik');
+                return sprintf(__('%s displaying the number of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files.', 'rrze-statistik'), $display_type_description);
             case 'kbytes':
-                return __('Chart displaying the number of transferred Data in kBytes over several months.', 'rrze-statistik');
+                return sprintf(__('%s displaying the number of transferred Data in kBytes over several months.', 'rrze-statistik'), $display_type_description);
         }
+        return;
     }
 
     public static function getAbscissaTitle()

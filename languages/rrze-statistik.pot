@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-04-22T05:35:58+00:00\n"
+"POT-Creation-Date: 2022-04-22T08:05:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: rrze-statistik\n"
@@ -50,7 +50,7 @@ msgstr ""
 #: includes/Analytics.php:115
 #: includes/Analytics.php:122
 #: includes/Dashboard.php:136
-#: includes/Dashboard.php:194
+#: includes/Dashboard.php:193
 #: includes/Language.php:51
 msgid "Hits"
 msgstr ""
@@ -78,22 +78,18 @@ msgid "Display type"
 msgstr ""
 
 #: includes/Dashboard.php:123
-#: includes/Dashboard.php:181
 msgid "Spline"
 msgstr ""
 
 #: includes/Dashboard.php:124
-#: includes/Dashboard.php:182
 msgid "Area-spline"
 msgstr ""
 
 #: includes/Dashboard.php:125
-#: includes/Dashboard.php:183
 msgid "Column"
 msgstr ""
 
 #: includes/Dashboard.php:126
-#: includes/Dashboard.php:184
 msgid "Bar"
 msgstr ""
 
@@ -103,36 +99,56 @@ msgid "Data type"
 msgstr ""
 
 #: includes/Dashboard.php:134
-#: includes/Dashboard.php:192
+#: includes/Dashboard.php:198
 msgid "Display all"
 msgstr ""
 
 #: includes/Dashboard.php:135
-#: includes/Dashboard.php:193
+#: includes/Dashboard.php:192
 msgid "Visits"
 msgstr ""
 
 #: includes/Dashboard.php:137
-#: includes/Dashboard.php:195
+#: includes/Dashboard.php:194
 #: includes/Language.php:56
 msgid "Hosts"
 msgstr ""
 
 #: includes/Dashboard.php:138
-#: includes/Dashboard.php:196
+#: includes/Dashboard.php:195
 #: includes/Language.php:61
 msgid "Files"
 msgstr ""
 
 #: includes/Dashboard.php:139
-#: includes/Dashboard.php:197
+#: includes/Dashboard.php:196
 #: includes/Language.php:66
 msgid "Kbytes"
 msgstr ""
 
 #: includes/Dashboard.php:140
-#: includes/Dashboard.php:198
+#: includes/Dashboard.php:197
 msgid "Popular Sites and Files"
+msgstr ""
+
+#: includes/Dashboard.php:181
+#: includes/Language.php:106
+msgid "Line chart"
+msgstr ""
+
+#: includes/Dashboard.php:182
+#: includes/Language.php:109
+msgid "Area chart"
+msgstr ""
+
+#: includes/Dashboard.php:183
+#: includes/Language.php:112
+msgid "Column chart"
+msgstr ""
+
+#: includes/Dashboard.php:184
+#: includes/Language.php:103
+msgid "Bar chart"
 msgstr ""
 
 #: includes/Dashboard.php:206
@@ -263,35 +279,39 @@ msgstr ""
 msgid "Unknown container"
 msgstr ""
 
-#: includes/Language.php:98
-msgid "Chart displaying the number of site visitors over several months."
-msgstr ""
-
-#: includes/Language.php:100
-msgid "Chart displaying the number of hits over several months. A hit is a request for a file such as a web page, image, javascript, or CSS hosted on a web server. A single visitor can generate plenty of hits."
-msgstr ""
-
-#: includes/Language.php:102
-msgid "Chart displaying the number of hosts over several months. A host is a computer or server opening your website. Larger online services are often only displayed as a single host if they share one server."
-msgstr ""
-
-#: includes/Language.php:104
-msgid "Chart displaying the number of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files."
-msgstr ""
-
-#: includes/Language.php:106
-msgid "Chart displaying the number of transferred Data in kBytes over several months."
-msgstr ""
-
-#: includes/Language.php:112
-msgid "Time"
-msgstr ""
-
-#: includes/Language.php:117
-msgid "Time over the last 23 months"
+#: includes/Language.php:116
+msgid "Chart"
 msgstr ""
 
 #: includes/Language.php:122
+msgid "%s displaying the number of site visitors over several months."
+msgstr ""
+
+#: includes/Language.php:124
+msgid "%s displaying the number of hits over several months. A hit is a request for a file such as a web page, image, javascript, or CSS hosted on a web server. A single visitor can generate plenty of hits."
+msgstr ""
+
+#: includes/Language.php:126
+msgid "%s displaying the number of hosts over several months. A host is a computer or server opening your website. Larger online services are often only displayed as a single host if they share one server."
+msgstr ""
+
+#: includes/Language.php:128
+msgid "%s displaying the number of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files."
+msgstr ""
+
+#: includes/Language.php:130
+msgid "%s displaying the number of transferred Data in kBytes over several months."
+msgstr ""
+
+#: includes/Language.php:137
+msgid "Time"
+msgstr ""
+
+#: includes/Language.php:142
+msgid "Time over the last 23 months"
+msgstr ""
+
+#: includes/Language.php:147
 msgid "Copy CSV to clipboard"
 msgstr ""
 

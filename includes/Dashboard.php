@@ -107,7 +107,7 @@ class Dashboard
 
         if (empty($options)) {
             $options['display_type'] = 'spline';
-            $options['data_type'] = 'display_all';
+            $options['data_type'] = 'visits';
 
             update_option('rrze_statistik_widget', $options);
         }
@@ -167,7 +167,7 @@ class Dashboard
 
         if (empty($options)) {
             $options['display_type'] = 'spline';
-            $options['data_type'] = 'display_all';
+            $options['data_type'] = 'visits';
 
             update_option('rrze_statistik_widget', $options);
         }
@@ -178,10 +178,10 @@ class Dashboard
                     <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
                     <td>
                         <select name="rrze_statistik_widget[display_type]">
-                            <option value="spline" <?php selected($options['display_type'], 'spline'); ?>><?php _e('Spline', 'rrze-statistik'); ?></option>
-                            <option value="areaspline" <?php selected($options['display_type'], 'areaspline'); ?>><?php _e('Area-spline', 'rrze-statistik'); ?></option>
-                            <option value="column" <?php selected($options['display_type'], 'column'); ?>><?php _e('Column', 'rrze-statistik'); ?></option>
-                            <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar', 'rrze-statistik'); ?></option>
+                            <option value="spline" <?php selected($options['display_type'], 'spline'); ?>><?php _e('Line chart', 'rrze-statistik'); ?></option>
+                            <option value="areaspline" <?php selected($options['display_type'], 'areaspline'); ?>><?php _e('Area chart', 'rrze-statistik'); ?></option>
+                            <option value="column" <?php selected($options['display_type'], 'column'); ?>><?php _e('Column chart', 'rrze-statistik'); ?></option>
+                            <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar chart', 'rrze-statistik'); ?></option>
                         </select>
                     </td>
                 </tr>
@@ -189,13 +189,13 @@ class Dashboard
                     <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
                     <td>
                         <select name="rrze_statistik_widget[data_type]">
-                            <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
                             <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
                             <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
                             <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
                             <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
                             <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
                             <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites and Files', 'rrze-statistik'); ?></option>
+                            <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
                         </select>
                     </td>
                 </tr>
