@@ -25,16 +25,16 @@ class Dashboard
     {
         $option = get_option('rrze_statistik_widget');
         if (empty($option) || $option['data_type'] === 'display_all') {
-            wp_add_dashboard_widget('rrze_statistik_widget_visits', __('Site visitors over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_hits', __('Hits over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_hosts', __('Hosts over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_hosts'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_files', __('Files over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_files'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_kbytes', __('Kbytes over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_kbytes'], [$this, 'control_statistik_widgets']);
-            wp_add_dashboard_widget('rrze_statistik_widget_urls', __('Popular Sites and Files over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
+            wp_add_dashboard_widget('rrze_statistik_widget_visits', Language::dashboardWidgetTitle('visits'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
+            wp_add_dashboard_widget('rrze_statistik_widget_hits', Language::dashboardWidgetTitle('hits'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
+            wp_add_dashboard_widget('rrze_statistik_widget_hosts', Language::dashboardWidgetTitle('hosts'), [$this, 'load_rrze_statistik_dashboard_hosts'], [$this, 'control_statistik_widgets']);
+            wp_add_dashboard_widget('rrze_statistik_widget_files', Language::dashboardWidgetTitle('files'), [$this, 'load_rrze_statistik_dashboard_files'], [$this, 'control_statistik_widgets']);
+            wp_add_dashboard_widget('rrze_statistik_widget_kbytes', Language::dashboardWidgetTitle('kbytes'), [$this, 'load_rrze_statistik_dashboard_kbytes'], [$this, 'control_statistik_widgets']);
+            wp_add_dashboard_widget('rrze_statistik_widget_urls', Language::dashboardWidgetTitle('urls'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
         } elseif ($option['data_type'] === 'hits') {
-            wp_add_dashboard_widget('rrze_statistik_widget_hits', __('Hits over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
+            wp_add_dashboard_widget('rrze_statistik_widget_hits', Language::dashboardWidgetTitle('hits'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
         } else {
-            wp_add_dashboard_widget('rrze_statistik_widget_' . $option['data_type'], __($option['data_type'] . ' over time', 'rrze-statistik'), [$this, 'load_rrze_statistik_dashboard_' . $option['data_type']], [$this, 'control_statistik_widgets']);
+            wp_add_dashboard_widget('rrze_statistik_widget_' . $option['data_type'], Language::dashboardWidgetTitle($option['data_type']), [$this, 'load_rrze_statistik_dashboard_' . $option['data_type']], [$this, 'control_statistik_widgets']);
         }
     }
 
@@ -85,7 +85,7 @@ class Dashboard
     }
 
     /**
-     * Static Settings for Dashboard Widget
+     * Static Settings for Dashboard Widget - Overwritten by Ajax functions below
      *
      * @return void
      */
@@ -203,7 +203,7 @@ class Dashboard
                     <td>
                         <input type="hidden" name="action" value="widgetsave" /><input type="hidden" name="widget_id" value="<?php echo $widget_id; ?>">
                         <?php echo wp_nonce_field('edit-dashboard-widget_' . $widget_id, 'dashboard-widget-nonce', true, false); ?>
-                        <p class="submit"><input type="submit" name="submit" id="submit" style="display:inline-block" class="button button-primary" value="Submit"></p>
+                        <p class="submit"><input type="submit" name="submit" id="submit" style="display:inline-block" class="button button-primary" value="<?php _e('submit', 'rrze-statistik'); ?>"></p>
                     </td>
                 </tr>
             </table>
@@ -223,7 +223,6 @@ class Dashboard
         // security check
         check_ajax_referer('edit-dashboard-widget_' . $_POST['widget_id'], 'dashboard-widget-nonce');
 
-        // if $update_settings are not empty, then update the settings
         if (!empty($_POST['widget_id'])) {
             $updated_settings = $_POST['rrze_statistik_widget'];
             update_option('rrze_statistik_widget', $updated_settings);
