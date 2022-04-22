@@ -110,6 +110,8 @@ function deactivation()
     //
     delete_option('rrze_statistik_webalizer_hist_data');
     delete_option('rrze_statistik_url_dataset');
+    delete_option('rrze_statistik_widget');
+    
     wp_clear_scheduled_hook(Cron::ACTION_HOOK);
     wp_clear_scheduled_hook((Cron::ACTION_HOOK_WEEKLY));
 }
