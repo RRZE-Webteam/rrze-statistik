@@ -14,6 +14,8 @@ class Dashboard
         add_action('wp_dashboard_setup', [$this, 'add_rrze_statistik_dashboard_widget']);
         add_action('wp_ajax_widgetsave', [$this, 'rrze_statistik_save_widget']);
         add_action('wp_ajax_showform', [$this, 'rrze_statistik_ajax_show_form']);
+
+        Self::prefill_options();
     }
 
     /**
