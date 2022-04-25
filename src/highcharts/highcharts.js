@@ -1,33 +1,46 @@
 let currentYear = new Date().getFullYear();
-const datatypes = ["visits", "hits", "hosts", "files", "kbytes"];
 
 //data is passed from Transfer.php
-//Check if document is ready
 document.addEventListener("DOMContentLoaded", function (event) {
     //Check if data was passed from PHP
-    if (linechartDataset === "undefined") {
-        console.log("Data could not be retrieved");
+    if (RRZESTATISTIKTRANSFER.linechartDataset === "undefined") {
+        return;
     } else {
-        //Process dataset and split it based on the last three years
-        console.log("Dataset successfully loaded");
+        //read needed charts from dom
+        dataTypes = ["visits", "hits", "hosts", "files", "kbytes"];
+        chartTypes = [];
 
+        dataTypes.forEach((dataType) => {
+            if (document.getElementById(dataType)) {
+                chartTypes.push(dataType);
+            }
+        });
+
+        //Process dataset and split it based on the last three years
         const firstYear = currentYear - 2;
         const secondYear = currentYear - 1;
         const thirdYear = currentYear;
 
-        console.log(linechartDataset);
-        
         //Create the dataset for each datatype
-        datatypes.forEach((datatype) => {
+        chartTypes.forEach((datatype) => {
             let filterData = (dataset, year) => {
                 let output = dataset.filter((data) => {
                     return data.year === year.toString();
                 });
                 return output;
             };
-            let outputThirdYear = filterData(linechartDataset, thirdYear);
-            let outputSecondYear = filterData(linechartDataset, secondYear);
-            let outputFirstYear = filterData(linechartDataset, firstYear);
+            let outputThirdYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                thirdYear
+            );
+            let outputSecondYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                secondYear
+            );
+            let outputFirstYear = filterData(
+                RRZESTATISTIKTRANSFER.linechartDataset,
+                firstYear
+            );
 
             //Create an empty dataset array
             let generateDatasets = (dataset) => {
@@ -67,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             //Create the Highcharts container for each datatype
             const chart = Highcharts.chart(datatype, {
                 chart: {
-                    type: "spline",
+                    type: RRZESTATISTIKTRANSFER.displayType,
                     renderTo: datatype,
                 },
 
@@ -76,30 +89,34 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 },
 
                 title: {
-                    text: languagePackage[datatype].headline_chart,
+                    text: RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                        .headline_chart,
                 },
 
                 yAxis: {
                     title: {
-                        text: languagePackage[datatype].ordinate_desc,
+                        text: RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                            .ordinate_desc,
                     },
                     accessibility: {
-                        description: languagePackage[datatype].ordinate_desc,
+                        description:
+                            RRZESTATISTIKTRANSFER.languagePackage[datatype]
+                                .ordinate_desc,
                     },
                 },
 
                 xAxis: {
                     title: {
-                        text: abscissaTitle,
+                        text: RRZESTATISTIKTRANSFER.abscissaTitle,
                     },
                     accessibility: {
-                        description: a11yAbscissa,
+                        description: RRZESTATISTIKTRANSFER.a11yAbscissa,
                     },
-                    categories: abscissaDescriptiontext,
+                    categories: RRZESTATISTIKTRANSFER.abscissaDescriptiontext,
                 },
 
                 tooltip: {
-                    valueSuffix: ` ${languagePackage[datatype].ordinate_desc}`,
+                    valueSuffix: ` ${RRZESTATISTIKTRANSFER.languagePackage[datatype].ordinate_desc}`,
                 },
 
                 plotOptions: {

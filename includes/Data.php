@@ -11,8 +11,8 @@ class Data
 {
 
     public function __construct()
-    {        
-        add_action( 'current_screen',  [$this, 'setTransients'] );
+    {
+        add_action('current_screen',  [$this, 'setTransients']);
     }
 
     public static function setTransients()
@@ -20,11 +20,11 @@ class Data
         if (is_admin()) {
             $screen = get_current_screen();
             if ($screen->id == "dashboard") {
-                if(!get_transient('rrze_statistik_data_webalizer_hist')) {
-                    Self:: updateData();
+                if (!get_transient('rrze_statistik_data_webalizer_hist')) {
+                    Self::updateData();
                 }
-                if(!get_transient('rrze_statistik_data_url')) {
-                    Self:: updateUrlData();
+                if (!get_transient('rrze_statistik_data_url')) {
+                    Self::updateUrlData();
                 }
             }
         }
@@ -49,7 +49,7 @@ class Data
             array_pop($data);
             set_transient('rrze_statistik_data_webalizer_hist', $data, 6 * HOUR_IN_SECONDS);
             return true;
-        } 
+        }
     }
 
     /**
@@ -97,12 +97,16 @@ class Data
     public static function validateData($data_body)
     {
         if (strpos($data_body, "Forbidden") !== false) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de forbidden fetch response body');
             return false;
         } else if (strlen($data_body) === 0) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de empty fetch response body');
             return false;
         } else if (strpos($data_body, "could not be found on this server") !== false) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de fetch response body: Site not found on this server');
             return false;
         } else if (strpos($data_body, "not found") !== false) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de forbidden fetch response body: Site not found on this server');
             return false;
         } else {
             return true;
@@ -163,7 +167,7 @@ class Data
                 || strpos($array_splitted[1], ".doc") !== false
                 || strpos($array_splitted[1], ".zip") !== false
                 || strpos($array_splitted[1], ".rar") !== false
-                
+
             ) {
                 array_push($pdf_files, $array_splitted);
             } else {
@@ -177,7 +181,7 @@ class Data
         array_pop($image_files);
         array_pop($pdf_files);
 
-        
+
         //check if value isNull
         is_null($sites) ? $sites = [] : $sites;
         is_null($image_files) ? $image_files = [] : $image_files;

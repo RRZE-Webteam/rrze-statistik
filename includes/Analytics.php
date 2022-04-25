@@ -89,7 +89,6 @@ class Analytics
             $html .= "</table></div>";
             return $html;
         }
-
     }
 
     /**
@@ -103,23 +102,23 @@ class Analytics
         if (!$data) {
             return  __('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</strong><br />';
         } else {
-            if(array_key_exists(0, $data)){
+            if (array_key_exists(0, $data)) {
                 $top_url = $data[0];
-                if(!empty($top_url)){
-                $table1 = Self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
-                $output = $table1;
+                if (!empty($top_url)) {
+                    $table1 = Self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
+                    $output = $table1;
                 }
             }
-            if(array_key_exists(1, $data)){
+            if (array_key_exists(1, $data)) {
                 $top_images = $data[1];
-                if(!empty($top_images)){
-                $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Media', 'rrze-statistik'));
-                $output .= $table2;
+                if (!empty($top_images)) {
+                    $table2 = Self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Media', 'rrze-statistik'));
+                    $output .= $table2;
                 }
             }
-            if(array_key_exists(2, $data)){
+            if (array_key_exists(2, $data)) {
                 $top_pdf = $data[2];
-                if(!empty($top_pdf)){
+                if (!empty($top_pdf)) {
                     $table3 = Self::getTwoDimensionalHtmlTable($top_pdf, 0, 1, __('Hits', 'rrze-statistik'), __('Documents', 'rrze-statistik'));
                     $output .= $table3;
                 }
@@ -138,15 +137,16 @@ class Analytics
      */
     public static function isDateNewer($array, $arrayRef)
     {
-        if (is_array($array) && is_array($arrayRef)){
-        $offset = count($array) - 2;
-        $date = $array[$offset]['year'] . sprintf("%02d", $array[$offset]['month']);
-        $dateRef = $arrayRef[count($arrayRef) - 1]['year'] . sprintf("%02d", $arrayRef[count($arrayRef) - 1]['month']);
-        if ((int)$date > (int)$dateRef) {
-            return true;
+        if (is_array($array) && is_array($arrayRef)) {
+            $offset = count($array) - 2;
+            $date = $array[$offset]['year'] . sprintf("%02d", $array[$offset]['month']);
+            $dateRef = $arrayRef[count($arrayRef) - 1]['year'] . sprintf("%02d", $arrayRef[count($arrayRef) - 1]['month']);
+            if ((int)$date > (int)$dateRef) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
-        }} else {
             return false;
         }
     }
