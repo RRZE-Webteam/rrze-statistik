@@ -148,14 +148,14 @@ class Dashboard
                 <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
                 <td>
                     <select name="rrze_statistik_widget[data_type]">
-                        <option value="visits_and_sites" <?php selected($options['data_type'], 'visits_and_sites'); ?>><?php _e('visits and Popular sites and files', 'rrze-statistik'); ?></option>
+                        <option value="visits_and_sites" <?php selected($options['data_type'], 'visits_and_sites'); ?>><?php _e('Visits and popular sites', 'rrze-statistik'); ?></option>
                         <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
                         <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
                         <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
                         <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
                         <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
                         <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
-                        <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular sites and files', 'rrze-statistik'); ?>
+                        <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular sites', 'rrze-statistik'); ?>
                         </option>
                     </select>
                 </td>
@@ -201,13 +201,13 @@ class Dashboard
                     <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
                     <td>
                         <select name="rrze_statistik_widget[data_type]">
-                            <option value="visits_and_sites" <?php selected($options['data_type'], 'visits_and_sites'); ?>><?php _e('Visits and Popular sites and files', 'rrze-statistik'); ?></option>
+                            <option value="visits_and_sites" <?php selected($options['data_type'], 'visits_and_sites'); ?>><?php _e('Visits and popular sites', 'rrze-statistik'); ?></option>
                             <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
                             <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
                             <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
                             <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
                             <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
-                            <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites and Files', 'rrze-statistik'); ?></option>
+                            <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites', 'rrze-statistik'); ?></option>
                             <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
                         </select>
                     </td>

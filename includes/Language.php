@@ -84,7 +84,7 @@ class Language
             case 'kbytes':
                 return __('Kbytes over time', 'rrze-statistik');
             case 'urls':
-                return __('Popular sites and files over time', 'rrze-statistik');
+                return __('Popular sites and files', 'rrze-statistik');
 
             default:
                 return __('Unknown container', 'rrze-statistik');

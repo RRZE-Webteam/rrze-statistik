@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2.
 msgid ""
 msgstr ""
-"Project-Id-Version: RRZE Statistics 1.0.4\n"
+"Project-Id-Version: RRZE Statistics 1.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-statistik\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-04-22T08:05:13+00:00\n"
+"POT-Creation-Date: 2022-04-25T13:01:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: rrze-statistik\n"
@@ -49,8 +49,8 @@ msgstr ""
 #: includes/Analytics.php:108
 #: includes/Analytics.php:115
 #: includes/Analytics.php:122
-#: includes/Dashboard.php:136
-#: includes/Dashboard.php:193
+#: includes/Dashboard.php:154
+#: includes/Dashboard.php:206
 #: includes/Language.php:51
 msgid "Hits"
 msgstr ""
@@ -67,103 +67,111 @@ msgstr ""
 msgid "Documents"
 msgstr ""
 
-#: includes/Dashboard.php:83
+#: includes/Dashboard.php:107
 #: includes/Language.php:38
 msgid "Source: Statistiken.rrze.fau.de"
 msgstr ""
 
-#: includes/Dashboard.php:120
-#: includes/Dashboard.php:178
+#: includes/Dashboard.php:137
+#: includes/Dashboard.php:190
 msgid "Display type"
 msgstr ""
 
-#: includes/Dashboard.php:123
+#: includes/Dashboard.php:140
 msgid "Spline"
 msgstr ""
 
-#: includes/Dashboard.php:124
+#: includes/Dashboard.php:141
 msgid "Area-spline"
 msgstr ""
 
-#: includes/Dashboard.php:125
+#: includes/Dashboard.php:142
 msgid "Column"
 msgstr ""
 
-#: includes/Dashboard.php:126
+#: includes/Dashboard.php:143
 msgid "Bar"
 msgstr ""
 
-#: includes/Dashboard.php:131
-#: includes/Dashboard.php:189
+#: includes/Dashboard.php:148
+#: includes/Dashboard.php:201
 msgid "Data type"
 msgstr ""
 
-#: includes/Dashboard.php:134
-#: includes/Dashboard.php:198
+#: includes/Dashboard.php:151
+#: includes/Dashboard.php:204
+msgid "Visits and popular sites"
+msgstr ""
+
+#: includes/Dashboard.php:152
+#: includes/Dashboard.php:211
 msgid "Display all"
 msgstr ""
 
-#: includes/Dashboard.php:135
-#: includes/Dashboard.php:192
+#: includes/Dashboard.php:153
+#: includes/Dashboard.php:205
 msgid "Visits"
 msgstr ""
 
-#: includes/Dashboard.php:137
-#: includes/Dashboard.php:194
+#: includes/Dashboard.php:155
+#: includes/Dashboard.php:207
 #: includes/Language.php:56
 msgid "Hosts"
 msgstr ""
 
-#: includes/Dashboard.php:138
-#: includes/Dashboard.php:195
+#: includes/Dashboard.php:156
+#: includes/Dashboard.php:208
 #: includes/Language.php:61
 msgid "Files"
 msgstr ""
 
-#: includes/Dashboard.php:139
-#: includes/Dashboard.php:196
+#: includes/Dashboard.php:157
+#: includes/Dashboard.php:209
 #: includes/Language.php:66
 msgid "Kbytes"
 msgstr ""
 
-#: includes/Dashboard.php:140
-#: includes/Dashboard.php:197
-msgid "Popular Sites and Files"
+#: includes/Dashboard.php:158
+msgid "Popular sites"
 msgstr ""
 
-#: includes/Dashboard.php:181
-#: includes/Language.php:106
+#: includes/Dashboard.php:193
+#: includes/Language.php:104
 msgid "Line chart"
 msgstr ""
 
-#: includes/Dashboard.php:182
-#: includes/Language.php:109
+#: includes/Dashboard.php:194
+#: includes/Language.php:107
 msgid "Area chart"
 msgstr ""
 
-#: includes/Dashboard.php:183
-#: includes/Language.php:112
+#: includes/Dashboard.php:195
+#: includes/Language.php:110
 msgid "Column chart"
 msgstr ""
 
-#: includes/Dashboard.php:184
-#: includes/Language.php:103
+#: includes/Dashboard.php:196
+#: includes/Language.php:101
 msgid "Bar chart"
 msgstr ""
 
-#: includes/Dashboard.php:206
+#: includes/Dashboard.php:210
+msgid "Popular Sites"
+msgstr ""
+
+#: includes/Dashboard.php:219
 msgid "submit"
 msgstr ""
 
-#: includes/Dashboard.php:230
+#: includes/Dashboard.php:243
 msgid "No widget_id in POST-Array for RRZE Statistik Widget"
 msgstr ""
 
-#: includes/Dashboard.php:240
+#: includes/Dashboard.php:253
 msgid "No settings found."
 msgstr ""
 
-#: includes/Dashboard.php:241
+#: includes/Dashboard.php:254
 msgid "No settings found for rrze-statistik dashboard display after AJAX request."
 msgstr ""
 
@@ -272,46 +280,46 @@ msgid "Site visitors over time"
 msgstr ""
 
 #: includes/Language.php:87
-msgid "Popular sites and files over time"
+msgid "Popular sites and files"
 msgstr ""
 
 #: includes/Language.php:90
 msgid "Unknown container"
 msgstr ""
 
-#: includes/Language.php:116
+#: includes/Language.php:114
 msgid "Chart"
 msgstr ""
 
-#: includes/Language.php:122
+#: includes/Language.php:120
 msgid "%s displaying the number of site visitors over several months."
 msgstr ""
 
-#: includes/Language.php:124
+#: includes/Language.php:122
 msgid "%s displaying the number of hits over several months. A hit is a request for a file such as a web page, image, javascript, or CSS hosted on a web server. A single visitor can generate plenty of hits."
 msgstr ""
 
-#: includes/Language.php:126
+#: includes/Language.php:124
 msgid "%s displaying the number of hosts over several months. A host is a computer or server opening your website. Larger online services are often only displayed as a single host if they share one server."
 msgstr ""
 
-#: includes/Language.php:128
+#: includes/Language.php:126
 msgid "%s displaying the number of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files."
 msgstr ""
 
-#: includes/Language.php:130
+#: includes/Language.php:128
 msgid "%s displaying the number of transferred Data in kBytes over several months."
 msgstr ""
 
-#: includes/Language.php:137
+#: includes/Language.php:135
 msgid "Time"
 msgstr ""
 
-#: includes/Language.php:142
+#: includes/Language.php:140
 msgid "Time over the last 23 months"
 msgstr ""
 
-#: includes/Language.php:147
+#: includes/Language.php:145
 msgid "Copy CSV to clipboard"
 msgstr ""
 
@@ -327,6 +335,6 @@ msgstr ""
 
 #. translators: 1: The plugin name, 2: The error string.
 #: rrze-statistik.php:97
-#: rrze-statistik.php:149
+#: rrze-statistik.php:151
 msgid "Plugins: %1$s: %2$s"
 msgstr ""
