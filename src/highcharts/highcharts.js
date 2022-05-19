@@ -1,11 +1,18 @@
-import Highcharts from 'highcharts';
-import 'highcharts/modules/exporting';
-import 'highcharts/modules/export-data';
-import 'highcharts/modules/data';
-import 'highcharts/modules/series-label';
-import 'highcharts/themes/high-contrast-light';
+import Highcharts, { data } from 'highcharts';
+import Accessibility from "highcharts/modules/accessibility";
+import Exporting from 'highcharts/modules/exporting';
+import Exportdata from 'highcharts/modules/export-data';
+import Data from 'highcharts/modules/data';
+import Serieslabel from 'highcharts/modules/series-label';
+import HighContrastLight from 'highcharts/themes/high-contrast-light';
 
-import 'highcharts/modules/accessibility';
+HighContrastLight(Highcharts);
+Accessibility(Highcharts);
+Exporting(Highcharts);
+Exportdata(Highcharts);
+Data(Highcharts);
+Serieslabel(Highcharts);
+
 
 let currentYear = new Date().getFullYear();
 
