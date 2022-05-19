@@ -1,3 +1,12 @@
+import Highcharts from 'highcharts';
+import 'highcharts/modules/exporting';
+import 'highcharts/modules/export-data';
+import 'highcharts/modules/data';
+import 'highcharts/modules/series-label';
+import 'highcharts/themes/high-contrast-light';
+
+import 'highcharts/modules/accessibility';
+
 let currentYear = new Date().getFullYear();
 
 //data is passed from Transfer.php
@@ -74,9 +83,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             let datasetSecondYear = generateDatasets(outputSecondYear);
             let datasetThirdYear = generateDatasets(outputThirdYear);
 
-            //Load the theme colors
-            var colors = Highcharts.getOptions().colors;
-
             //Create the Highcharts container for each datatype
             const chart = Highcharts.chart(datatype, {
                 chart: {
@@ -87,6 +93,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 legend: {
                     symbolWidth: 40,
                 },
+
+                colors: ["#fe6100", "#785ef0", "#dc267f", "#648fff", "#f45b5b", "#b68c51", "#397550", "#c0493d", "#4f4a7a", "#b381b3"],
 
                 title: {
                     text: RRZESTATISTIKTRANSFER.languagePackage[datatype]
@@ -129,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     {
                         name: firstYear.toString(),
                         data: datasetFirstYear,
-                        color: colors[4],
                         zIndex: 0,
                     },
                     {
@@ -137,14 +144,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         data: datasetSecondYear,
                         zIndex: 1,
                         dashStyle: "ShortDashDot",
-                        color: colors[1],
                     },
                     {
                         name: thirdYear.toString(),
                         data: datasetThirdYear,
                         zIndex: 2,
                         dashStyle: "ShortDot",
-                        color: colors[2],
                     },
                 ],
                 //define the Export value
