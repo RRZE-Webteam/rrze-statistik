@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         return;
     } else {
         //read needed charts from dom
-        dataTypes = ["visits", "hits", "hosts", "files", "kbytes"];
-        chartTypes = [];
+        let dataTypes = ["visits", "hits", "hosts", "files", "kbytes"];
+        let chartTypes = [];
 
         dataTypes.forEach((dataType) => {
             if (document.getElementById(dataType)) {
