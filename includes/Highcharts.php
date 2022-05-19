@@ -16,20 +16,6 @@ class Highcharts
 
     public function statistik_enqueue_script()
     {
-        wp_enqueue_style(
-            'highcharts-css',
-            plugins_url('dist/highcharts.css', plugin()->getBasename()),
-            array(),
-            plugin()->getVersion(),
-            'all'
-        );
-        wp_enqueue_script(
-            'highcharts-js',
-            plugins_url('assets/js/highcharts/9.3.3/highcharts.js', plugin()->getBasename()),
-            array(),
-            plugin()->getVersion(),
-            true
-        );
         wp_enqueue_script(
             'index-js',
             plugins_url('dist/highchartsIndex.js', plugin()->getBasename()),
@@ -37,28 +23,6 @@ class Highcharts
             plugin()->getVersion(),
             true
         );
-
-        $modules = ['accessibility', 'data', 'export-data', 'exporting', 'high-contrast-light', 'series-label'];
-        foreach ($modules as $val) {
-            wp_enqueue_script(
-                'highcharts-module-' . $val,
-                plugins_url('assets/js/highcharts/9.3.3/modules/' . $val . '.js', plugin()->getBasename()),
-                array(),
-                plugin()->getVersion(),
-                true
-            );
-        }
-
-        $maps = ['accessibility', 'data', 'export-data', 'exporting', 'high-contrast-light', 'series-label'];
-        foreach ($maps as $val) {
-            wp_enqueue_script(
-                'highcharts-module-' . $val,
-                plugins_url('assets/js/highcharts/9.3.3/modules/' . $val . '.js.map', plugin()->getBasename()),
-                array(),
-                plugin()->getVersion(),
-                true
-            );
-        }
     }
 
     public function loadHighcharts()

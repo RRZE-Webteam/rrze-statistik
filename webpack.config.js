@@ -4,6 +4,7 @@ const CSSMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 const path = require("path");
+const webpack = require("webpack");
 const highcharts = path.join(__dirname, "src", "highcharts");
 
 module.exports = (env, argv) => {
@@ -30,7 +31,7 @@ module.exports = (env, argv) => {
                 filename: (chunkData) => {
                     return "[name].css";
                 },
-            }),
+            })
         ],
         devtool: isDevelopment() ? "cheap-module-source-map" : "source-map",
         module: {
