@@ -16,6 +16,13 @@ class Highcharts
 
     public function statistik_enqueue_script()
     {
+        wp_enqueue_style(
+            'highcharts-css',
+            plugins_url('dist/highcharts.css', plugin()->getBasename()),
+            array(),
+            plugin()->getVersion(),
+            'all'
+        );
         wp_enqueue_script(
             'index-js',
             plugins_url('dist/highchartsIndex.js', plugin()->getBasename()),
