@@ -12,8 +12,7 @@ class Main
         new Dashboard();
         new Data();
 
-        $highcharts = new Highcharts();
-        $highcharts->loadHighcharts();
+        new Highcharts();
         Cron::init();
     }
 }
