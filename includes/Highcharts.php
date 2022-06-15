@@ -11,30 +11,37 @@ class Highcharts
 {
     public function __construct()
     {
-        $this->loadHighcharts();
+        add_action('admin_enqueue_scripts', array($this, 'statistik_register_script'));
     }
 
-    public function statistik_enqueue_script()
+    public function statistik_register_script($hook_suffix)
     {
-        wp_enqueue_style(
+
+        
+        wp_register_style(
             'highcharts-css',
             plugins_url('dist/highcharts.css', plugin()->getBasename()),
             array(),
             plugin()->getVersion(),
             'all'
         );
-        wp_enqueue_script(
+        wp_register_script(
             'index-js',
             plugins_url('dist/highchartsIndex.js', plugin()->getBasename()),
             array(),
             plugin()->getVersion(),
             true
         );
-    }
 
-    public function loadHighcharts()
-    {
-        add_action('admin_enqueue_scripts', array($this, 'statistik_enqueue_script'));
+            $screen = get_current_screen();
+            $screen_id = $screen->id ?? '';
+
+            if ($screen_id == "dashboard") {
+                wp_enqueue_script('highcharts-css');
+                wp_enqueue_script('index-js');
+            }
+
+
     }
 
     /**
@@ -53,7 +60,7 @@ class Highcharts
         } else {
             $logs_url = Analytics::retrieveSiteUrl('logs');
             return
-            '<figure class="rrze-statistik highcharts-figure">
+                '<figure class="rrze-statistik highcharts-figure">
             <div id="' . $container . '"></div>
             <p class="highcharts-description">' . Language::getLinechartDescription($container) . '</p><hr />
             <a href=' . $logs_url . '>' . __('Source: www.statistiken.rrze.fau.de', 'rrze-statistik') . '</a><hr />
