@@ -37,7 +37,7 @@ class Highcharts
             $screen_id = $screen->id ?? '';
 
             if ($screen_id == "dashboard") {
-                wp_enqueue_script('highcharts-css');
+                wp_enqueue_style('highcharts-css');
                 wp_enqueue_script('index-js');
             }
 
