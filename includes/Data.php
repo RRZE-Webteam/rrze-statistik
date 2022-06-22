@@ -131,7 +131,7 @@ class Data
         foreach ($array as $value) {
             $array_splitted = preg_split("/	|( 	)/", $value);
             \array_splice($array_splitted, 1, -1);
-
+            //Following file extensions are ignored
             if (
                 strpos($array_splitted[1], "wp-includes") !== false
                 || strpos($array_splitted[1], "wp-content") !== false
@@ -141,6 +141,7 @@ class Data
                 || strpos($array_splitted[1], ".css") !== false
                 || strpos($array_splitted[1], "module.php") !== false
             ) {
+            //Following file extensions are listed below sites in Dashboard
             } elseif (
                 strpos($array_splitted[1], ".jpg") !== false
                 || strpos($array_splitted[1], ".jpeg") !== false
@@ -157,6 +158,7 @@ class Data
                 || strpos($array_splitted[1], ".eps") !== false
             ) {
                 array_push($image_files, $array_splitted);
+            //Following file extensions are listed below documents in Dashboard
             } elseif (
                 strpos($array_splitted[1], ".pdf") !== false
                 || strpos($array_splitted[1], ".docx") !== false
