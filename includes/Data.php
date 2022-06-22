@@ -143,6 +143,7 @@ class Data
                 || strpos($array_splitted[1], ".css") !== false
                 || strpos($array_splitted[1], ".js") !== false
                 || strpos($array_splitted[1], ".json") !== false
+                || strpos($array_splitted[1], "/feed") !== false
             ) {
             //Following file extensions are listed below sites in Dashboard
             } elseif (
