@@ -135,11 +135,14 @@ class Data
             if (
                 strpos($array_splitted[1], "wp-includes") !== false
                 || strpos($array_splitted[1], "wp-content") !== false
-                || strpos($array_splitted[1], "robots") !== false
+                || strpos($array_splitted[1], "wp-json") !== false
                 || strpos($array_splitted[1], "wp-admin") !== false
+                || strpos($array_splitted[1], "robots") !== false
                 || strpos($array_splitted[1], "xml") !== false
-                || strpos($array_splitted[1], ".css") !== false
                 || strpos($array_splitted[1], "module.php") !== false
+                || strpos($array_splitted[1], ".css") !== false
+                || strpos($array_splitted[1], ".js") !== false
+                || strpos($array_splitted[1], ".json") !== false
             ) {
             //Following file extensions are listed below sites in Dashboard
             } elseif (
