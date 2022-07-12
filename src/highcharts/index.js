@@ -1,4 +1,4 @@
-import "../../assets/sass/style.scss";
+import "./dashboard/style.scss";
 import "./highcharts.js";
 
 import "./ajax.js";
