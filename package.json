@@ -1,6 +1,6 @@
 {
   "name": "rrze-statistik",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Anzeige der Statistik von Webauftritten in der Dashboard",
   "main": "index.js",
   "scripts": {
@@ -38,7 +38,7 @@
     "sass-loader": "^12.6.0",
     "semver": "^7.3.5",
     "style-loader": "^3.2.1",
-    "terser-webpack-plugin": "^5.1.4",
+    "terser-webpack-plugin": "^5.3.3",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.7.2"
   }
