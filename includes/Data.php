@@ -132,6 +132,7 @@ class Data
             $array_splitted = preg_split("/	|( 	)/", $value);
             \array_splice($array_splitted, 1, -1);
             //Following file extensions are ignored
+            if(isset($array_splitted[1])){
             if (
                 strpos($array_splitted[1], "wp-includes") !== false
                 || strpos($array_splitted[1], "wp-content") !== false
@@ -179,6 +180,7 @@ class Data
             } else {
                 array_push($sites, $array_splitted);
             }
+        }
         }
         //if last array item has no trailing slash, remove it
         if (substr($sites[count($sites) - 1][1], -1) !== "/") {
