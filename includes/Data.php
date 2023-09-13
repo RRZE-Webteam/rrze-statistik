@@ -99,6 +99,9 @@ class Data
         if (strpos($data_body, "Forbidden") !== false) {
             do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de forbidden fetch response body');
             return false;
+        } else if (strpos($data_body, "Unavailable") !== false) {
+            do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de unavailable fetch response body');
+            return false;
         } else if (strlen($data_body) === 0) {
             do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de empty fetch response body');
             return false;
@@ -183,9 +186,9 @@ class Data
         }
         }
         //if last array item has no trailing slash, remove it
-        if (substr($sites[count($sites) - 1][1], -1) !== "/") {
+        if (!empty($sites) && substr($sites[count($sites) - 1][1], -1) !== "/") {
             array_pop($sites);
-        }
+        } 
         array_pop($image_files);
         array_pop($pdf_files);
 
@@ -222,11 +225,23 @@ class Data
         $data_trim = rtrim($data_body, " \n\r\t\v");
         $array = preg_split("/\r\n|\n|\r/", $data_trim);
         $output = [];
+
+        Helper::debug($data_body);
+    
         foreach ($array as $value) {
-            array_push($output, array_combine($keymap, preg_split("/ /", $value)));
+            $splittedValue = preg_split("/ /", $value);
+            
+            if (count($keymap) !== count($splittedValue)) {
+                Helper::debug('RRZE Statistik | Statistiken.rrze.fau.de fetch response body: The server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.');
+                continue;
+            }
+    
+            array_push($output, array_combine($keymap, $splittedValue));
         }
+    
         return $output;
     }
+    
 
     /**
      * Uses a set of functions to fetch webalizer.hist, process the data, set description 
