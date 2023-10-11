@@ -226,7 +226,7 @@ class Data
         $array = preg_split("/\r\n|\n|\r/", $data_trim);
         $output = [];
 
-        Helper::debug($data_body);
+        // Helper::debug($data_body);
     
         foreach ($array as $value) {
             $splittedValue = preg_split("/ /", $value);

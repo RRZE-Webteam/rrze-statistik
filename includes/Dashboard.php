@@ -27,10 +27,14 @@ class Dashboard
     {
         $options = get_option('rrze_statistik_widget');
 
+        if ($options === false) {
+            $options = [];
+        }
+        
         if (empty($options)) {
             $options['display_type'] = 'spline';
             $options['data_type'] = 'visits_and_sites';
-
+        
             update_option('rrze_statistik_widget', $options);
         }
     }
@@ -129,7 +133,7 @@ class Dashboard
 
         $options = get_option('rrze_statistik_widget');
 
-        Helper::debug($options);
+        // Helper::debug($options);
 
 ?>
         <table class="form-table">
