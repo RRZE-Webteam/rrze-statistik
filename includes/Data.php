@@ -96,7 +96,10 @@ class Data
      */
     public static function validateData($data_body)
     {
-        if (strpos($data_body, "Forbidden") !== false) {
+        if (null === $data_body) {
+            do_action('rrze.log.info', 'RRZE Statistik | Data body is null');
+            return false;
+        } else if (strpos($data_body, "Forbidden") !== false) {
             do_action('rrze.log.info', 'RRZE Statistik | Statistiken.rrze.fau.de forbidden fetch response body');
             return false;
         } else if (strpos($data_body, "Unavailable") !== false) {
