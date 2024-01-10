@@ -10,6 +10,8 @@ defined('ABSPATH') || exit;
 class Analytics
 {
 
+    private $highcharts;
+
     public static function getDate()
     {
         $raw_date = date("Ym");
