@@ -128,7 +128,6 @@ function plugin()
  */
 function loaded()
 {
-    add_action('init', __NAMESPACE__ . '\loadTextdomain');
     plugin()->loaded();
     if ($error = systemRequirements()) {
         add_action('admin_init', function () use ($error) {
