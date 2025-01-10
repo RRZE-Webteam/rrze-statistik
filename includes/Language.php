@@ -29,7 +29,7 @@ class Language
 
     public static function getAbscissa()
     {
-        $abscissa_desc = Self::getMonthDesc();
+        $abscissa_desc = self::getMonthDesc();
         return $abscissa_desc;
     }
 
