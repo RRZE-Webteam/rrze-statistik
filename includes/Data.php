@@ -21,10 +21,10 @@ class Data
             $screen = get_current_screen();
             if ($screen->id == "dashboard") {
                 if (!get_transient('rrze_statistik_data_webalizer_hist')) {
-                    Self::updateData();
+                    self::updateData();
                 }
                 if (!get_transient('rrze_statistik_data_url')) {
-                    Self::updateUrlData();
+                    self::updateUrlData();
                 }
             }
         }
@@ -40,12 +40,12 @@ class Data
     {
         // Fetch Dataset Webalizer.hist
         $url = Analytics::retrieveSiteUrl('webalizer.hist');
-        $data_body = Self::fetchDataBody($url);
-        $validation = Self::validateData($data_body);
+        $data_body = self::fetchDataBody($url);
+        $validation = self::validateData($data_body);
         if ($validation === false) {
             return false;
         } else {
-            $data = Self::processDataBody($data_body);
+            $data = self::processDataBody($data_body);
             array_pop($data);
             set_transient('rrze_statistik_data_webalizer_hist', $data, 6 * HOUR_IN_SECONDS);
             return true;
@@ -61,31 +61,69 @@ class Data
     {
         // Fetch Dataset
         $url = Analytics::retrieveSiteUrl('url');
-        $data_body = Self::fetchDataBody($url);
-        $validation = Self::validateData($data_body);
+        $data_body = self::fetchDataBody($url);
+        $validation = self::validateData($data_body);
 
         if ($validation === false) {
             return false;
         } else {
             $data = substr($data_body, 0, 9999);
 
-            $processed_data = Self::processUrlDataBody($data);
+            $processed_data = self::processUrlDataBody($data);
             set_transient('rrze_statistik_data_url', $processed_data, 12 * HOUR_IN_SECONDS);
             return true;
         }
     }
 
     /**
-     * Fetches body $url from statistiken.rrze.fau.de
+     * Fetches body $url from statistiken.rrze.fau.de and aborts if the file is too large
      *
      * @param string $url
-     * @return string
+     * @return string|false
      */
     public static function fetchDataBody($url)
     {
-        $cachable = wp_remote_get(esc_url_raw($url));
-        $cachable_body = wp_remote_retrieve_body($cachable);
-        return $cachable_body;
+        $response = wp_remote_head($url); // Initial HEAD-Request, um die Header zu prüfen
+        if (is_wp_error($response)) {
+            Helper::debug('RRZE Statistik | Failed to fetch headers: ' . $response->get_error_message());
+            return false;
+        }
+
+        // Check the HTTP Status Code
+        $status_code = wp_remote_retrieve_response_code($response);
+        if ($status_code == 403) {
+            Helper::debug('RRZE Statistik | HTTP 403 Forbidden: Access denied.');
+            return false;
+        } elseif ($status_code == 404) {
+            Helper::debug('RRZE Statistik | HTTP 404 Not Found: Resource unavailable.');
+            return false;
+        } elseif ($status_code >= 400) {
+            Helper::debug('RRZE Statistik | HTTP Error ' . $status_code . ': Aborting fetch.');
+            return false;
+        }
+
+        // Check the Data Size
+        $content_length = wp_remote_retrieve_header($response, 'content-length');
+        Helper::debug(wp_remote_retrieve_response_code($response));
+        if ($content_length && $content_length > 12 * 1024 * 1024) { // Set Size Limit
+            Helper::debug('RRZE Statistik | File size exceeds the 12 MB limit. Aborting fetch.');
+            return false;
+        }
+
+        // Only Fetch Content, if Size Limit of 12 MB is not exceeded
+        $response = wp_remote_get(esc_url_raw($url), ['timeout' => 10]); // Set Timeout
+        if (is_wp_error($response)) {
+            Helper::debug('RRZE Statistik | Failed to fetch data: ' . $response->get_error_message());
+            return false;
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        if (empty($body)) {
+            Helper::debug('rrze.log.error', 'RRZE Statistik | Empty response body.');
+            return false;
+        }
+
+        return $body;
     }
 
     /**
@@ -119,6 +157,13 @@ class Data
         }
     }
 
+    private static function generateRows($data_trim)
+{
+    foreach (explode("\n", $data_trim) as $row) {
+        yield $row;
+    }
+}
+
     /**
      * Converts .tab separated data in associative array for later use. in Cronjob, weekly
      *
@@ -127,83 +172,125 @@ class Data
      */
     public static function processUrlDataBody($data_body)
     {
+        // Trim and split the input data
         $data_trim = rtrim($data_body, " \n\r\t\v");
-        $array = preg_split("/\r\n|\n|\r/", $data_trim);
-        $image_files = [];
+        if (empty($data_trim)) {
+            return [[], [], []]; // Return empty arrays if no data
+        }
+        $rows = explode("\n", $data_trim);
+
+        // Precompile patterns for better performance
+        $ignore_patterns = [
+            "wp-includes",
+            "wp-content",
+            "wp-json",
+            "wp-admin",
+            "robots",
+            "xml",
+            "module.php",
+            ".css",
+            ".js",
+            ".json",
+            "/feed"
+        ];
+
+        $image_patterns = [
+            ".jpg",
+            ".jpeg",
+            ".gif",
+            ".png",
+            ".svg",
+            ".webp",
+            ".ico",
+            ".bmp",
+            ".tiff",
+            ".tif",
+            ".psd",
+            ".ai",
+            ".eps"
+        ];
+
+        $document_patterns = [
+            ".pdf",
+            ".docx",
+            ".ppt",
+            ".pptx",
+            ".xls",
+            ".xlsx",
+            ".doc",
+            ".zip",
+            ".rar"
+        ];
+
+        // Initialize result arrays
         $sites = [];
+        $image_files = [];
         $pdf_files = [];
 
-        $output = [];
-        foreach ($array as $value) {
-            $array_splitted = preg_split("/	|( 	)/", $value);
-            \array_splice($array_splitted, 1, -1);
-            //Following file extensions are ignored
-            if(isset($array_splitted[1])){
-            if (
-                strpos($array_splitted[1], "wp-includes") !== false
-                || strpos($array_splitted[1], "wp-content") !== false
-                || strpos($array_splitted[1], "wp-json") !== false
-                || strpos($array_splitted[1], "wp-admin") !== false
-                || strpos($array_splitted[1], "robots") !== false
-                || strpos($array_splitted[1], "xml") !== false
-                || strpos($array_splitted[1], "module.php") !== false
-                || strpos($array_splitted[1], ".css") !== false
-                || strpos($array_splitted[1], ".js") !== false
-                || strpos($array_splitted[1], ".json") !== false
-                || strpos($array_splitted[1], "/feed") !== false
-            ) {
-            //Following file extensions are listed below sites in Dashboard
-            } elseif (
-                strpos($array_splitted[1], ".jpg") !== false
-                || strpos($array_splitted[1], ".jpeg") !== false
-                || strpos($array_splitted[1], ".gif") !== false
-                || strpos($array_splitted[1], ".png") !== false
-                || strpos($array_splitted[1], ".svg") !== false
-                || strpos($array_splitted[1], ".webp") !== false
-                || strpos($array_splitted[1], ".ico") !== false
-                || strpos($array_splitted[1], ".bmp") !== false
-                || strpos($array_splitted[1], ".tiff") !== false
-                || strpos($array_splitted[1], ".tif") !== false
-                || strpos($array_splitted[1], ".psd") !== false
-                || strpos($array_splitted[1], ".ai") !== false
-                || strpos($array_splitted[1], ".eps") !== false
-            ) {
-                array_push($image_files, $array_splitted);
-            //Following file extensions are listed below documents in Dashboard
-            } elseif (
-                strpos($array_splitted[1], ".pdf") !== false
-                || strpos($array_splitted[1], ".docx") !== false
-                || strpos($array_splitted[1], ".ppt") !== false
-                || strpos($array_splitted[1], ".pptx") !== false
-                || strpos($array_splitted[1], ".xls") !== false
-                || strpos($array_splitted[1], ".xlsx") !== false
-                || strpos($array_splitted[1], ".doc") !== false
-                || strpos($array_splitted[1], ".zip") !== false
-                || strpos($array_splitted[1], ".rar") !== false
+        // Set iteration and time limits
+        $max_iterations = 10000; // Maximum rows to process
+        $start_time = microtime(true);
+        $time_limit = 5; // Max processing time in seconds
 
-            ) {
-                array_push($pdf_files, $array_splitted);
+        $index = 0;
+        foreach (self::generateRows($data_trim) as $row) {
+            $index++;
+            // Stop processing if iteration or time limits are exceeded
+            if ($index >= $max_iterations || (microtime(true) - $start_time) > $time_limit) {
+                break;
+            }
+
+            $columns = preg_split("/\t+/", $row, -1, PREG_SPLIT_NO_EMPTY);
+            unset($columns[4]);
+            unset($columns[3]);
+            unset($columns[2]);
+            unset($columns[1]);
+            $columns = array_values($columns);
+            if (count($columns) < 2) {
+                continue;
+            }
+
+            $url = $columns[1];
+
+            // Check if the URL matches any ignore patterns
+            if (self::matchesAnyPattern($url, $ignore_patterns)) {
+                continue;
+            }
+
+            // Categorize the URL into images, documents, or other sites
+            if (self::matchesAnyPattern($url, $image_patterns)) {
+                $image_files[] = $columns;
+            } elseif (self::matchesAnyPattern($url, $document_patterns)) {
+                $pdf_files[] = $columns;
             } else {
-                array_push($sites, $array_splitted);
+                $sites[] = $columns;
+            }
+
+            // Stop processing if enough items are collected
+            if (count($sites) >= 10 && count($image_files) >= 10 && count($pdf_files) >= 5) {
+                break;
             }
         }
-        }
-        //if last array item has no trailing slash, remove it
-        if (!empty($sites) && substr($sites[count($sites) - 1][1], -1) !== "/") {
-            array_pop($sites);
-        } 
-        array_pop($image_files);
-        array_pop($pdf_files);
 
-
-        //check if value isNull
-        is_null($sites) ? $sites = [] : $sites;
-        is_null($image_files) ? $image_files = [] : $image_files;
-        is_null($pdf_files) ? $pdf_files = [] : $pdf_files;
-
-        $output = [array_slice($sites, 0, 10), array_slice($image_files, 0, 10), array_slice($pdf_files, 0, 5)];
-        return ($output);
+        return [
+            array_slice($sites, 0, 10),
+            array_slice($image_files, 0, 10),
+            array_slice($pdf_files, 0, 5),
+        ];
     }
+
+    /**
+     * Checks if a string matches any pattern in the given array
+     *
+     * @param string $text
+     * @param array $patterns
+     * @return bool
+     */
+    private static function matchesAnyPattern($text, $patterns)
+    {
+        return array_filter($patterns, fn($pattern) => strpos($text, $pattern) !== false);
+    }
+
 
     /**
      * Transforms webalizer.hist into Array and keys it with associated keymap.
@@ -225,26 +312,26 @@ class Data
             'pages',
             'visits',
         );
-        $data_trim = rtrim($data_body, " \n\r\t\v");
+        $data_trim = trim($data_body, " \n\r\t\v");
         $array = preg_split("/\r\n|\n|\r/", $data_trim);
         $output = [];
 
         // Helper::debug($data_body);
-    
+
         foreach ($array as $value) {
             $splittedValue = preg_split("/ /", $value);
-            
+
             if (count($keymap) !== count($splittedValue)) {
                 Helper::debug('RRZE Statistik | Statistiken.rrze.fau.de fetch response body: The server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.');
                 continue;
             }
-    
+
             array_push($output, array_combine($keymap, $splittedValue));
         }
-    
+
         return $output;
     }
-    
+
 
     /**
      * Uses a set of functions to fetch webalizer.hist, process the data, set description 
