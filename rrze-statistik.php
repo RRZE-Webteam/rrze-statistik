@@ -18,8 +18,6 @@ defined('ABSPATH') || exit;
 
 use RRZE\Statistik\Main;
 
-const RRZE_HIGHCHARTS_VERSION = '10.1.0';
-
 const RRZE_PHP_VERSION = '7.4';
 const RRZE_WP_VERSION = '5.8';
 /**

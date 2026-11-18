@@ -5,44 +5,69 @@ namespace RRZE\Statistik;
 defined('ABSPATH') || exit;
 
 /**
- * Sends PHP values as JSON to highchartsIndex.js
+ * Publishes cached chart data and WordPress-localized metadata to the browser.
  */
 class Transfer
 {
     /**
-     * Sends all parameters to JS via Ajax-Request
+     * Whether the shared data object has been attached to the script this request.
      *
-     * @param array $data_body
-     * @param array $abscissa_desc
-     * @param string $ordinate_desc
-     * @param string $headline_chart
-     * @param string $tooltip_desc
-     * @return void
+     * @var bool
      */
-    public static function sendToJs($data_body, $abscissa_desc, $languagePackage)
+    private static $sent = false;
+
+    /**
+     * Adds one shared data object before the chart bundle, preserving legacy fields.
+     *
+     * Each widget calls this method, but all widgets consume the same dataset.
+     *
+     * @param array $dataBody Cached monthly records; non-arrays are treated as empty.
+     * @param array $abscissaDesc Translated month abbreviations.
+     * @param array $languagePackage Translated metric titles and units.
+     * @return array Normalized records, retaining the previous return contract.
+     */
+    public static function sendToJs($dataBody, $abscissaDesc, $languagePackage)
     {
-        $json_data = json_encode($data_body);
-        $source_Text = Language::getSource();
-        $a11y_abscissa = Language::getAccessibilityAbscissa();
-        $abscissa_title = Language::getAbscissaTitle();
-        $option = get_option('rrze_statistik_widget');
-        $display_type = $option['display_type'] ?? 'Spline';
+        $dataBody = is_array($dataBody) ? array_values($dataBody) : [];
+        if (self::$sent) {
+            return $dataBody;
+        }
 
-        $rrze_statistik_transfer_nonce = wp_create_nonce("rrze_statistik_transfer");
-        $ajax_url = admin_url('admin-ajax.php');
+        $options = get_option('rrze_statistik_widget');
+        $displayType = is_array($options) ? ($options['display_type'] ?? 'spline') : 'spline';
+        if (!in_array($displayType, ['spline', 'areaspline', 'column', 'bar'], true)) {
+            $displayType = 'spline';
+        }
+        $descriptions = [];
+        foreach (array_keys(Language::getLanguagePackage()) as $metric) {
+            $descriptions[$metric] = Language::getLinechartDescription($metric);
+        }
 
-        wp_add_inline_script('index-js', 'var RRZESTATISTIKTRANSFER =' . json_encode([
-            'nonce' => $rrze_statistik_transfer_nonce,
-            'ajaxurl' => $ajax_url,
-            'linechartDataset' => json_decode($json_data),
-            'abscissaDescriptiontext' => $abscissa_desc,
-            'languagePackage' => $languagePackage,
-            'abscissaTitle' => $abscissa_title,
-            'sourceText' => $source_Text,
-            'a11yAbscissa' => $a11y_abscissa,
-            'displayType' => $display_type
-        ]) . ';', 'before');
+        $payload = [
+            'nonce' => wp_create_nonce('rrze_statistik_transfer'),
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'linechartDataset' => $dataBody,
+            'abscissaDescriptiontext' => is_array($abscissaDesc) ? $abscissaDesc : Language::getAbscissa(),
+            'languagePackage' => is_array($languagePackage) ? $languagePackage : Language::getLanguagePackage(),
+            'abscissaTitle' => Language::getAbscissaTitle(),
+            'sourceText' => Language::getSource(),
+            'a11yAbscissa' => Language::getAccessibilityAbscissa(),
+            'displayType' => $displayType,
+            'currentYear' => (int) wp_date('Y'),
+            'locale' => str_replace('_', '-', get_user_locale()),
+            'sourceUrl' => Analytics::retrieveSiteUrl('logs'),
+            'descriptions' => $descriptions,
+            'labels' => Language::getChartLabels(),
+        ];
+        $json = wp_json_encode($payload, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        if ($json !== false) {
+            self::$sent = wp_add_inline_script(
+                'rrze-statistik-charts',
+                'var RRZESTATISTIKTRANSFER = ' . $json . ';',
+                'before'
+            );
+        }
 
-        return $data_body;
+        return $dataBody;
     }
 }

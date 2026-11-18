@@ -1,74 +1,29 @@
-const autoprefixer = require("autoprefixer");
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
-const CSSMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
+const path = require('path');
+const autoprefixer = require('autoprefixer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
-const path = require("path");
-const webpack = require("webpack");
-const highcharts = path.join(__dirname, "src", "highcharts");
-
-module.exports = (env, argv) => {
-    function isDevelopment() {
-        return argv.mode === "development";
-    }
-    var config = {
-        entry: {
-            highcharts,
-        },
-        output: {
-            filename: "[name]Index.js",
-            clean: true,
-        },
-        optimization: {
-            minimizer: [
-                new CSSMinimizerPlugin(),
-                new TerserPlugin({ terserOptions: { sourceMap: true } }),
-            ],
-        },
-        plugins: [
-            new MiniCSSExtractPlugin({
-                chunkFilename: "[id].css",
-                filename: (chunkData) => {
-                    return "[name].css";
-                },
-            })
-        ],
-        devtool: isDevelopment() ? "cheap-module-source-map" : "source-map",
+/**
+ * Bundle the dashboard with locally hosted dependencies.
+ * @param {Object} env Webpack environment values.
+ * @param {Object} argv Webpack command-line options.
+ * @returns {Object} Webpack configuration.
+ */
+module.exports = function createWebpackConfig(env, argv) {
+    return {
+        entry: {charts: path.join(__dirname, 'src', 'charts', 'index.js')},
+        output: {path: path.join(__dirname, 'dist'), filename: '[name]Index.js', clean: true},
+        optimization: {minimizer: [new CssMinimizerPlugin(), new TerserPlugin()]},
+        plugins: [new MiniCssExtractPlugin({filename: '[name].css'})],
+        devtool: argv.mode === 'development' ? 'cheap-module-source-map' : 'source-map',
         module: {
             rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: [
-                        {
-                            loader: "babel-loader",
-                            options: {
-                                presets: ["@babel/preset-env"],
-                            },
-                        },
-                    ],
-                },
-                {
-                    test: /\.(sa|sc|c)ss$/,
-                    use: [
-                        MiniCSSExtractPlugin.loader,
-                        "css-loader",
-                        {
-                            loader: "postcss-loader",
-                            options: {
-                                postcssOptions: {
-                                    plugins: [autoprefixer()],
-                                },
-                            },
-                        },
-                        "sass-loader",
-                    ],
-                },
+                {test: /\.js$/, exclude: /node_modules/, use: {loader: 'babel-loader', options: {presets: ['@babel/preset-env']}}},
+                {test: /\.(sa|sc|c)ss$/, use: [MiniCssExtractPlugin.loader, 'css-loader',
+                    {loader: 'postcss-loader', options: {postcssOptions: {plugins: [autoprefixer()]}}}, 'sass-loader']},
             ],
         },
-        externals: {
-            jquery: "jQuery",
-        },
+        externals: {jquery: 'jQuery'},
     };
-    return config;
 };

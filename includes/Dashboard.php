@@ -169,7 +169,7 @@ class Dashboard
     }
 
     /**
-     * Ajax Widget Settings Action. Ajax Script inside ../src/highcharts/ajax.js
+     * Ajax widget settings action used by the dashboard configuration script.
      *
      * @return void
      */
@@ -231,7 +231,7 @@ class Dashboard
     }
 
     /**
-     * Ajax Widgetsave Action. Ajax Script inside ../src/highcharts/ajax.js
+     * Ajax widget save action used by the dashboard configuration script.
      *
      * @return void
      */

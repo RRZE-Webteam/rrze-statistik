@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: RRZE Statistics\n"
-"POT-Creation-Date: 2022-04-25 15:02+0200\n"
-"PO-Revision-Date: 2022-04-25 15:02+0200\n"
+"Project-Id-Version: RRZE Statistics 1.1.16\n"
+"POT-Creation-Date: 2026-11-18\n"
+"PO-Revision-Date: 2026-11-18\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -22,7 +22,37 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 "X-Poedit-SearchPathExcluded-1: node_modules\n"
 
-#: includes/Analytics.php:58
+#. Plugin Name of the plugin
+#: rrze-statistik.php
+msgid "RRZE Statistics"
+msgstr "RRZE Statistik"
+
+#. Plugin URI of the plugin
+#: rrze-statistik.php
+msgid "https://github.com/rrze-webteam/rrze-statistik"
+msgstr "https://github.com/rrze-webteam/rrze-statistik"
+
+#. Description of the plugin
+#: rrze-statistik.php
+msgid ""
+"Displays monthly statistics from https://statistiken.rrze.fau.de within your "
+"Dashboard."
+msgstr ""
+"Zeigt monatliche Statistiken von https://statistiken.rrze.fau.de auf Ihrem "
+"Dashboard an."
+
+#. Author of the plugin
+#: rrze-statistik.php
+msgid "RRZE Webteam"
+msgstr "RRZE Webteam"
+
+#. Author URI of the plugin
+#: rrze-statistik.php
+msgid "https://blogs.fau.de/webworking/"
+msgstr "https://blogs.fau.de/webworking/"
+
+#. translators: %1$s: Website hostname.
+#: includes/Analytics.php:60
 #, php-format
 msgid ""
 "It might take a few days until personal statistics for your website ( %1$s ) "
@@ -31,252 +61,260 @@ msgstr ""
 "Es kann mehrere Tage dauern, bevor persönliche Statistiken Ihrer Webseite "
 "( %1$s ) im Dashboard dargestellt werden."
 
-#: includes/Analytics.php:79
+#: includes/Analytics.php:82
 msgid "No data available."
 msgstr "Keine Daten verfügbar."
 
-#: includes/Analytics.php:103
+#: includes/Analytics.php:108
 msgid ""
 "It might take a few weeks until the summary is displayed on your dashboard."
 msgstr ""
 "Es kann einige Wochen dauern, bis die Zusammenfassung auf Ihrem Dashboard "
 "angezeigt wird."
 
-#: includes/Analytics.php:108 includes/Analytics.php:115
-#: includes/Analytics.php:122 includes/Dashboard.php:154
-#: includes/Dashboard.php:206 includes/Language.php:51
+#: includes/Analytics.php:113 includes/Analytics.php:120
+#: includes/Analytics.php:127 includes/Dashboard.php:158
+#: includes/Dashboard.php:210 includes/Language.php:71
 msgid "Hits"
 msgstr "Hits"
 
-#: includes/Analytics.php:108
+#: includes/Analytics.php:113
 msgid "Sites"
 msgstr "Seiten"
 
-#: includes/Analytics.php:115
+#: includes/Analytics.php:120
 msgid "Media"
 msgstr "Mediendateien"
 
-#: includes/Analytics.php:122
+#: includes/Analytics.php:127
 msgid "Documents"
 msgstr "Dokumente"
 
-#: includes/Dashboard.php:107 includes/Language.php:38
+#: includes/Charts.php:78 includes/Language.php:223
+msgid "Loading statistics…"
+msgstr "Statistik wird geladen …"
+
+#: includes/Charts.php:80
+msgid ""
+"JavaScript is required for the charts. The source statistics are available "
+"using the following link."
+msgstr ""
+"Für die Diagramme wird JavaScript benötigt. Die ursprüngliche Statistik ist "
+"über den folgenden Link verfügbar."
+
+#: includes/Dashboard.php:111 includes/Language.php:53
 msgid "Source: Statistiken.rrze.fau.de"
 msgstr "Quelle: Statistiken.rrze.fau.de"
 
-#: includes/Dashboard.php:137 includes/Dashboard.php:190
+#: includes/Dashboard.php:141 includes/Dashboard.php:194
 msgid "Display type"
 msgstr "Darstellungsart"
 
-#: includes/Dashboard.php:140
+#: includes/Dashboard.php:144
 msgid "Spline"
 msgstr "Liniendiagramm"
 
-#: includes/Dashboard.php:141
+#: includes/Dashboard.php:145
 msgid "Area-spline"
 msgstr "Flächendiagramm"
 
-#: includes/Dashboard.php:142
+#: includes/Dashboard.php:146
 msgid "Column"
 msgstr "Balkendiagramm"
 
-#: includes/Dashboard.php:143
+#: includes/Dashboard.php:147
 msgid "Bar"
 msgstr "Säulendiagramm"
 
-#: includes/Dashboard.php:148 includes/Dashboard.php:201
+#: includes/Dashboard.php:152 includes/Dashboard.php:205
 msgid "Data type"
 msgstr "Datentyp"
 
-#: includes/Dashboard.php:151 includes/Dashboard.php:204
+#: includes/Dashboard.php:155 includes/Dashboard.php:208
 msgid "Visits and popular sites"
 msgstr "Seitenbesuche und beliebte Seiten"
 
-#: includes/Dashboard.php:152 includes/Dashboard.php:211
+#: includes/Dashboard.php:156 includes/Dashboard.php:215
 msgid "Display all"
 msgstr "Alle anzeigen"
 
-#: includes/Dashboard.php:153 includes/Dashboard.php:205
+#: includes/Dashboard.php:157 includes/Dashboard.php:209
+#: includes/Language.php:66
 msgid "Visits"
-msgstr "Seitenbesuche"
+msgstr "Besuche"
 
-#: includes/Dashboard.php:155 includes/Dashboard.php:207
-#: includes/Language.php:56
+#: includes/Dashboard.php:159 includes/Dashboard.php:211
+#: includes/Language.php:76
 msgid "Hosts"
 msgstr "Hosts"
 
-#: includes/Dashboard.php:156 includes/Dashboard.php:208
-#: includes/Language.php:61
+#: includes/Dashboard.php:160 includes/Dashboard.php:212
+#: includes/Language.php:81
 msgid "Files"
 msgstr "Dateien"
 
-#: includes/Dashboard.php:157 includes/Dashboard.php:209
-#: includes/Language.php:66
+#: includes/Dashboard.php:161 includes/Dashboard.php:213
+#: includes/Language.php:86
 msgid "Kbytes"
 msgstr "KBytes"
 
-#: includes/Dashboard.php:158
+#: includes/Dashboard.php:162
 msgid "Popular sites"
 msgstr "Beliebte Seiten"
 
-#: includes/Dashboard.php:193 includes/Language.php:104
+#: includes/Dashboard.php:197 includes/Language.php:136
 msgid "Line chart"
 msgstr "Liniendiagramm"
 
-#: includes/Dashboard.php:194 includes/Language.php:107
+#: includes/Dashboard.php:198 includes/Language.php:139
 msgid "Area chart"
 msgstr "Flächendiagramm"
 
-#: includes/Dashboard.php:195 includes/Language.php:110
+#: includes/Dashboard.php:199 includes/Language.php:142
 msgid "Column chart"
 msgstr "Säulendiagramm"
 
-#: includes/Dashboard.php:196 includes/Language.php:101
+#: includes/Dashboard.php:200 includes/Language.php:133
 msgid "Bar chart"
 msgstr "Balkendiagramm"
 
-#: includes/Dashboard.php:210
+#: includes/Dashboard.php:214
 msgid "Popular Sites"
 msgstr "Beliebte Seiten"
 
-#: includes/Dashboard.php:219
+#: includes/Dashboard.php:223
 msgid "submit"
 msgstr "Änderungen speichern"
 
-#: includes/Dashboard.php:243
+#: includes/Dashboard.php:247
 msgid "No widget_id in POST-Array for RRZE Statistik Widget"
 msgstr "Keine widget_id im POST-Array des rrze-statistik widgets gefunden"
 
-#: includes/Dashboard.php:253
+#: includes/Dashboard.php:257
 msgid "No settings found."
 msgstr "Keine Voreinstellungen gefunden."
 
-#: includes/Dashboard.php:254
+#: includes/Dashboard.php:258
 msgid ""
 "No settings found for rrze-statistik dashboard display after AJAX request."
 msgstr ""
 "Keine Einstellungen für rrze-statistik Dashboard widget gefunden nach AJAX "
 "request."
 
-#: includes/Highcharts.php:88
-msgid "Source: www.statistiken.rrze.fau.de"
-msgstr "Quelle: Statistiken.rrze.fau.de"
-
-#: includes/Language.php:15
+#: includes/Language.php:20
 msgid "Jan"
 msgstr "Jan"
 
-#: includes/Language.php:16
+#: includes/Language.php:21
 msgid "Feb"
 msgstr "Feb"
 
-#: includes/Language.php:17
+#: includes/Language.php:22
 msgid "Mar"
 msgstr "März"
 
-#: includes/Language.php:18
+#: includes/Language.php:23
 msgid "Apr"
 msgstr "April"
 
-#: includes/Language.php:19
+#: includes/Language.php:24
 msgid "May"
 msgstr "Mai"
 
-#: includes/Language.php:20
+#: includes/Language.php:25
 msgid "Jun"
 msgstr "Juni"
 
-#: includes/Language.php:21
+#: includes/Language.php:26
 msgid "Jul"
 msgstr "Juli"
 
-#: includes/Language.php:22
+#: includes/Language.php:27
 msgid "Aug"
 msgstr "Aug"
 
-#: includes/Language.php:23
+#: includes/Language.php:28
 msgid "Sep"
 msgstr "Sep"
 
-#: includes/Language.php:24
+#: includes/Language.php:29
 msgid "Oct"
 msgstr "Okt"
 
-#: includes/Language.php:25
+#: includes/Language.php:30
 msgid "Nov"
 msgstr "Nov"
 
-#: includes/Language.php:26
+#: includes/Language.php:31
 msgid "Dec"
 msgstr "Dez"
 
-#: includes/Language.php:46
-msgid "Visitors"
-msgstr "Seitenbesucher"
+#: includes/Language.php:67
+msgid "Visits over time"
+msgstr "Besuche im zeitlichen Verlauf"
 
-#: includes/Language.php:47
-msgid "Visitors over time"
-msgstr "Besucher über Zeit"
+#: includes/Language.php:68
+msgid " Visits / Month"
+msgstr " Besuche / Monat"
 
-#: includes/Language.php:48
-msgid " Visitors / Month"
-msgstr " Besucher / Monat"
-
-#: includes/Language.php:52 includes/Language.php:79
+#: includes/Language.php:72 includes/Language.php:105
 msgid "Hits over time"
 msgstr "Hits über Zeit"
 
-#: includes/Language.php:53
+#: includes/Language.php:73
 msgid " Hits / Month"
 msgstr " Hits / Monat"
 
-#: includes/Language.php:57 includes/Language.php:81
+#: includes/Language.php:77 includes/Language.php:107
 msgid "Hosts over time"
 msgstr "Hosts über Zeit"
 
-#: includes/Language.php:58
+#: includes/Language.php:78
 msgid " Hosts / Month"
 msgstr " Hosts / Monat"
 
-#: includes/Language.php:62 includes/Language.php:83
+#: includes/Language.php:82 includes/Language.php:109
 msgid "Files over time"
 msgstr "Dateien über Zeit"
 
-#: includes/Language.php:63
+#: includes/Language.php:83
 msgid " Files / Month"
 msgstr " Dateien / Monat"
 
-#: includes/Language.php:67 includes/Language.php:85
+#: includes/Language.php:87 includes/Language.php:111
 msgid "Kbytes over time"
 msgstr "Kbytes über Zeit"
 
-#: includes/Language.php:68
+#: includes/Language.php:88
 msgid " Kbytes / Month"
 msgstr " Kbytes / Monat"
 
-#: includes/Language.php:77
-msgid "Site visitors over time"
-msgstr "Website-Besucher über Zeit"
+#: includes/Language.php:103
+msgid "Site visits over time"
+msgstr "Website-Besuche im zeitlichen Verlauf"
 
-#: includes/Language.php:87
+#: includes/Language.php:113
 msgid "Popular sites and files"
 msgstr "Beliebte Seiten und Dateien"
 
-#: includes/Language.php:90
+#: includes/Language.php:116
 msgid "Unknown container"
 msgstr "Unbekannter Datentyp"
 
-#: includes/Language.php:114
+#: includes/Language.php:146
 msgid "Chart"
 msgstr "Diagramm"
 
-#: includes/Language.php:120
+#. translators: %s: Selected chart type.
+#: includes/Language.php:153
 #, php-format
-msgid "%s displaying the number of site visitors over several months."
+msgid ""
+"%s displaying monthly site visits. Visits are not a count of unique people."
 msgstr ""
-"Das %s zeigt die Anzahl der Webseiten-Besucher über die letzten Monate."
+"%s mit monatlichen Website-Besuchen. Besuche entsprechen nicht der Anzahl "
+"unterschiedlicher Personen."
 
-#: includes/Language.php:122
+#: includes/Language.php:155
 #, php-format
 msgid ""
 "%s displaying the number of hits over several months. A hit is a request for "
@@ -288,7 +326,7 @@ msgstr ""
 "Webserver gehostet wird. Ein einzelner Besucher kann während einem "
 "Seitenaufruf also viele Hits generieren."
 
-#: includes/Language.php:124
+#: includes/Language.php:157
 #, php-format
 msgid ""
 "%s displaying the number of hosts over several months. A host is a computer "
@@ -300,7 +338,7 @@ msgstr ""
 "Online-Dienste werden oft als einzelner Host angezeigt, wenn ein Server "
 "geteilt wurde."
 
-#: includes/Language.php:126
+#: includes/Language.php:159
 #, php-format
 msgid ""
 "%s displaying the number of successful loaded files from your domain. This "
@@ -309,7 +347,7 @@ msgstr ""
 "%s mit der Anzahl der erfolgreich geladenen Dateien für Ihre Domain. Dazu "
 "gehören alle Dokumente, CSS-Dateien, Skripte und Mediendateien."
 
-#: includes/Language.php:128
+#: includes/Language.php:161
 #, php-format
 msgid ""
 "%s displaying the number of transferred Data in kBytes over several months."
@@ -317,25 +355,132 @@ msgstr ""
 "Das %s zeigt die Größe der übertragenen Datenpakete in kByte über einen "
 "Zeitraum von mehreren Monaten."
 
-#: includes/Language.php:135
+#: includes/Language.php:173
 msgid "Time"
 msgstr "Zeit"
 
-#: includes/Language.php:140
-msgid "Time over the last 23 months"
-msgstr "Zeit über die letzten 23 Monate"
+#. translators: 1: First calendar year, 2: Last calendar year.
+#: includes/Language.php:186
+#, php-format
+msgid "Monthly values from January %1$d to December %2$d"
+msgstr "Monatswerte von Januar %1$d bis Dezember %2$d"
 
-#: includes/Language.php:145
+#: includes/Language.php:199
 msgid "Copy CSV to clipboard"
 msgstr "Als CSV in Zwischenablage kopieren"
 
-#: includes/Plugin.php:189
-#, php-format
-msgid "Call to undefined method %1$s::%2$s"
-msgstr "Aufruf der undefinierten Methode %1$s::%2$s"
+#: includes/Language.php:212
+msgid "Month"
+msgstr "Monat"
+
+#: includes/Language.php:213
+msgid "Year"
+msgstr "Jahr"
+
+#: includes/Language.php:214
+msgid "Choose a year"
+msgstr "Jahr auswählen"
+
+#: includes/Language.php:215
+msgid "Choose a month"
+msgstr "Monat auswählen"
+
+#: includes/Language.php:216
+msgid "Visible years"
+msgstr "Sichtbare Jahre"
+
+#: includes/Language.php:217
+msgid "Show data table"
+msgstr "Datentabelle anzeigen"
+
+#. translators: {title} is the chart title; preserve the placeholder.
+#: includes/Language.php:219
+msgid "{title}: monthly values"
+msgstr "{title}: Monatswerte"
+
+#: includes/Language.php:220 includes/Language.php:241
+msgid "No data available"
+msgstr "Keine Daten vorhanden"
+
+#: includes/Language.php:221
+msgid "No monthly data are available for this period."
+msgstr "Für diesen Zeitraum sind keine Monatswerte vorhanden."
+
+#: includes/Language.php:222
+msgid ""
+"The chart could not be displayed. The data table and CSV export remain "
+"available."
+msgstr ""
+"Das Diagramm konnte nicht angezeigt werden. Die Datentabelle und der CSV-"
+"Export sind weiterhin verfügbar."
+
+#: includes/Language.php:225
+msgid "Download CSV"
+msgstr "CSV herunterladen"
+
+#: includes/Language.php:226
+msgid "Download SVG"
+msgstr "SVG herunterladen"
+
+#: includes/Language.php:227
+msgid "Download PNG"
+msgstr "PNG herunterladen"
+
+#: includes/Language.php:228
+msgid "CSV copied to clipboard."
+msgstr "CSV wurde in die Zwischenablage kopiert."
+
+#: includes/Language.php:229
+msgid "The CSV could not be copied. Please use the CSV download instead."
+msgstr ""
+"Die CSV-Daten konnten nicht kopiert werden. Bitte verwenden Sie den CSV-"
+"Download."
+
+#: includes/Language.php:230
+msgid "The export could not be created. Please try again."
+msgstr ""
+"Der Export konnte nicht erstellt werden. Bitte versuchen Sie es erneut."
+
+#: includes/Language.php:231
+msgid "Preparing export…"
+msgstr "Export wird vorbereitet …"
+
+#: includes/Language.php:232
+msgid "The download is ready."
+msgstr "Der Download ist bereit."
+
+#: includes/Language.php:233
+msgid "At least one year must remain visible."
+msgstr "Mindestens ein Jahr muss sichtbar bleiben."
+
+#. translators: Preserve {range}, {min}, {minDate}, {max} and {maxDate}.
+#: includes/Language.php:235
+msgid "{range}. Minimum: {min} ({minDate}). Maximum: {max} ({maxDate})."
+msgstr "{range}. Minimum: {min} ({minDate}). Maximum: {max} ({maxDate})."
+
+#. translators: {first} and {last} are calendar years; preserve the placeholders.
+#: includes/Language.php:237
+msgid "{first}–{last}"
+msgstr "{first}–{last}"
+
+#: includes/Language.php:238
+msgid "Minimum"
+msgstr "Minimum"
+
+#: includes/Language.php:239
+msgid "Maximum"
+msgstr "Maximum"
+
+#: includes/Language.php:240
+msgid "Choose a year and use the month slider to explore the values."
+msgstr "Wählen Sie ein Jahr und erkunden Sie die Werte mit dem Monatsregler."
+
+#: includes/Language.php:242
+msgid "Source"
+msgstr "Quelle"
 
 #. translators: 1: Server PHP version number, 2: Required PHP version number.
-#: rrze-statistik.php:72
+#: rrze-statistik.php:62
 #, php-format
 msgid ""
 "The server is running PHP version %1$s. The Plugin requires at least PHP "
@@ -345,7 +490,7 @@ msgstr ""
 "mindestens die PHP-Version %2$s."
 
 #. translators: 1: Server WordPress version number, 2: Required WordPress version number.
-#: rrze-statistik.php:79
+#: rrze-statistik.php:69
 #, php-format
 msgid ""
 "The server is running WordPress version %1$s. The Plugin requires at least "
@@ -355,34 +500,37 @@ msgstr ""
 "benötigt mindestens die WordPress-Version %2$s."
 
 #. translators: 1: The plugin name, 2: The error string.
-#: rrze-statistik.php:97 rrze-statistik.php:151
+#: rrze-statistik.php:87 rrze-statistik.php:140
 #, php-format
 msgid "Plugins: %1$s: %2$s"
 msgstr "Plugins: %1$s: %2$s"
 
-#. Plugin Name of the plugin/theme
-msgid "RRZE Statistics"
-msgstr "RRZE Statistik"
+#~ msgid "Source: www.statistiken.rrze.fau.de"
+#~ msgstr "Quelle: Statistiken.rrze.fau.de"
 
-#. Plugin URI of the plugin/theme
-msgid "https://github.com/rrze-webteam/rrze-statistik"
-msgstr "https://github.com/rrze-webteam/rrze-statistik"
+#~ msgid "Visitors"
+#~ msgstr "Seitenbesucher"
 
-#. Description of the plugin/theme
-msgid ""
-"Displays monthly statistics from https://statistiken.rrze.fau.de within your "
-"Dashboard."
-msgstr ""
-"Zeigt monatliche Statistiken von https://statistiken.rrze.fau.de auf Ihrem "
-"Dashboard an."
+#~ msgid "Visitors over time"
+#~ msgstr "Besucher über Zeit"
 
-#. Author of the plugin/theme
-msgid "RRZE Webteam"
-msgstr "RRZE Webteam"
+#~ msgid " Visitors / Month"
+#~ msgstr " Besucher / Monat"
 
-#. Author URI of the plugin/theme
-msgid "https://blogs.fau.de/webworking/"
-msgstr "https://blogs.fau.de/webworking/"
+#~ msgid "Site visitors over time"
+#~ msgstr "Website-Besucher über Zeit"
+
+#, php-format
+#~ msgid "%s displaying the number of site visitors over several months."
+#~ msgstr ""
+#~ "Das %s zeigt die Anzahl der Webseiten-Besucher über die letzten Monate."
+
+#~ msgid "Time over the last 23 months"
+#~ msgstr "Zeit über die letzten 23 Monate"
+
+#, php-format
+#~ msgid "Call to undefined method %1$s::%2$s"
+#~ msgstr "Aufruf der undefinierten Methode %1$s::%2$s"
 
 #~ msgid "Popular sites and files over time"
 #~ msgstr "Beliebte Seiten und Mediendateien des letzten Monats"

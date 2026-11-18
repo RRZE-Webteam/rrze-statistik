@@ -5,12 +5,10 @@ namespace RRZE\Statistik;
 defined('ABSPATH') || exit;
 
 /**
- * Get processed data & initiate Highchart plot
+ * Gets processed statistics and initiates their dashboard presentation.
  */
 class Analytics
 {
-
-    private $highcharts;
 
     public static function getDate()
     {
@@ -46,10 +44,10 @@ class Analytics
     }
 
     /**
-     * Create the Highcharts Linechart using the name of a css-id for the highcharts container.
+     * Creates chart markup while preserving the existing public metric interface.
      *
-     * @param string $container
-     * @return string
+     * @param string $container Supported metric identifier and chart element ID.
+     * @return string Escaped chart markup or a data-availability notice.
      */
     public function getLinechart($container)
     {
@@ -57,10 +55,13 @@ class Analytics
         $site = str_replace($remove_char, "", get_site_url());
         $ready_check = Data::processLinechartDataset(self::retrieveSiteUrl('webalizer.hist'));
         if ($ready_check === false) {
-            return printf(__('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'), $site) . '</strong><br />';
+            return '<p>' . esc_html(sprintf(
+                /* translators: %1$s: Website hostname. */
+                __('It might take a few days until personal statistics for your website ( %1$s ) are displayed within your dashboard.', 'rrze-statistik'),
+                $site
+            )) . '</p>';
         } else {
-            $this->highcharts = new Highcharts();
-            return $this->highcharts->lineplot($container);
+            return Charts::lineplot($container);
         };
     }
 
