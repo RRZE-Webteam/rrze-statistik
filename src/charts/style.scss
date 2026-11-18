@@ -331,3 +331,129 @@
     }
   }
 }
+
+/* The dashboard owns navigation; each chart keeps its existing independent state. */
+.rrze-statistik-dashboard {
+  min-width: 0;
+  container-type: inline-size;
+  [hidden] { display: none !important; }
+
+  .rrze-statistik-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    padding: 5px;
+    margin: 0 0 14px;
+    border: 1px solid #d5dde8;
+    border-radius: 11px;
+    background: #f2f5fa;
+    [role="tab"] {
+      min-width: 0;
+      min-height: 38px;
+      padding: 7px 6px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: transparent;
+      color: #475467;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+      cursor: pointer;
+      &:hover { background: #e5ebf4; color: #1d2939; }
+      &[aria-selected="true"] {
+        border-color: #b5c4d8;
+        background: #fff;
+        color: #005a9c;
+        font-weight: 600;
+        box-shadow: 0 1px 3px rgb(16 24 40 / 9%);
+      }
+    }
+  }
+  .rrze-statistik-display-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 0 0 18px;
+    label { color: #526078; font-size: 12px; }
+    select {
+      min-height: 36px;
+      max-width: 100%;
+      margin: 0;
+      padding: 5px 28px 5px 10px;
+      border: 1px solid #8290a6;
+      border-radius: 7px;
+      background-color: #fff;
+      color: #1d2939;
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+  }
+  .rrze-statistik-preferences-feedback {
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    border-left: 3px solid #8c4a00;
+    background: #fff8ed;
+    p { margin: 0 0 8px; }
+  }
+  .rrze-statistik-preferences-progress {
+    min-height: 16px;
+    margin: -10px 0 12px;
+    color: #526078;
+    font-size: 11px;
+    line-height: 16px;
+    text-align: right;
+    &.is-saving .rrze-statistik-progress-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+  .rrze-statistik-save-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #d5dde8;
+    border-top-color: #526078;
+    border-radius: 50%;
+    vertical-align: middle;
+    animation: rrze-statistik-saving .8s linear infinite;
+  }
+  .rrze-statistik-table {
+    margin: 16px 0;
+    caption { padding: 0 0 8px; text-align: left; font-weight: 600; }
+  }
+  [role="tab"]:focus-visible, [role="tabpanel"]:focus-visible,
+  .rrze-statistik-display-controls select:focus-visible {
+    outline: 3px solid #005a9c;
+    outline-offset: 2px;
+  }
+  > [data-statistik-panel] { min-width: 0; }
+}
+
+@keyframes rrze-statistik-saving {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rrze-statistik-save-indicator { animation: none; }
+}
+
+@container (min-width: 600px) {
+  .rrze-statistik-dashboard .rrze-statistik-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+@media (forced-colors: active) {
+  .rrze-statistik-dashboard {
+    [role="tab"][aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -3px; }
+    [role="tab"]:focus-visible, [role="tabpanel"]:focus-visible,
+    .rrze-statistik-display-controls select:focus-visible { outline-color: Highlight; }
+  }
+}

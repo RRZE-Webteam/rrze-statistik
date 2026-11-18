@@ -81,15 +81,19 @@ class Analytics
         if (!is_array($array)) {
             return __('No data available.', 'rrze-statistik');
         } else {
-            $html = "<div class='rrze-statistik-table'><table><tr><th>" . $head_desc_1 . '</th><th>' . $head_desc_2 . '</th></tr>';
+            $html = '<div class="rrze-statistik-table"><table><caption>' . esc_html($head_desc_2)
+                . '</caption><thead><tr><th scope="col">' . esc_html($head_desc_1)
+                . '</th><th scope="col">' . esc_html($head_desc_2) . '</th></tr></thead><tbody>';
 
             foreach ($array as $value) {
                 //only execute if $value or $value[array_key_1] or $value[array_key_2] isn't empty
-                if (!empty($value) && !empty($value[$array_key_1]) && !empty($value[$array_key_2])) {
-                    $html .= '<tr><td>' . $value[$array_key_1] . '</td><td>' . '<a href="' . $value[$array_key_2] . '">' . $value[$array_key_2] . '</a>' . '</td></tr>';
+                if (is_array($value) && isset($value[$array_key_1], $value[$array_key_2])
+                    && is_scalar($value[$array_key_1]) && is_scalar($value[$array_key_2])) {
+                    $html .= '<tr><td>' . esc_html($value[$array_key_1]) . '</td><td><a href="'
+                        . esc_url($value[$array_key_2]) . '">' . esc_html($value[$array_key_2]) . '</a></td></tr>';
                 }
             }
-            $html .= "</table></div>";
+            $html .= '</tbody></table></div>';
             return $html;
         }
     }
@@ -104,8 +108,8 @@ class Analytics
         $output = '';  // Initialize $output
         $data = get_transient('rrze_statistik_data_url');
 
-        if (!$data) {
-            return  __('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</strong><br />';
+        if (!is_array($data) || !array_filter($data)) {
+            return '<p>' . esc_html__('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</p>';
         } else {
             if (array_key_exists(0, $data)) {
                 $top_url = $data[0];

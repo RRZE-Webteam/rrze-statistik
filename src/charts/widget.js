@@ -1,4 +1,4 @@
-import {createInitialState, describePoint, formatValue} from './model.js';
+import {createInitialState, describePoint, formatValue, DISPLAY_TYPES} from './model.js';
 import {getSeriesStyle, renderChartSvg} from './render.js';
 import {mountExportControls} from './exports.js';
 
@@ -91,11 +91,11 @@ function updateTable(table, model, visibleYears) {
 }
 
 /**
- * Mount a responsive accessible chart, returning its explicit teardown function.
+ * Mount a responsive accessible chart with controls for lifecycle and chart type.
  *
  * @param {HTMLElement} root Existing WordPress chart placeholder.
  * @param {object} model Normalized chart model.
- * @returns {Function} Cleanup function for listeners, observers and export controls.
+ * @returns {{dispose:Function,setDisplayType:Function}} Chart lifecycle and representation controls.
  */
 export function mountChart(root, model) {
     mountedCharts.get(root)?.();
@@ -230,6 +230,25 @@ export function mountChart(root, model) {
             plotHost.replaceChildren(element('p', 'notice notice-error rrze-statistik-render-error', model.labels.renderError));
             console.error('RRZE Statistik: chart rendering failed.', error);
         }
+    }
+
+    /**
+     * Change representation while retaining controls, focus, month and visible years.
+     * @param {string} type Supported display type.
+     * @param {string} text Localized description of this metric and representation.
+     * @returns {void}
+     */
+    function setDisplayType(type, text = model.description) {
+        if (disposed || !DISPLAY_TYPES.includes(type)) return;
+        model.displayType = type;
+        model.description = text;
+        description.textContent = text;
+        for (const button of legendButtons.values()) {
+            button.querySelector('.rrze-statistik-swatch').classList.toggle(
+                'rrze-statistik-swatch-line', type === 'spline' || type === 'areaspline'
+            );
+        }
+        updatePlot();
     }
 
     /**
@@ -374,5 +393,5 @@ export function mountChart(root, model) {
         mountedCharts.delete(root);
     }
     mountedCharts.set(root, dispose);
-    return dispose;
+    return {dispose, setDisplayType};
 }

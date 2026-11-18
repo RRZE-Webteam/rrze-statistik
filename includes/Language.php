@@ -121,12 +121,13 @@ class Language
      * Describes the selected chart type and the meaning of its metric.
      *
      * @param string $type Metric identifier.
+     * @param string|null $displayType Explicit chart type, or the legacy site default.
      * @return string|null Translated description, or null for an unknown metric.
      */
-    public static function getLinechartDescription($type)
+    public static function getLinechartDescription($type, $displayType = null)
     {
         $options = get_option('rrze_statistik_widget');
-        $display_type = $options['display_type'] ?? '';
+        $display_type = $displayType ?? ($options['display_type'] ?? '');
 
         switch ($display_type){
             case 'bar':
@@ -200,6 +201,36 @@ class Language
     }
 
     /**
+     * Provides compact, localized labels for the dashboard tabs.
+     * @return array<string,string> Labels in display order.
+     */
+    public static function getDashboardViews()
+    {
+        return [
+            'visits' => __('Visits', 'rrze-statistik'),
+            'hits' => __('Requests', 'rrze-statistik'),
+            'hosts' => __('Hosts', 'rrze-statistik'),
+            'files' => __('Files', 'rrze-statistik'),
+            'kbytes' => __('Transfer', 'rrze-statistik'),
+            'urls' => __('Popular pages', 'rrze-statistik'),
+        ];
+    }
+
+    /**
+     * Provides the native chart-type selector's labels and allowlisted values.
+     * @return array<string,string> Chart type labels.
+     */
+    public static function getDisplayTypes()
+    {
+        return [
+            'spline' => __('Line chart', 'rrze-statistik'),
+            'areaspline' => __('Area chart', 'rrze-statistik'),
+            'column' => __('Column chart', 'rrze-statistik'),
+            'bar' => __('Bar chart', 'rrze-statistik'),
+        ];
+    }
+
+    /**
      * Returns translated labels shared by chart controls, tables and exports.
      *
      * Named placeholders are replaced by the browser after the values are known.
@@ -240,6 +271,9 @@ class Language
             'navigationHelp' => __('Choose a year and use the month slider to explore the values.', 'rrze-statistik'),
             'missingValue' => __('No data available', 'rrze-statistik'),
             'source' => __('Source', 'rrze-statistik'),
+            'preferencesError' => __('Your selection could not be saved. It remains active until this page is reloaded.', 'rrze-statistik'),
+            'preferencesSaving' => __('Saving selection…', 'rrze-statistik'),
+            'preferencesSaved' => __('Selection saved.', 'rrze-statistik'),
         ];
     }
 }

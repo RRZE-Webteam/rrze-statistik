@@ -17,7 +17,7 @@
  */
 
 export const METRICS = ['visits', 'hits', 'hosts', 'files', 'kbytes'];
-const DISPLAY_TYPES = ['spline', 'areaspline', 'column', 'bar'];
+export const DISPLAY_TYPES = ['spline', 'areaspline', 'column', 'bar'];
 
 export const DEFAULT_LABELS = Object.freeze({
     month: 'Month', year: 'Year', chooseYear: 'Choose a year', chooseMonth: 'Choose a month',
@@ -34,6 +34,8 @@ export const DEFAULT_LABELS = Object.freeze({
     range: '{first}–{last}', minimum: 'Minimum', maximum: 'Maximum',
     navigationHelp: 'Choose a year and use the month slider to explore the values.',
     missingValue: 'No data available', source: 'Source',
+    preferencesError: 'Your selection could not be saved. It remains active until this page is reloaded.',
+    preferencesSaving: 'Saving selection…', preferencesSaved: 'Selection saved.',
 });
 
 /**

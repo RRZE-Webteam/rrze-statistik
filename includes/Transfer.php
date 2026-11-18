@@ -33,18 +33,21 @@ class Transfer
             return $dataBody;
         }
 
-        $options = get_option('rrze_statistik_widget');
-        $displayType = is_array($options) ? ($options['display_type'] ?? 'spline') : 'spline';
-        if (!in_array($displayType, ['spline', 'areaspline', 'column', 'bar'], true)) {
-            $displayType = 'spline';
-        }
+        $preferences = Dashboard::getPreferences();
+        $displayType = $preferences['displayType'];
         $descriptions = [];
+        $descriptionsByType = [];
         foreach (array_keys(Language::getLanguagePackage()) as $metric) {
-            $descriptions[$metric] = Language::getLinechartDescription($metric);
+            $descriptions[$metric] = Language::getLinechartDescription($metric, $displayType);
+            foreach (Dashboard::DISPLAY_TYPES as $type) {
+                $descriptionsByType[$type][$metric] = Language::getLinechartDescription($metric, $type);
+            }
         }
 
         $payload = [
             'nonce' => wp_create_nonce('rrze_statistik_transfer'),
+            'preferencesNonce' => wp_create_nonce('rrze_statistik_preferences'),
+            'preferences' => $preferences,
             'ajaxurl' => admin_url('admin-ajax.php'),
             'linechartDataset' => $dataBody,
             'abscissaDescriptiontext' => is_array($abscissaDesc) ? $abscissaDesc : Language::getAbscissa(),
@@ -57,6 +60,7 @@ class Transfer
             'locale' => str_replace('_', '-', get_user_locale()),
             'sourceUrl' => Analytics::retrieveSiteUrl('logs'),
             'descriptions' => $descriptions,
+            'descriptionsByType' => $descriptionsByType,
             'labels' => Language::getChartLabels(),
         ];
         $json = wp_json_encode($payload, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);

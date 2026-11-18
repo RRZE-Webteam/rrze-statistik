@@ -1,11 +1,11 @@
 import './style.scss';
-import './ajax.js';
 import {createChartModel, METRICS} from './model.js';
 import {mountChart} from './widget.js';
+import {mountDashboard} from './dashboard.js';
 
 const mounted = new Map();
 
-/** Mount new widgets and dispose removed ones. @returns {void} */
+/** Mount new dashboards or standalone charts and dispose removed roots. @returns {void} */
 function reconcileCharts() {
     for (const [root, dispose] of mounted) {
         if (!root.isConnected) {
@@ -14,10 +14,13 @@ function reconcileCharts() {
         }
     }
     const transfer = window.RRZESTATISTIKTRANSFER || {};
+    for (const root of document.querySelectorAll('[data-statistik-dashboard]')) {
+        if (!mounted.has(root)) mounted.set(root, mountDashboard(root, transfer));
+    }
     for (const root of document.querySelectorAll('[data-statistik-chart]')) {
-        if (mounted.has(root) || !METRICS.includes(root.dataset.metric)) continue;
+        if (root.closest('[data-statistik-dashboard]') || mounted.has(root) || !METRICS.includes(root.dataset.metric)) continue;
         const model = createChartModel(transfer, root.dataset.metric);
-        mounted.set(root, mountChart(root, model));
+        mounted.set(root, mountChart(root, model).dispose);
     }
 }
 

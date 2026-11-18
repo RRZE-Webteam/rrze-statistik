@@ -49,12 +49,59 @@ class Charts
         wp_register_script(
             'rrze-statistik-charts',
             plugins_url('dist/chartsIndex.js', plugin()->getBasename()),
-            ['jquery', 'wp-a11y'],
+            ['wp-a11y'],
             plugin()->getVersion(),
             true
         );
         wp_enqueue_style('rrze-statistik-charts');
         wp_enqueue_script('rrze-statistik-charts');
+    }
+
+    /**
+     * Renders a progressively enhanced tabbed dashboard with native type selection.
+     * Panels remain readable without JavaScript; tabs are revealed by the controller.
+     * @return string Escaped controls and server-rendered tab contents.
+     */
+    public static function dashboard()
+    {
+        $views = Language::getDashboardViews();
+        $preferences = Dashboard::getPreferences();
+        $html = '<div class="rrze-statistik-dashboard" data-statistik-dashboard>'
+            . '<div class="rrze-statistik-dashboard-controls" hidden>'
+            . '<div class="rrze-statistik-tabs" role="tablist" aria-label="'
+            . esc_attr(__('Statistics views', 'rrze-statistik')) . '">';
+        foreach ($views as $view => $label) {
+            $html .= '<button type="button" role="tab" id="rrze-statistik-tab-' . esc_attr($view)
+                . '" aria-controls="rrze-statistik-panel-' . esc_attr($view)
+                . '" data-statistik-tab="' . esc_attr($view) . '">' . esc_html($label) . '</button>';
+        }
+        $html .= '</div><div class="rrze-statistik-display-controls">'
+            . '<label for="rrze-statistik-display-type">' . esc_html__('Display type', 'rrze-statistik') . '</label>'
+            . '<select id="rrze-statistik-display-type" data-statistik-display-type>';
+        foreach (Language::getDisplayTypes() as $type => $label) {
+            $html .= '<option value="' . esc_attr($type) . '"'
+                . ($preferences['displayType'] === $type ? ' selected' : '') . '>' . esc_html($label) . '</option>';
+        }
+        $html .= '</select></div><p class="rrze-statistik-preferences-progress" role="status"></p>'
+            . '<div class="rrze-statistik-preferences-feedback" hidden>'
+            . '<p role="status" class="rrze-statistik-preferences-status"></p>'
+            . '<button type="button" class="button" data-statistik-retry>'
+            . esc_html__('Retry saving', 'rrze-statistik') . '</button></div></div>';
+        foreach ($views as $view => $label) {
+            $html .= '<section id="rrze-statistik-panel-' . esc_attr($view) . '" data-statistik-panel="'
+                . esc_attr($view) . '">';
+            if ($view === 'urls') {
+                $html .= '<h3>' . esc_html(Language::dashboardWidgetTitle('urls')) . '</h3>'
+                    . Analytics::getUrlDatasetTable()
+                    . '<p class="rrze-statistik-source"><a href="'
+                    . esc_url(preg_replace('/\.tab$/', '.html', Analytics::retrieveSiteUrl('url'))) . '">'
+                    . esc_html(Language::getSource()) . '</a></p>';
+            } else {
+                $html .= self::lineplot($view);
+            }
+            $html .= '</section>';
+        }
+        return $html . '</div>';
     }
 
     /**

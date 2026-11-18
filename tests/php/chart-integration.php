@@ -20,6 +20,11 @@ $state = [
     'options' => ['display_type' => 'column'],
     'transient' => [['year' => '2026', 'month' => '3', 'visits' => '0']],
     'acceptInline' => false,
+    'personal' => false,
+    'canRead' => true,
+    'widgets' => [],
+    'userUpdates' => [],
+    'storageFailure' => false,
 ];
 
 /**
@@ -292,7 +297,70 @@ function expect($condition, $message)
     }
 }
 
+/** @return array|false Current user's site-scoped preferences. */
+function get_user_option($name) { return $GLOBALS['state']['personal']; }
+
+/** @return int Authenticated user fixture. */
+function get_current_user_id() { return 12; }
+
+/** @param string $capability Required capability. @return bool Access fixture. */
+function current_user_can($capability) { return $capability === 'read' && $GLOBALS['state']['canRead']; }
+
+/**
+ * Record only site-scoped writes for the authenticated user.
+ * @param int $user User ID.
+ * @param string $key Preference name.
+ * @param array $value Preferences.
+ * @param bool $global Network-wide flag.
+ * @return bool Whether the fixture accepted the update.
+ */
+function update_user_option($user, $key, $value, $global)
+{
+    $GLOBALS['state']['userUpdates'][] = [$user, $key, $value, $global];
+    if ($GLOBALS['state']['storageFailure']) return false;
+    $GLOBALS['state']['personal'] = $value;
+    return true;
+}
+
+/** @param string $name Option key. @param array $value Options. @return void */
+function update_option($name, $value) { $GLOBALS['state']['options'] = $value; }
+
+/**
+ * Capture dashboard registration without a running WordPress instance.
+ * @param string $id Widget identifier.
+ * @param string $title Widget heading.
+ * @param callable $render Render callback.
+ * @param callable|null $configure Optional legacy configuration callback.
+ * @return void
+ */
+function wp_add_dashboard_widget($id, $title, $render, $configure = null)
+{
+    $GLOBALS['state']['widgets'][] = [$id, $title, $render, $configure];
+}
+
+/** @param string $action Expected nonce action. @param string $key POST key. @return void */
+function check_ajax_referer($action, $key)
+{
+    if ($action !== 'rrze_statistik_preferences' || ($_POST[$key] ?? '') !== 'valid') {
+        wp_send_json_error(null, 403);
+    }
+}
+
+/** @param mixed $data Response data. @param int $status HTTP status. @return void */
+function wp_send_json_error($data, $status) { throw new \RuntimeException('response', $status); }
+
+/** @param mixed $data Response data. @return void */
+function wp_send_json_success($data) { throw new \RuntimeException('response', 200); }
+
+/** @param Dashboard $dashboard Endpoint owner. @return int Captured HTTP response status. */
+function saveResponse($dashboard)
+{
+    try { $dashboard->savePreferences(); } catch (\RuntimeException $response) { return $response->getCode(); }
+    return 0;
+}
+
 require __DIR__ . '/../../includes/Language.php';
+require __DIR__ . '/../../includes/Dashboard.php';
 require __DIR__ . '/../../includes/Charts.php';
 require __DIR__ . '/../../includes/Transfer.php';
 require __DIR__ . '/../../includes/Analytics.php';
@@ -306,7 +374,7 @@ $charts->registerAssets('plugins.php');
 expect($state['scripts'] === [], 'Other administration pages must not receive chart assets.');
 $state['screen'] = (object) ['id' => 'dashboard'];
 $charts->registerAssets('index.php');
-expect($state['scripts']['rrze-statistik-charts'][1] === ['jquery', 'wp-a11y'], 'WordPress dependencies must be declared.');
+expect($state['scripts']['rrze-statistik-charts'][1] === ['wp-a11y'], 'WordPress dependencies must be declared.');
 expect(substr($state['scripts']['rrze-statistik-charts'][0], -19) === 'dist/chartsIndex.js', 'The neutral chart bundle must be registered.');
 
 $markup = Charts::lineplot('visits');
@@ -339,4 +407,50 @@ $leakedOutput = ob_get_clean();
 expect($leakedOutput === '', 'The rendering method must return rather than echo its missing-data notice.');
 expect(strpos($notice, '<script>') === false, 'Website names must be escaped in missing-data notices.');
 
-echo "PHP chart integration checks passed.\n";
+$dashboard = new Dashboard();
+foreach (['display_all', 'visits_and_sites', 'visits', 'hits', 'hosts', 'files', 'kbytes', 'urls'] as $legacyView) {
+    $state['options'] = ['data_type' => $legacyView, 'display_type' => 'bar'];
+    $state['widgets'] = [];
+    $dashboard->add_rrze_statistik_dashboard_widget();
+    expect(count($state['widgets']) === 1, 'Every legacy mode must register exactly one dashboard widget.');
+    expect($state['widgets'][0][3] === null, 'The separate Configure screen must be removed.');
+    $expectedView = in_array($legacyView, Dashboard::VIEWS, true) ? $legacyView : 'visits';
+    expect(Dashboard::getPreferences() === ['view' => $expectedView, 'displayType' => 'bar'], 'Legacy defaults must migrate predictably.');
+}
+$state['personal'] = ['view' => 'hosts', 'displayType' => 'column'];
+expect(Dashboard::getPreferences()['view'] === 'hosts', 'Personal views must override the legacy default.');
+$state['personal'] = ['view' => ['invalid'], 'displayType' => 'invalid'];
+$state['options'] = false;
+expect(Dashboard::getPreferences() === ['view' => 'visits', 'displayType' => 'spline'], 'Malformed options must fall back safely.');
+$markup = Charts::dashboard();
+expect(substr_count($markup, 'role="tab"') === 6, 'All five metrics and popular pages must have tabs.');
+expect(substr_count($markup, 'data-statistik-panel=') === 6, 'Each tab must have one panel.');
+expect(strpos($markup, 'rrze-statistik-dashboard-controls" hidden') !== false, 'Inactive JavaScript controls must be hidden in the fallback.');
+expect(isset($payload['descriptionsByType']['bar']['visits']), 'Changing chart type must have localized descriptions.');
+
+$_POST = ['nonce' => 'valid', 'view' => 'hits', 'displayType' => 'bar'];
+expect(saveResponse($dashboard) === 200, 'Valid selections must be saved.');
+expect($state['userUpdates'][0] === [12, 'rrze_statistik_preferences', ['view' => 'hits', 'displayType' => 'bar'], false], 'Writes must be restricted to the current user and site.');
+expect($state['options'] === false, 'Personal selections must not change the site-wide legacy options.');
+expect(saveResponse($dashboard) === 200, 'Saving an unchanged selection must succeed.');
+expect(count($state['userUpdates']) === 1, 'Unchanged selections must not trigger metadata writes again.');
+$before = count($state['userUpdates']);
+$_POST['view'] = ['visits'];
+expect(saveResponse($dashboard) === 400, 'Array inputs must be rejected.');
+$_POST['view'] = 'unknown';
+expect(saveResponse($dashboard) === 400, 'Unsupported views must be rejected.');
+$_POST['view'] = 'visits';
+$_POST['displayType'] = 'unknown';
+expect(saveResponse($dashboard) === 400, 'Unsupported chart types must be rejected.');
+$_POST['displayType'] = 'spline';
+$_POST['nonce'] = 'invalid';
+expect(saveResponse($dashboard) === 403, 'An invalid nonce must not write preferences.');
+$_POST['nonce'] = 'valid';
+$state['canRead'] = false;
+expect(saveResponse($dashboard) === 403, 'Users without dashboard access must not write preferences.');
+expect(count($state['userUpdates']) === $before, 'Rejected requests must not write any data.');
+$state['canRead'] = true;
+$state['storageFailure'] = true;
+expect(saveResponse($dashboard) === 500, 'A failed write must be reported rather than silently accepted.');
+
+echo "PHP chart and dashboard integration checks passed.\n";

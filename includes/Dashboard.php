@@ -4,260 +4,106 @@ namespace RRZE\Statistik;
 
 defined('ABSPATH') || exit;
 
-/**
- * Inititalizes the dashboard plugins and their basic behavior
- */
+/** Registers one statistics widget and stores each user's view preferences. */
 class Dashboard
 {
+    /** @var string[] Supported statistics tabs, including the popular-pages table. */
+    const VIEWS = ['visits', 'hits', 'hosts', 'files', 'kbytes', 'urls'];
+
+    /** @var string[] Supported chart representations. */
+    const DISPLAY_TYPES = ['spline', 'areaspline', 'column', 'bar'];
+
+    /** Registers dashboard rendering and the authenticated preference endpoint. */
     public function __construct()
     {
         add_action('wp_dashboard_setup', [$this, 'add_rrze_statistik_dashboard_widget']);
-        add_action('wp_ajax_widgetsave', [$this, 'rrze_statistik_save_widget']);
-        add_action('wp_ajax_showform', [$this, 'rrze_statistik_ajax_show_form']);
-
+        add_action('wp_ajax_rrze_statistik_save_preferences', [$this, 'savePreferences']);
         self::prefill_options();
     }
 
     /**
-     * Checks if Options are empty and sets default values
-     *
+     * Retains legacy defaults as the starting point for existing installations.
      * @return void
      */
     public static function prefill_options()
     {
-        $options = get_option('rrze_statistik_widget');
-
-        if ($options === false) {
-            $options = [];
-        }
-        
-        if (empty($options)) {
-            $options['display_type'] = 'spline';
-            $options['data_type'] = 'visits_and_sites';
-        
-            update_option('rrze_statistik_widget', $options);
+        if (!get_option('rrze_statistik_widget')) {
+            update_option('rrze_statistik_widget', [
+                'display_type' => 'spline', 'data_type' => 'visits_and_sites',
+            ]);
         }
     }
 
     /**
-     * Adds the Dashboard Widgets
-     *
+     * Resolves site-specific personal preferences with validated legacy defaults.
+     * Legacy combined views start on visits; all tabs remain available.
+     * @return array<string,string> Selected view and chart representation.
+     */
+    public static function getPreferences()
+    {
+        $legacy = get_option('rrze_statistik_widget');
+        $legacy = is_array($legacy) ? $legacy : [];
+        $personal = get_user_option('rrze_statistik_preferences');
+        $personal = is_array($personal) ? $personal : [];
+        $preferences = [];
+        foreach (['view' => self::VIEWS, 'displayType' => self::DISPLAY_TYPES] as $key => $allowed) {
+            $oldKey = $key === 'view' ? 'data_type' : 'display_type';
+            $fallback = in_array($legacy[$oldKey] ?? null, $allowed, true) ? $legacy[$oldKey] : $allowed[0];
+            $preferences[$key] = in_array($personal[$key] ?? null, $allowed, true) ? $personal[$key] : $fallback;
+        }
+        return $preferences;
+    }
+
+    /**
+     * Registers one widget, retaining the common visits widget's placement/visibility.
      * @return void
      */
     public function add_rrze_statistik_dashboard_widget()
     {
-        $option = get_option('rrze_statistik_widget');
-        switch ($option['data_type']) {
-            case 'display_all':
-                wp_add_dashboard_widget('rrze_statistik_widget_visits', Language::dashboardWidgetTitle('visits'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
-                wp_add_dashboard_widget('rrze_statistik_widget_hits', Language::dashboardWidgetTitle('hits'), [$this, 'load_rrze_statistik_dashboard_hits'], [$this, 'control_statistik_widgets']);
-                wp_add_dashboard_widget('rrze_statistik_widget_hosts', Language::dashboardWidgetTitle('hosts'), [$this, 'load_rrze_statistik_dashboard_hosts'], [$this, 'control_statistik_widgets']);
-                wp_add_dashboard_widget('rrze_statistik_widget_files', Language::dashboardWidgetTitle('files'), [$this, 'load_rrze_statistik_dashboard_files'], [$this, 'control_statistik_widgets']);
-                wp_add_dashboard_widget('rrze_statistik_widget_kbytes', Language::dashboardWidgetTitle('kbytes'), [$this, 'load_rrze_statistik_dashboard_kbytes'], [$this, 'control_statistik_widgets']);
-                wp_add_dashboard_widget('rrze_statistik_widget_urls', Language::dashboardWidgetTitle('urls'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
-                break;
-            case 'visits_and_sites':
-                wp_add_dashboard_widget('rrze_statistik_widget_visits', Language::dashboardWidgetTitle('visits'), [$this, 'load_rrze_statistik_dashboard_visits'], [$this, 'control_statistik_widgets']);
-                wp_add_dashboard_widget('rrze_statistik_widget_urls', Language::dashboardWidgetTitle('urls'), [$this, 'load_rrze_statistik_dashboard_urls'], [$this, 'control_statistik_widgets']);
-                break;
-            default:
-                wp_add_dashboard_widget('rrze_statistik_widget_' . $option['data_type'], Language::dashboardWidgetTitle($option['data_type']), [$this, 'load_rrze_statistik_dashboard_' . $option['data_type']], [$this, 'control_statistik_widgets']);
-                break;
-            }
+        wp_add_dashboard_widget(
+            'rrze_statistik_widget_visits',
+            __('Website statistics', 'rrze-statistik'),
+            [$this, 'render']
+        );
     }
 
     /**
-     * Defines Content of Dashboard Widget
-     *
+     * Publishes shared monthly data once and renders all available tab panels.
      * @return void
      */
-    function load_rrze_statistik_dashboard_visits()
+    public function render()
     {
-        $analytics = new Analytics();
-        echo ($analytics->getLinechart('visits'));
-    }
-
-    function load_rrze_statistik_dashboard_hits()
-    {
-        $analytics = new Analytics();
-        echo ($analytics->getLinechart('hits'));
-    }
-
-    function load_rrze_statistik_dashboard_hosts()
-    {
-        $analytics = new Analytics();
-        echo ($analytics->getLinechart('hosts'));
-    }
-
-    function load_rrze_statistik_dashboard_files()
-    {
-        $analytics = new Analytics();
-        echo ($analytics->getLinechart('files'));
-    }
-
-    function load_rrze_statistik_dashboard_kbytes()
-    {
-        $analytics = new Analytics();
-        echo ($analytics->getLinechart('kbytes'));
-    }
-
-    function load_rrze_statistik_dashboard_urls()
-    {
-        echo (Analytics::getUrlDatasetTable());
-        $source_link_target = Analytics::retrieveSiteURL('');
-        $source_link_target = substr($source_link_target, 0, -4);
-
-        if (!empty($source_link_target)) {
-            echo ('<p><a href="' . $source_link_target . '.html' . '" target="_blank">' . __('Source: Statistiken.rrze.fau.de', 'rrze-statistik') . '</a></p>');
-        }
+        Data::processLinechartDataset(Analytics::retrieveSiteUrl('webalizer.hist'));
+        echo Charts::dashboard();
     }
 
     /**
-     * Static Settings for Dashboard Widget - Overwritten by Ajax functions below
-     *
-     * @return void
+     * Saves allowlisted preferences only for the current user on the current site.
+     * @return void The WordPress JSON response terminates the request.
      */
-    function control_statistik_widgets()
+    public function savePreferences()
     {
-
-        if (!empty($_POST['rrze_statistik_widget'])) {
-            $control_list = array(
-                'display_type' => @$_POST['rrze_statistik_widget']['display_type'],
-                'data_type' => @$_POST['rrze_statistik_widget']['data_type'],
-            );
-
-            update_option('rrze_statistik_widget', $control_list);
+        check_ajax_referer('rrze_statistik_preferences', 'nonce');
+        if (!current_user_can('read')) {
+            wp_send_json_error(null, 403);
+            return;
         }
-
-
-
-        $options = get_option('rrze_statistik_widget');
-
-        // Helper::debug($options);
-
-?>
-        <table class="form-table">
-            <tr>
-                <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
-                <td>
-                    <select name="rrze_statistik_widget[display_type]">
-                        <option value="spline" <?php selected($options['display_type'], 'spline'); ?>><?php _e('Spline', 'rrze-statistik'); ?></option>
-                        <option value="areaspline" <?php selected($options['display_type'], 'areaspline'); ?>><?php _e('Area-spline', 'rrze-statistik'); ?></option>
-                        <option value="column" <?php selected($options['display_type'], 'column'); ?>><?php _e('Column', 'rrze-statistik'); ?></option>
-                        <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar', 'rrze-statistik'); ?></option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
-                <td>
-                    <select name="rrze_statistik_widget[data_type]">
-                        <option value="visits_and_sites" <?php selected($options['data_type'], 'visits_and_sites'); ?>><?php _e('Visits and popular sites', 'rrze-statistik'); ?></option>
-                        <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
-                        <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
-                        <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
-                        <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
-                        <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
-                        <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
-                        <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular sites', 'rrze-statistik'); ?>
-                        </option>
-                    </select>
-                </td>
-            </tr>
-        </table>
-    <?php
-    }
-
-    /**
-     * Ajax widget settings action used by the dashboard configuration script.
-     *
-     * @return void
-     */
-    function rrze_statistik_ajax_show_form()
-    {
-        $widget_id = 'rrze_statistik_dashboard_widget';
-        if (!empty($_POST['rrze_statistik_widget'])) {
-            $control_list = array(
-                'display_type' => @$_POST['rrze_statistik_widget']['display_type'],
-                'data_type' => @$_POST['rrze_statistik_widget']['data_type'],
-            );
-
-            update_option('rrze_statistik_widget', $control_list);
+        $view = $_POST['view'] ?? null;
+        $displayType = $_POST['displayType'] ?? null;
+        if (!in_array($view, self::VIEWS, true) || !in_array($displayType, self::DISPLAY_TYPES, true)) {
+            wp_send_json_error(null, 400);
+            return;
         }
-
-        $options = get_option('rrze_statistik_widget');
-
-    ?>
-        <form method="post" id="rrze_statistik_settings">
-            <table class="form-table">
-                <tr>
-                    <th scope="row"><?php _e('Display type', 'rrze-statistik'); ?></th>
-                    <td>
-                        <select name="rrze_statistik_widget[display_type]">
-                            <option value="spline" <?php selected($options['display_type'], 'spline'); ?>><?php _e('Line chart', 'rrze-statistik'); ?></option>
-                            <option value="areaspline" <?php selected($options['display_type'], 'areaspline'); ?>><?php _e('Area chart', 'rrze-statistik'); ?></option>
-                            <option value="column" <?php selected($options['display_type'], 'column'); ?>><?php _e('Column chart', 'rrze-statistik'); ?></option>
-                            <option value="bar" <?php selected($options['display_type'], 'bar'); ?>><?php _e('Bar chart', 'rrze-statistik'); ?></option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php _e('Data type', 'rrze-statistik'); ?></th>
-                    <td>
-                        <select name="rrze_statistik_widget[data_type]">
-                            <option value="visits_and_sites" <?php selected($options['data_type'], 'visits_and_sites'); ?>><?php _e('Visits and popular sites', 'rrze-statistik'); ?></option>
-                            <option value="visits" <?php selected($options['data_type'], 'visits'); ?>><?php _e('Visits', 'rrze-statistik'); ?></option>
-                            <option value="hits" <?php selected($options['data_type'], 'hits'); ?>><?php _e('Hits', 'rrze-statistik'); ?></option>
-                            <option value="hosts" <?php selected($options['data_type'], 'hosts'); ?>><?php _e('Hosts', 'rrze-statistik'); ?></option>
-                            <option value="files" <?php selected($options['data_type'], 'files'); ?>><?php _e('Files', 'rrze-statistik'); ?></option>
-                            <option value="kbytes" <?php selected($options['data_type'], 'kbytes'); ?>><?php _e('Kbytes', 'rrze-statistik'); ?></option>
-                            <option value="urls" <?php selected($options['data_type'], 'urls'); ?>><?php _e('Popular Sites', 'rrze-statistik'); ?></option>
-                            <option value="display_all" <?php selected($options['data_type'], 'display_all'); ?>><?php _e('Display all', 'rrze-statistik'); ?></option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="hidden" name="action" value="widgetsave" /><input type="hidden" name="widget_id" value="<?php echo $widget_id; ?>">
-                        <?php echo wp_nonce_field('edit-dashboard-widget_' . $widget_id, 'dashboard-widget-nonce', true, false); ?>
-                        <p class="submit"><input type="submit" name="submit" id="submit" style="display:inline-block" class="button button-primary" value="<?php _e('submit', 'rrze-statistik'); ?>"></p>
-                    </td>
-                </tr>
-            </table>
-        </form>
-<?php
-
-        die;
-    }
-
-    /**
-     * Ajax widget save action used by the dashboard configuration script.
-     *
-     * @return void
-     */
-    function rrze_statistik_save_widget()
-    {
-        // security check
-        check_ajax_referer('edit-dashboard-widget_' . $_POST['widget_id'], 'dashboard-widget-nonce');
-
-        if (!empty($_POST['widget_id'])) {
-            $updated_settings = $_POST['rrze_statistik_widget'];
-            update_option('rrze_statistik_widget', $updated_settings);
-        } else {
-            do_action('rrze.log.info', _('No widget_id in POST-Array for RRZE Statistik Widget', 'rrze-statistik'));
+        $preferences = ['view' => $view, 'displayType' => $displayType];
+        // Do not invoke metadata update hooks for an already confirmed selection.
+        if (get_user_option('rrze_statistik_preferences') !== $preferences) {
+            update_user_option(get_current_user_id(), 'rrze_statistik_preferences', $preferences, false);
         }
-
-        if (!empty(get_option('rrze_statistik_widget'))) {
-            $selector = $_POST['selector'];
-            $selectorDataType = substr($selector, 15);
-
-            $analytics = new Analytics();
-            echo ($analytics->getLinechart($selectorDataType));
-        } else {
-            _e('No settings found.', 'rrze-statistik');
-            do_action('rrze.log.info', _('No settings found for rrze-statistik dashboard display after AJAX request.', 'rrze-statistik'));
+        // A false update result also means unchanged data; compare the stored value.
+        if (get_user_option('rrze_statistik_preferences') !== $preferences) {
+            wp_send_json_error(null, 500);
+            return;
         }
-
-        die;
+        wp_send_json_success($preferences);
     }
 }
