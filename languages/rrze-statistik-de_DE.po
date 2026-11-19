@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: RRZE Statistics 1.1.16\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-statistik\n"
-"POT-Creation-Date: 2026-11-18T13:40:36+00:00\n"
+"POT-Creation-Date: 2026-11-19T08:34:49+00:00\n"
 "PO-Revision-Date: 2026-11-18\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -61,33 +61,44 @@ msgstr ""
 "Es kann mehrere Tage dauern, bevor persönliche Statistiken Ihrer Webseite "
 "( %1$s ) im Dashboard dargestellt werden."
 
-#: includes/Analytics.php:82
-msgid "No data available."
-msgstr "Keine Daten verfügbar."
+#. translators: %s: Number of resources in the ranking.
+#: includes/Analytics.php:104
+#, php-format
+msgid "Top %s"
+msgstr "Top %s"
 
-#: includes/Analytics.php:112
+#: includes/Analytics.php:115
+msgid "Home page"
+msgstr "Startseite"
+
+#. translators: %s: Position in the resource ranking.
+#: includes/Analytics.php:119
+#, php-format
+msgid "Rank %s"
+msgstr "Rang %s"
+
+#: includes/Analytics.php:140
+msgid "Sites"
+msgstr "Seiten"
+
+#: includes/Analytics.php:140
+msgid "Media"
+msgstr "Mediendateien"
+
+#: includes/Analytics.php:140
+msgid "Documents"
+msgstr "Dokumente"
+
+#: includes/Analytics.php:144 includes/Language.php:211
+msgid "Requests"
+msgstr "Zugriffe"
+
+#: includes/Analytics.php:149
 msgid ""
 "It might take a few weeks until the summary is displayed on your dashboard."
 msgstr ""
 "Es kann einige Wochen dauern, bis die Zusammenfassung auf Ihrem Dashboard "
 "angezeigt wird."
-
-#: includes/Analytics.php:117 includes/Analytics.php:124
-#: includes/Analytics.php:131 includes/Language.php:71
-msgid "Hits"
-msgstr "Hits"
-
-#: includes/Analytics.php:117
-msgid "Sites"
-msgstr "Seiten"
-
-#: includes/Analytics.php:124
-msgid "Media"
-msgstr "Mediendateien"
-
-#: includes/Analytics.php:131
-msgid "Documents"
-msgstr "Dokumente"
 
 #: includes/Charts.php:72
 msgid "Statistics views"
@@ -180,6 +191,10 @@ msgstr "Besuche im zeitlichen Verlauf"
 #: includes/Language.php:68
 msgid " Visits / Month"
 msgstr " Besuche / Monat"
+
+#: includes/Language.php:71
+msgid "Hits"
+msgstr "Hits"
 
 #: includes/Language.php:72 includes/Language.php:105
 msgid "Hits over time"
@@ -320,10 +335,6 @@ msgstr "Monatswerte von Januar %1$d bis Dezember %2$d"
 #: includes/Language.php:200
 msgid "Copy CSV to clipboard"
 msgstr "Als CSV in Zwischenablage kopieren"
-
-#: includes/Language.php:211
-msgid "Requests"
-msgstr "Zugriffe"
 
 #: includes/Language.php:214
 msgid "Transfer"
@@ -484,6 +495,9 @@ msgstr ""
 #, php-format
 msgid "Plugins: %1$s: %2$s"
 msgstr "Plugins: %1$s: %2$s"
+
+#~ msgid "No data available."
+#~ msgstr "Keine Daten verfügbar."
 
 #~ msgid "Spline"
 #~ msgstr "Liniendiagramm"

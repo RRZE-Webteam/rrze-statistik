@@ -66,75 +66,89 @@ class Analytics
     }
 
     /**
-     * Creates a html table for use within the dashboard
-     *
-     * @param array $array
-     * @param string $array_key_1
-     * @param string $array_key_2
-     * @param string $head_desc_1
-     * @param string $head_desc_2
-     * @return string
+     * Renders a ranked resource table inside a native, keyboard-operable disclosure.
+     * Full resource paths remain visible; only the homepage gets a descriptive label.
+     * @param array $array Source rows containing request counts and resource paths.
+     * @param string|int $array_key_1 Request-count key.
+     * @param string|int $array_key_2 Resource-path key.
+     * @param string $head_desc_1 Localized count-column heading.
+     * @param string $head_desc_2 Localized category and resource-column heading.
+     * @param bool $expanded Whether the category is initially open.
+     * @return string Escaped disclosure and semantic table, or an empty string without valid rows.
      */
-    public static function getTwoDimensionalHtmlTable($array, $array_key_1, $array_key_2, $head_desc_1, $head_desc_2)
+    public static function getTwoDimensionalHtmlTable($array, $array_key_1, $array_key_2, $head_desc_1, $head_desc_2, $expanded = true)
     {
-        //check if $array is an Array
-        if (!is_array($array)) {
-            return __('No data available.', 'rrze-statistik');
-        } else {
-            $html = '<div class="rrze-statistik-table"><table><caption>' . esc_html($head_desc_2)
-                . '</caption><thead><tr><th scope="col">' . esc_html($head_desc_1)
-                . '</th><th scope="col">' . esc_html($head_desc_2) . '</th></tr></thead><tbody>';
-
-            foreach ($array as $value) {
-                //only execute if $value or $value[array_key_1] or $value[array_key_2] isn't empty
-                if (is_array($value) && isset($value[$array_key_1], $value[$array_key_2])
-                    && is_scalar($value[$array_key_1]) && is_scalar($value[$array_key_2])) {
-                    $html .= '<tr><td>' . esc_html($value[$array_key_1]) . '</td><td><a href="'
-                        . esc_url($value[$array_key_2]) . '">' . esc_html($value[$array_key_2]) . '</a></td></tr>';
-                }
-            }
-            $html .= '</tbody></table></div>';
-            return $html;
+        if (!is_array($array)) return '';
+        $rows = [];
+        foreach ($array as $value) {
+            if (!is_array($value) || !isset($value[$array_key_1], $value[$array_key_2])
+                || !is_scalar($value[$array_key_1]) || !is_string($value[$array_key_2])) continue;
+            $hits = filter_var($value[$array_key_1], FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+            $path = trim($value[$array_key_2]);
+            if ($hits === false || $path === '') continue;
+            $rows[] = ['hits' => $hits, 'path' => $path, 'order' => count($rows)];
         }
+        if (!$rows) return '';
+        /**
+         * Sort by requests while preserving source order for ties on PHP 7.4 too.
+         * @param array $first First normalized resource.
+         * @param array $second Second normalized resource.
+         * @return int Relative sort order.
+         */
+        $compare = static function ($first, $second) {
+            return ($second['hits'] <=> $first['hits']) ?: ($first['order'] <=> $second['order']);
+        };
+        usort($rows, $compare);
+        $topLabel = sprintf(
+            /* translators: %s: Number of resources in the ranking. */
+            __('Top %s', 'rrze-statistik'), number_format_i18n(count($rows))
+        );
+        $html = '<details class="rrze-statistik-ranking"' . ($expanded ? ' open' : '') . '>'
+            . '<summary><span class="rrze-statistik-ranking-title">' . esc_html($head_desc_2) . '</span>'
+            . '<span class="rrze-statistik-ranking-count">' . esc_html($topLabel) . '</span></summary>'
+            . '<div class="rrze-statistik-table"><table><caption>' . esc_html($head_desc_2) . '</caption>'
+            . '<colgroup><col><col class="rrze-statistik-hits-column"></colgroup>'
+            . '<thead><tr><th scope="col">' . esc_html($head_desc_2) . '</th>'
+            . '<th scope="col" class="rrze-statistik-hits">' . esc_html($head_desc_1) . '</th></tr></thead><tbody>';
+        foreach ($rows as $index => $row) {
+            $url = esc_url($row['path'], ['http', 'https']);
+            $label = $row['path'] === '/' ? __('Home page', 'rrze-statistik') : $row['path'];
+            $resource = $url !== '' ? '<a href="' . $url . '">' . esc_html($label) . '</a>' : '<span>' . esc_html($label) . '</span>';
+            $rankLabel = sprintf(
+                /* translators: %s: Position in the resource ranking. */
+                __('Rank %s', 'rrze-statistik'), number_format_i18n($index + 1)
+            );
+            $html .= '<tr><th scope="row"><div class="rrze-statistik-resource">'
+                . '<span class="rrze-statistik-rank"><span class="rrze-statistik-ranking-sr">'
+                . esc_html($rankLabel) . '</span><span aria-hidden="true">' . esc_html($index + 1) . '</span></span>'
+                . '<span class="rrze-statistik-resource-path">' . $resource . '</span></div></th>'
+                . '<td class="rrze-statistik-hits"><span class="rrze-statistik-hit-count">'
+                . esc_html(number_format_i18n($row['hits'])) . '</span></td></tr>';
+        }
+        return $html . '</tbody></table></div></details>';
     }
 
     /**
-     * Gets the html table out of data of the popular sites and images stored inside wp options
+     * Renders cached resource rankings, initially expanding the sites category.
      *
-     * @return string
+     * @return string Escaped ranking disclosures or a data-availability notice.
      */
     public static function getUrlDatasetTable()
     {
-        $output = '';  // Initialize $output
         $data = get_transient('rrze_statistik_data_url');
-
-        if (!is_array($data) || !array_filter($data)) {
-            return '<p>' . esc_html__('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</p>';
-        } else {
-            if (array_key_exists(0, $data)) {
-                $top_url = $data[0];
-                if (!empty($top_url)) {
-                    $table1 = self::getTwoDimensionalHtmlTable($top_url, 0, 1, __('Hits', 'rrze-statistik'), __('Sites', 'rrze-statistik'));
-                    $output = $table1;
-                }
+        $output = '';
+        $categories = [__('Sites', 'rrze-statistik'), __('Media', 'rrze-statistik'), __('Documents', 'rrze-statistik')];
+        if (is_array($data)) {
+            foreach ($categories as $index => $label) {
+                $output .= self::getTwoDimensionalHtmlTable(
+                    $data[$index] ?? [], 0, 1, __('Requests', 'rrze-statistik'), $label, $index === 0
+                );
             }
-            if (array_key_exists(1, $data)) {
-                $top_images = $data[1];
-                if (!empty($top_images)) {
-                    $table2 = self::getTwoDimensionalHtmlTable($top_images, 0, 1, __('Hits', 'rrze-statistik'), __('Media', 'rrze-statistik'));
-                    $output .= $table2;
-                }
-            }
-            if (array_key_exists(2, $data)) {
-                $top_pdf = $data[2];
-                if (!empty($top_pdf)) {
-                    $table3 = self::getTwoDimensionalHtmlTable($top_pdf, 0, 1, __('Hits', 'rrze-statistik'), __('Documents', 'rrze-statistik'));
-                    $output .= $table3;
-                }
-            }
-
-            return $output;
         }
+        if ($output === '') {
+            return '<p>' . esc_html__('It might take a few weeks until the summary is displayed on your dashboard.', 'rrze-statistik') . '</p>';
+        }
+        return $output;
     }
 
     /**

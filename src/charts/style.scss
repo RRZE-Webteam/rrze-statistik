@@ -284,14 +284,91 @@
   }
 }
 
-/* Preserve the unrelated popular-sites tables in the same dashboard bundle. */
-.rrze-statistik-table {
-  overflow-x: auto;
-  font-size: 1em;
-  table { width: 100%; border-collapse: collapse; }
-  th, td { padding: .5em; border: 1px solid #8c8f94; text-align: left; }
-  thead, tr:nth-child(even) { background: #f6f7f7; }
-  a { overflow-wrap: anywhere; }
+/* Native disclosures keep the rankings usable without JavaScript. */
+.rrze-statistik-ranking {
+  margin: 14px 0;
+  border: 1px solid #d5dde8;
+  border-radius: 10px;
+  background: #fff;
+  color: #344054;
+  > summary {
+    padding: 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #344054;
+    font-size: 13px;
+    line-height: 22px;
+    cursor: pointer;
+    &::marker { color: #667085; }
+    &:hover { background: #eef3f8; }
+  }
+  &[open] > summary { border-bottom: 1px solid #e4e9f0; border-radius: 10px 10px 0 0; }
+  .rrze-statistik-ranking-title { margin-left: 4px; font-weight: 600; }
+  .rrze-statistik-ranking-count {
+    float: right;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 12px;
+    background: #e9eff6;
+    color: #475467;
+    font-size: 11px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .rrze-statistik-table { padding: 0 12px 4px; }
+  table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12px; }
+  caption, .rrze-statistik-ranking-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  th, td { padding: 11px 0; border: 0; border-bottom: 1px solid #e4e9f0; vertical-align: top; text-align: left; }
+  thead th { font-size: 11px; font-weight: 500; color: #526078; }
+  tbody th { font-weight: 400; }
+  tbody tr:last-child > * { border-bottom: 0; }
+  tbody tr:hover, tbody tr:focus-within { background: #f8fafc; }
+  .rrze-statistik-hits-column { width: 7em; }
+  .rrze-statistik-hits { text-align: right; }
+  .rrze-statistik-hit-count {
+    display: inline-block;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 3px 6px;
+    border-radius: 5px;
+    background: #eef3f8;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  .rrze-statistik-resource { display: flex; gap: 9px; align-items: flex-start; padding-right: 8px; }
+  .rrze-statistik-rank {
+    display: inline-flex;
+    flex: 0 0 22px;
+    justify-content: center;
+    align-items: center;
+    height: 22px;
+    border-radius: 6px;
+    background: #f2f5fa;
+    color: #526078;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  tbody tr:first-child .rrze-statistik-rank { background: #e5f0fa; color: #005a9c; font-weight: 600; }
+  .rrze-statistik-resource-path { min-width: 0; padding-top: 2px; line-height: 1.5; overflow-wrap: anywhere; }
+  a {
+    display: block;
+    color: #005a9c;
+    text-decoration: underline;
+    text-decoration-color: #b2c9dd;
+    text-underline-offset: 3px;
+    &:hover { color: #003e6d; text-decoration-color: currentColor; }
+  }
+  a:focus-visible, > summary:focus-visible { outline: 3px solid #005a9c; outline-offset: 2px; }
 }
 
 @media (forced-colors: active) {
@@ -425,10 +502,6 @@
     border-radius: 50%;
     vertical-align: middle;
     animation: rrze-statistik-saving .8s linear infinite;
-  }
-  .rrze-statistik-table {
-    margin: 16px 0;
-    caption { padding: 0 0 8px; text-align: left; font-weight: 600; }
   }
   [role="tab"]:focus-visible, [role="tabpanel"]:focus-visible,
   .rrze-statistik-display-controls select:focus-visible {

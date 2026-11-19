@@ -10,6 +10,8 @@ Die Tab-Leiste ist mit Pfeil links/rechts sowie Pos1/Ende bedienbar. Bereits bes
 
 Über die Jahresauswahl und den Monatsregler lassen sich einzelne Werte per Tastatur erkunden. Jahresreihen können über die Legende ein- und ausgeblendet werden. Die aufklappbare Datentabelle enthält dieselben Werte wie das Diagramm. Fehlende Werte werden als fehlend ausgegeben; echte Nullen bleiben erhalten.
 
+Der Tab „Top-Seiten“ zeigt Seiten, Medien und Dokumente als nach Zugriffen geordnete Ranglisten. Seiten sind zunächst aufgeklappt; weitere Kategorien lassen sich auch per Tastatur öffnen. Zugriffszahlen werden gemäß WordPress-Sprache formatiert, lange Pfade vollständig umgebrochen und die Startseite verständlich benannt. Die Ausgabe bleibt eine semantische Tabelle und funktioniert ohne JavaScript.
+
 CSV lässt sich kopieren oder herunterladen; SVG und PNG enthalten Titel, Zeitraum, Einheit, Legende und Quelle. Exporte berücksichtigen die sichtbaren Jahresreihen. CSV verwendet Kommas und unveränderte Zahlenwerte, bei fehlenden Werten leere Felder. Die Datei enthält einen UTF-8-BOM für Tabellenprogramme; kopierter Text nicht. SVG ist 1.200 Pixel breit, PNG 2.400 Pixel. PDF und XLSX sind nicht Bestandteil dieser Version.
 
 ### Entwicklung und Prüfung

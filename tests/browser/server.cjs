@@ -1,6 +1,8 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const {execFileSync} = require('node:child_process');
+const popularPagesMarkup = execFileSync('php', [path.join(__dirname, '../php/popular-pages-fixture.php')], {encoding: 'utf8'});
 
 const metrics = ['visits', 'hits', 'hosts', 'files', 'kbytes'];
 
@@ -47,7 +49,7 @@ function dashboardMarkup() {
         <div class="rrze-statistik-preferences-feedback" hidden><p role="status" class="rrze-statistik-preferences-status"></p>
         <button type="button" data-statistik-retry>Retry saving</button></div></div>
         ${views.map((view) => `<section id="rrze-statistik-panel-${view}" data-statistik-panel="${view}">
-            ${view === 'urls' ? '<h3>Popular sites and files</h3><div class="rrze-statistik-table"><table><caption>Sites</caption><thead><tr><th scope="col">Hits</th><th scope="col">Sites</th></tr></thead><tbody><tr><td>42</td><td><a href="https://example.test/">Example site</a></td></tr></tbody></table></div>'
+            ${view === 'urls' ? `<h3>Popular sites and files</h3>${popularPagesMarkup}`
                 : `<div class="rrze-statistik-chart" id="${view}" data-statistik-chart data-metric="${view}">Loading chart…</div>`}
         </section>`).join('')}</div>`;
 }

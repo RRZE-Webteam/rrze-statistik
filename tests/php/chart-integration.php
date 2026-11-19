@@ -95,11 +95,19 @@ function esc_attr($text) { return esc_html($text); }
 /**
 
  * @param string $url URL to escape.
+ * @param array $protocols Allowed URL schemes.
 
  * @return string Escaped URL.
 
  */
-function esc_url($url) { return esc_html($url); }
+function esc_url($url, $protocols = ['http', 'https'])
+{
+    $scheme = parse_url($url, PHP_URL_SCHEME);
+    return $scheme && !in_array(strtolower($scheme), $protocols, true) ? '' : esc_html($url);
+}
+
+/** @param int $value Request count or rank. @return string German fixture formatting. */
+function number_format_i18n($value) { return number_format($value, 0, ',', '.'); }
 
 /**
 
@@ -452,5 +460,26 @@ expect(count($state['userUpdates']) === $before, 'Rejected requests must not wri
 $state['canRead'] = true;
 $state['storageFailure'] = true;
 expect(saveResponse($dashboard) === 500, 'A failed write must be reported rather than silently accepted.');
+
+$ranking = Analytics::getTwoDimensionalHtmlTable([
+    [0, '/zero/'], [10013, '/'], [10, '/first-tie/'], [10, '/second-tie/'],
+    ['invalid', '/missing/'], [-1, '/negative/'], [2, '/?q=<script>&page=1'], [1, 'javascript:alert(1)'],
+], 0, 1, 'Requests', 'Sites');
+expect(strpos($ranking, '<details class="rrze-statistik-ranking" open>') !== false, 'Pages must start expanded.');
+expect(strpos($ranking, 'Top 6') !== false, 'The count must describe valid rows only.');
+expect(strpos($ranking, '10.013') !== false, 'Request counts must use WordPress number formatting.');
+expect(strpos($ranking, 'Home page') !== false, 'The root resource must have a descriptive link name.');
+expect(strpos($ranking, 'Home page') < strpos($ranking, '/first-tie/'), 'Rankings must be sorted by requests.');
+expect(strpos($ranking, '/first-tie/') < strpos($ranking, '/second-tie/'), 'Equal counts must retain source order.');
+expect(strpos($ranking, '/zero/') !== false, 'Zero requests must remain valid data.');
+expect(strpos($ranking, '<script>') === false && strpos($ranking, 'href="javascript:') === false, 'Resource labels and links must be safe HTML.');
+expect(substr_count($ranking, 'scope="row"') === 6, 'Each resource must be a semantic row heading.');
+expect(Analytics::getTwoDimensionalHtmlTable([], 0, 1, 'Requests', 'Sites') === '', 'Empty groups must not create empty disclosures.');
+$state['transient'] = [[[5, '/']], [[3, '/image.png']], [[2, '/report.pdf']]];
+$rankings = Analytics::getUrlDatasetTable();
+expect(substr_count($rankings, '<details') === 3, 'Pages, media and documents must each have a category.');
+expect(substr_count($rankings, 'class="rrze-statistik-ranking" open') === 1, 'Secondary categories must start collapsed.');
+$state['transient'] = [[['invalid', '/bad/']]];
+expect(strpos(Analytics::getUrlDatasetTable(), 'It might take a few weeks') !== false, 'Invalid cached data must retain a useful empty state.');
 
 echo "PHP chart and dashboard integration checks passed.\n";

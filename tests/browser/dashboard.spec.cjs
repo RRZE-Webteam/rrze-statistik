@@ -157,6 +157,37 @@ test('unchanged selections are skipped and rapid changes produce one short-lived
     expect(requests).toHaveLength(1);
 });
 
+test('popular resources expose ranked tables and keyboard disclosures without narrow-layout overflow', async ({page}, testInfo) => {
+    await page.setViewportSize({width: 410, height: 1200});
+    const root = await openDashboard(page);
+    await root.getByRole('tab', {name: 'Popular pages'}).click();
+    const rankings = root.locator('.rrze-statistik-ranking');
+    const sites = root.getByRole('table', {name: 'Sites', exact: true});
+    await expect(rankings).toHaveCount(3);
+    await expect(root.getByRole('table')).toHaveCount(1);
+    await expect(sites.getByRole('columnheader')).toHaveText(['Sites', 'Requests']);
+    await expect(sites.getByRole('rowheader')).toHaveCount(6);
+    await expect(sites.getByRole('cell').first()).toHaveText('10,013');
+    await expect(sites.getByRole('link', {name: 'Home page'})).toHaveAttribute('href', '/');
+    await expect(sites.getByRole('cell').last()).toHaveText('0');
+    await root.screenshot({path: testInfo.outputPath('top-pages-preview.png')});
+
+    await page.setViewportSize({width: 320, height: 900});
+    for (const index of [1, 2]) {
+        const summary = rankings.nth(index).locator('summary');
+        await summary.focus();
+        await summary.press('Enter');
+        await expect(rankings.nth(index).getByRole('table')).toBeVisible();
+        await expect(summary).toBeFocused();
+    }
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);
+    const accessibility = await new AxeBuilder({page}).include('[data-statistik-panel="urls"]')
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+    expect(accessibility.violations).toEqual([]);
+    await rankings.nth(1).locator('summary').press('Enter');
+    await expect(root.getByRole('table', {name: 'Media', exact: true})).toHaveCount(0);
+});
+
 test('single-widget preview, narrow tabs and enlarged layout', async ({page}, testInfo) => {
     await page.setViewportSize({width: 410, height: 1300});
     const root = await openDashboard(page);
