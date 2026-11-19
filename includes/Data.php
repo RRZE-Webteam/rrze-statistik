@@ -334,18 +334,17 @@ class Data
 
 
     /**
-     * Uses a set of functions to fetch webalizer.hist, process the data, set description 
-     * tags for the charts and send the combined information to the JS file
+     * Publishes cached monthly statistics and their translated chart labels.
      *
-     * @param string $url
-     * @return boolean returns true if successful.
+     * @param string $url Source URL retained for compatibility; data comes from the cache.
+     * @return bool Whether a cached array of monthly statistics is available.
      */
     public static function processLinechartDataset($url)
     {
         $data = get_transient('rrze_statistik_data_webalizer_hist');
 
-        if ($data === false) {
-            Transfer::sendToJs('undefined', 'undefined', 'undefined', 'undefined', 'undefined');
+        if (!is_array($data)) {
+            Transfer::sendToJs([], Language::getAbscissa(), Language::getLanguagePackage());
             return false;
         } else {
             Transfer::sendToJs($data, Language::getAbscissa(), Language::getLanguagePackage());

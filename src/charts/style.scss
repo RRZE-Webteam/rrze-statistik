@@ -1,0 +1,532 @@
+.rrze-statistik-chart {
+  min-width: 0;
+  max-width: 100%;
+  color: #1d2327;
+  container-type: inline-size;
+
+  .rrze-statistik-heading { margin: 0 0 .75rem; font-size: 1.1rem; }
+  .rrze-statistik-description, .rrze-statistik-summary { margin: .65rem 0; line-height: 1.55; }
+  .rrze-statistik-description { color: #475467; }
+  .rrze-statistik-summary { font-size: 12px; color: #526078; }
+  .rrze-statistik-svg { display: block; max-width: 100%; height: auto; }
+  .rrze-statistik-plot { min-width: 0; }
+  .rrze-statistik-point-targets { cursor: crosshair; }
+  .rrze-statistik-render-error { padding: .75rem; }
+
+  .rrze-statistik-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 16px;
+    padding: 0;
+    border: 0;
+    legend { margin-bottom: 8px; font-size: 12px; color: #526078; font-weight: 500; }
+  }
+
+  .rrze-statistik-year-toggle.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 34px;
+    padding: 3px 12px;
+    border: 1px solid #c3cbd7;
+    border-radius: 18px;
+    background: #fff;
+    color: #344054;
+    box-shadow: 0 1px 2px rgb(16 24 40 / 4%);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    transition: background-color .15s, border-color .15s;
+    &:hover { background: #f2f5fa; border-color: #8290a6; color: #1d2939; }
+    &[aria-pressed="false"] {
+      text-decoration: line-through;
+      background: #f8fafc;
+      color: #667085;
+      .rrze-statistik-swatch { opacity: .45; }
+    }
+    &[aria-disabled="true"] { cursor: default; }
+  }
+
+  .rrze-statistik-swatch {
+    display: inline-block;
+    width: 26px;
+    height: 12px;
+    background: var(--series-color);
+    border: 1px solid var(--series-color);
+  }
+  .rrze-statistik-swatch-diagonal {
+    background: repeating-linear-gradient(135deg, var(--series-color) 0 4px, #fff 4px 5px, var(--series-color) 5px 8px);
+  }
+  .rrze-statistik-swatch-dots {
+    background-color: var(--series-color);
+    background-image: radial-gradient(#fff 1px, transparent 1.5px);
+    background-size: 6px 6px;
+  }
+  .rrze-statistik-swatch-line {
+    height: 0;
+    border: 0;
+    border-top: 3px solid var(--series-color);
+    background: none;
+    &.rrze-statistik-swatch-diagonal { border-top-style: dashed; }
+    &.rrze-statistik-swatch-dots { border-top-style: dotted; }
+  }
+
+  /* Keep the complete reading order for assistive technology while the visual
+     value is split into date, number, and unit. */
+  .rrze-statistik-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .rrze-statistik-explorer {
+    --explorer-accent: #005a9c;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #d5dde8;
+    border-radius: 12px;
+  }
+  .rrze-statistik-explorer-header {
+    display: grid;
+    grid-template-columns: minmax(88px, 104px) minmax(0, 1fr);
+    align-items: start;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .rrze-statistik-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    label { font-size: 12px; line-height: 1.4; color: #526078; font-weight: 500; }
+  }
+  .rrze-statistik-select-wrapper {
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      right: 14px;
+      top: 17px;
+      width: 6px;
+      height: 6px;
+      border-right: 1.5px solid #475467;
+      border-bottom: 1.5px solid #475467;
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+  }
+  .rrze-statistik-field .rrze-statistik-year-select {
+    appearance: none;
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-height: 42px;
+    margin: 0;
+    padding: 8px 32px 8px 12px;
+    border: 1px solid #8290a6;
+    border-radius: 8px;
+    background: #fff;
+    color: #1d2939;
+    box-shadow: 0 1px 2px rgb(16 24 40 / 4%);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px;
+    cursor: pointer;
+    &:hover { border-color: var(--explorer-accent); }
+    &:focus { border-color: var(--explorer-accent); box-shadow: none; }
+  }
+  .rrze-statistik-current-value {
+    display: block;
+    min-width: 0;
+    margin: 0;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .rrze-statistik-value-visual { display: flex; flex-direction: column; align-items: end; gap: 3px; }
+  .rrze-statistik-selected-date { font-size: 12px; line-height: 1.4; color: #526078; }
+  .rrze-statistik-value-number {
+    max-width: 100%;
+    color: #1d2939;
+    font-size: 28px;
+    font-size: clamp(22px, 8cqi, 30px);
+    line-height: 1.15;
+    letter-spacing: -.035em;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+  }
+  .rrze-statistik-value-unit { color: #526078; font-size: 12px; line-height: 1.3; }
+  .rrze-statistik-value-missing .rrze-statistik-value-number { font-size: 15px; letter-spacing: normal; line-height: 1.4; }
+  .rrze-statistik-month-field { gap: 4px; }
+  .rrze-statistik-month-slider {
+    --month-progress: 0%;
+    appearance: none;
+    display: block;
+    width: 100%;
+    height: 28px;
+    min-height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    accent-color: var(--explorer-accent);
+    &:focus { box-shadow: none; }
+    &::-webkit-slider-runnable-track {
+      height: 5px;
+      border-radius: 5px;
+      background: linear-gradient(to right, var(--explorer-accent) var(--month-progress), #c4cddb var(--month-progress));
+    }
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      margin-top: -6.5px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--explorer-accent);
+      box-shadow: 0 0 0 1px var(--explorer-accent), 0 2px 4px rgb(16 24 40 / 18%);
+    }
+    &::-moz-range-track {
+      height: 5px;
+      border-radius: 5px;
+      background: linear-gradient(to right, var(--explorer-accent) var(--month-progress), #c4cddb var(--month-progress));
+    }
+    &::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      background: var(--explorer-accent);
+      box-shadow: 0 0 0 1px var(--explorer-accent), 0 2px 4px rgb(16 24 40 / 18%);
+    }
+  }
+  .rrze-statistik-month-scale {
+    display: flex;
+    justify-content: space-between;
+    margin: -2px 9px 0;
+    padding-bottom: 15px;
+    color: #526078;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .rrze-statistik-month-tick {
+    position: relative;
+    width: 1px;
+    height: 4px;
+    border-top: 4px solid #aab5c5;
+    font-size: 0;
+    text-indent: -9px;
+    &:nth-child(1), &:nth-child(6), &:nth-child(12) { font-size: 10px; }
+  }
+  .rrze-statistik-data { margin: 14px 0; }
+  .rrze-statistik-data > summary {
+    padding: 8px 0;
+    color: #344054;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    &::marker { color: #667085; }
+    &:hover { color: #005a9c; }
+  }
+  .rrze-statistik-table-scroll { overflow-x: auto; max-width: 100%; }
+  .rrze-statistik-data-table {
+    border-collapse: collapse;
+    width: 100%;
+    caption { padding: .6rem 0; text-align: left; font-weight: 600; }
+    th, td { padding: .5rem; border: 1px solid #8c8f94; text-align: right; }
+    th:first-child { text-align: left; }
+    thead { background: #f0f0f1; }
+    tbody tr:nth-child(even) { background: #f6f7f7; }
+  }
+  .rrze-statistik-export-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid #e4e9f0;
+    .button {
+      min-height: 34px;
+      padding: 4px 10px;
+      border: 1px solid #c3cbd7;
+      border-radius: 7px;
+      background: #fff;
+      color: #344054;
+      box-shadow: none;
+      font-family: inherit;
+      font-size: 12px;
+      line-height: 24px;
+      white-space: normal;
+      cursor: pointer;
+      &:hover { background: #f2f5fa; border-color: #8290a6; color: #1d2939; }
+      &[aria-disabled="true"] { opacity: .65; cursor: progress; }
+    }
+  }
+  .rrze-statistik-export-status { flex-basis: 100%; margin: 0; font-size: 12px; line-height: 1.5; }
+  .rrze-statistik-export-status:empty { display: none; }
+  .rrze-statistik-source { overflow-wrap: anywhere; }
+
+  button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible,
+  a:focus-visible, .rrze-statistik-table-scroll:focus-visible {
+    outline: 3px solid #005a9c;
+    outline-offset: 3px;
+  }
+}
+
+/* Native disclosures keep the rankings usable without JavaScript. */
+.rrze-statistik-ranking {
+  margin: 14px 0;
+  border: 1px solid #d5dde8;
+  border-radius: 10px;
+  background: #fff;
+  color: #344054;
+  > summary {
+    padding: 12px;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #344054;
+    font-size: 13px;
+    line-height: 22px;
+    cursor: pointer;
+    &::marker { color: #667085; }
+    &:hover { background: #eef3f8; }
+  }
+  &[open] > summary { border-bottom: 1px solid #e4e9f0; border-radius: 10px 10px 0 0; }
+  .rrze-statistik-ranking-title { margin-left: 4px; font-weight: 600; }
+  .rrze-statistik-ranking-count {
+    float: right;
+    padding: 0 8px;
+    margin-left: 8px;
+    border-radius: 12px;
+    background: #e9eff6;
+    color: #475467;
+    font-size: 11px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .rrze-statistik-table { padding: 0 12px 4px; }
+  table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12px; }
+  caption, .rrze-statistik-ranking-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  th, td { padding: 11px 0; border: 0; border-bottom: 1px solid #e4e9f0; vertical-align: top; text-align: left; }
+  thead th { font-size: 11px; font-weight: 500; color: #526078; }
+  tbody th { font-weight: 400; }
+  tbody tr:last-child > * { border-bottom: 0; }
+  tbody tr:hover, tbody tr:focus-within { background: #f8fafc; }
+  .rrze-statistik-hits-column { width: 7em; }
+  .rrze-statistik-hits { text-align: right; }
+  .rrze-statistik-hit-count {
+    display: inline-block;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 3px 6px;
+    border-radius: 5px;
+    background: #eef3f8;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  .rrze-statistik-resource { display: flex; gap: 9px; align-items: flex-start; padding-right: 8px; }
+  .rrze-statistik-rank {
+    display: inline-flex;
+    flex: 0 0 22px;
+    justify-content: center;
+    align-items: center;
+    height: 22px;
+    border-radius: 6px;
+    background: #f2f5fa;
+    color: #526078;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  tbody tr:first-child .rrze-statistik-rank { background: #e5f0fa; color: #005a9c; font-weight: 600; }
+  .rrze-statistik-resource-path { min-width: 0; padding-top: 2px; line-height: 1.5; overflow-wrap: anywhere; }
+  a {
+    display: block;
+    color: #005a9c;
+    text-decoration: underline;
+    text-decoration-color: #b2c9dd;
+    text-underline-offset: 3px;
+    &:hover { color: #003e6d; text-decoration-color: currentColor; }
+  }
+  a:focus-visible, > summary:focus-visible { outline: 3px solid #005a9c; outline-offset: 2px; }
+}
+
+@media (forced-colors: active) {
+  .rrze-statistik-chart {
+    .rrze-statistik-swatch { border-color: ButtonText; }
+    .rrze-statistik-year-toggle[aria-pressed="true"] { outline: 2px solid ButtonText; }
+    .rrze-statistik-selection circle, .rrze-statistik-selection line { stroke: CanvasText; }
+    button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible,
+    a:focus-visible, .rrze-statistik-table-scroll:focus-visible { outline-color: Highlight; }
+  }
+}
+
+.rrze-statistik > .rrze-statistik-source {
+  margin: 14px 0 0;
+  color: #526078;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+@container (min-width: 620px) {
+  .rrze-statistik-chart .rrze-statistik-month-tick { font-size: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rrze-statistik-chart .rrze-statistik-year-toggle { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .rrze-statistik-chart {
+    .rrze-statistik-explorer { border-color: CanvasText; }
+    .rrze-statistik-select-wrapper::after { border-color: ButtonText; }
+    .rrze-statistik-month-slider {
+      &::-webkit-slider-runnable-track { background: CanvasText; }
+      &::-webkit-slider-thumb { background: Highlight; border-color: Canvas; outline: 1px solid Highlight; }
+      &::-moz-range-track { background: CanvasText; }
+      &::-moz-range-thumb { background: Highlight; border-color: Canvas; outline: 1px solid Highlight; }
+    }
+  }
+}
+
+/* The dashboard owns navigation; each chart keeps its existing independent state. */
+.rrze-statistik-dashboard {
+  min-width: 0;
+  container-type: inline-size;
+  [hidden] { display: none !important; }
+
+  .rrze-statistik-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+    padding: 5px;
+    margin: 0 0 14px;
+    border: 1px solid #d5dde8;
+    border-radius: 11px;
+    background: #f2f5fa;
+    [role="tab"] {
+      min-width: 0;
+      min-height: 38px;
+      padding: 7px 6px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: transparent;
+      color: #475467;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+      cursor: pointer;
+      &:hover { background: #e5ebf4; color: #1d2939; }
+      &[aria-selected="true"] {
+        border-color: #b5c4d8;
+        background: #fff;
+        color: #005a9c;
+        font-weight: 600;
+        box-shadow: 0 1px 3px rgb(16 24 40 / 9%);
+      }
+    }
+  }
+  .rrze-statistik-display-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 0 0 18px;
+    label { color: #526078; font-size: 12px; }
+    select {
+      min-height: 36px;
+      max-width: 100%;
+      margin: 0;
+      padding: 5px 28px 5px 10px;
+      border: 1px solid #8290a6;
+      border-radius: 7px;
+      background-color: #fff;
+      color: #1d2939;
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+  }
+  .rrze-statistik-preferences-feedback {
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    border-left: 3px solid #8c4a00;
+    background: #fff8ed;
+    p { margin: 0 0 8px; }
+  }
+  .rrze-statistik-preferences-progress {
+    min-height: 16px;
+    margin: -10px 0 12px;
+    color: #526078;
+    font-size: 11px;
+    line-height: 16px;
+    text-align: right;
+    &.is-saving .rrze-statistik-progress-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+  .rrze-statistik-save-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #d5dde8;
+    border-top-color: #526078;
+    border-radius: 50%;
+    vertical-align: middle;
+    animation: rrze-statistik-saving .8s linear infinite;
+  }
+  [role="tab"]:focus-visible, [role="tabpanel"]:focus-visible,
+  .rrze-statistik-display-controls select:focus-visible {
+    outline: 3px solid #005a9c;
+    outline-offset: 2px;
+  }
+  > [data-statistik-panel] { min-width: 0; }
+}
+
+@keyframes rrze-statistik-saving {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rrze-statistik-save-indicator { animation: none; }
+}
+
+@container (min-width: 600px) {
+  .rrze-statistik-dashboard .rrze-statistik-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+@media (forced-colors: active) {
+  .rrze-statistik-dashboard {
+    [role="tab"][aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -3px; }
+    [role="tab"]:focus-visible, [role="tabpanel"]:focus-visible,
+    .rrze-statistik-display-controls select:focus-visible { outline-color: Highlight; }
+  }
+}
