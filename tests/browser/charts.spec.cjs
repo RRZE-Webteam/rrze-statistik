@@ -28,7 +28,7 @@ async function downloadBytes(page, root, kind) {
     return fs.readFile(await download.path());
 }
 
-for (const type of ['spline', 'areaspline', 'column', 'bar']) {
+for (const type of ['spline', 'areaspline', 'column', 'bar', 'heatmap']) {
     test(`${type}: keyboard exploration, visibility, table and accessibility`, async ({page}) => {
         const root = await openChart(page, `?type=${type}`);
         const slider = root.locator('input[type="range"]');
@@ -39,7 +39,7 @@ for (const type of ['spline', 'areaspline', 'column', 'bar']) {
         await expect(slider).toHaveAttribute('aria-valuetext', /January 2026: 0 visits/);
         await page.keyboard.press('End');
         await expect(slider).toHaveValue('12');
-        await expect(slider).toHaveAttribute('aria-valuetext', /No data available/);
+        await expect(slider).toHaveAttribute('aria-valuetext', /Future month/);
         await root.locator('select').selectOption('2025');
         await slider.focus();
         await page.keyboard.press('Home');
@@ -164,4 +164,58 @@ test('visual preview and enlarged layout', async ({page}, testInfo) => {
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(1280);
     await root.locator('input[type="range"]').press('Home');
     await expect(root.locator('output')).toContainText('January 2026: 0 visits');
+});
+
+/** Check the visible cell, keyboard value, table and real downloads for a selected month. */
+test('heatmap cells, keyboard and downloads share the displayed monthly values', async ({page}) => {
+    const root = await openChart(page, '?type=heatmap');
+    const slider = root.getByRole('slider');
+    await root.locator('[data-year="2025"][data-month="4"]').click();
+    await expect(slider).toHaveAttribute('aria-valuetext', 'April 2025: No data available');
+    await slider.press('ArrowRight');
+    await expect(slider).toHaveAttribute('aria-valuetext', 'May 2025: 250 visits');
+    await root.locator('summary').click();
+    await expect(root.locator('tbody tr').nth(4).locator('td').nth(1)).toHaveText('250');
+    await root.locator('[data-year="2024"].rrze-statistik-year-toggle').click();
+    const svg = (await downloadBytes(page, root, 'svg')).toString('utf8');
+    expect(svg).toContain('Upper limits');
+    expect(svg).toContain('2025–2026');
+    expect(svg).not.toContain('data-month=');
+    const png = await downloadBytes(page, root, 'png');
+    expect(png.subarray(1, 4).toString()).toBe('PNG');
+    expect(png.readUInt32BE(16)).toBe(2400);
+});
+
+/** Check that translated month labels fit, capturing the actual widget and export for visual review. */
+test('month labels fit the available width and retain the selected month', async ({page}, testInfo) => {
+    for (const type of ['column', 'bar', 'heatmap', 'spline', 'areaspline']) {
+        const root = await openChart(page, '?type=' + type);
+        for (const width of [320, 468]) {
+            await root.evaluate((node, size) => { node.style.width = size + 'px'; }, width);
+            const svg = root.locator('.rrze-statistik-svg');
+            await expect(svg).toHaveAttribute('width', String(width));
+            const axis = type === 'bar' ? 'y' : 'x';
+            const ticks = svg.locator('g[aria-label="' + axis + '-axis tick label"] text');
+            const labels = await ticks.allTextContents();
+            expect(labels).toContain('Jun');
+            if (width === 468 || type === 'bar') expect(labels).toHaveLength(12);
+            const boxes = await ticks.evaluateAll((nodes) => nodes.map((node) => {
+                const box = node.getBoundingClientRect();
+                return {left: box.left, right: box.right, top: box.top, bottom: box.bottom};
+            }));
+            for (let i = 1; i < boxes.length; i++) {
+                if (axis === 'x') expect(boxes[i].left).toBeGreaterThan(boxes[i - 1].right);
+                else expect(boxes[i].top).toBeGreaterThan(boxes[i - 1].bottom);
+            }
+            if (testInfo.project.name === 'chromium' && ['column', 'bar', 'heatmap'].includes(type)) {
+                await svg.screenshot({path: testInfo.outputPath(type + '-' + width + '.png')});
+            }
+        }
+        if (testInfo.project.name === 'chromium' && ['column', 'bar', 'heatmap'].includes(type)) {
+            await root.getByRole('button', {name: 'Year 2024'}).click();
+            await root.getByRole('button', {name: 'Year 2025'}).click();
+            const png = await downloadBytes(page, root, 'png');
+            await fs.writeFile(testInfo.outputPath(type + '-single-year-export.png'), png);
+        }
+    }
 });

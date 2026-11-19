@@ -130,6 +130,9 @@ class Language
         $display_type = $displayType ?? ($options['display_type'] ?? '');
 
         switch ($display_type){
+            case 'heatmap':
+                $display_type_description = __('Monthly heatmap', 'rrze-statistik');
+                break;
             case 'bar':
                 $display_type_description = __('Bar chart', 'rrze-statistik');
                 break;
@@ -227,6 +230,7 @@ class Language
             'areaspline' => __('Area chart', 'rrze-statistik'),
             'column' => __('Column chart', 'rrze-statistik'),
             'bar' => __('Bar chart', 'rrze-statistik'),
+            'heatmap' => __('Monthly heatmap', 'rrze-statistik'),
         ];
     }
 
@@ -269,6 +273,8 @@ class Language
             'minimum' => __('Minimum', 'rrze-statistik'),
             'maximum' => __('Maximum', 'rrze-statistik'),
             'navigationHelp' => __('Choose a year and use the month slider to explore the values.', 'rrze-statistik'),
+            'futureMonth' => __('Future month', 'rrze-statistik'),
+            'intensityScale' => __('Upper limits', 'rrze-statistik'),
             'missingValue' => __('No data available', 'rrze-statistik'),
             'source' => __('Source', 'rrze-statistik'),
             'preferencesError' => __('Your selection could not be saved. It remains active until this page is reloaded.', 'rrze-statistik'),

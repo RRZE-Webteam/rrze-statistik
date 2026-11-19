@@ -116,3 +116,50 @@ test('empty data and very long export metadata are represented without invalid g
     assert.ok(Number(svg.getAttribute('height')) > 500);
     assert.ok(svg.querySelectorAll(':scope > text').length > 10);
 });
+
+/** Verify measured zero has geometry and an empty month occupies only its group slot. */
+test('grouped bars distinguish a measured zero, a selected measurement and a gap', () => {
+    for (const type of ['bar', 'column']) {
+        const model = fixture(type);
+        const svg = renderChartSvg(model, model.years, {width: 468, selectedYear: 2026, selectedMonth: 2});
+        const zero = svg.querySelector('[data-year="2026"][data-month="2"]');
+        assert.ok(zero);
+        assert.ok(svg.querySelector(type === 'bar' ? 'g[aria-label="rule"] line, g[aria-label="ruleX"] line'
+            : 'g[aria-label="rule"] line, g[aria-label="ruleY"] line'));
+        assert.ok(svg.querySelector('.rrze-statistik-selection rect'));
+        assert.equal(svg.querySelector('.rrze-statistik-selection circle'), null);
+        assert.equal(svg.querySelector('[data-year="2026"][data-month="3"]'), null);
+        if (type === 'bar') assert.ok(+renderChartSvg(model, [2026], {width: 468}).getAttribute('height') < +svg.getAttribute('height'));
+    }
+});
+
+/** Compare actual SVG fills across filtered and exported matrices, including bin edges. */
+test('heatmap filters keep thresholds stable and distinguish zero, missing and future', () => {
+    const model = fixture('heatmap');
+    model.currentMonth = 6;
+    model.series[0].values[0] = 120;
+    model.series[2].values[0] = 30;
+    const all = renderChartSvg(model, model.years, {width: 468});
+    const single = renderChartSvg(model, [2026], {width: 1200, exportMode: true});
+    const allCells = all.querySelectorAll('g[aria-label="cell"] rect');
+    const cells = single.querySelectorAll('g[aria-label="cell"] rect');
+    assert.equal(allCells.length, 36);
+    assert.equal(cells.length, 12);
+    assert.equal(cells[0].getAttribute('fill'), allCells[24].getAttribute('fill'));
+    const key = [...single.querySelectorAll('.rrze-statistik-heat-key rect')];
+    assert.equal(cells[0].getAttribute('fill'), key[1].getAttribute('fill'));
+    assert.equal(cells[1].getAttribute('fill'), key[0].getAttribute('fill'));
+    assert.match(cells[2].getAttribute('fill'), /url\(#.+missing\)/);
+    assert.equal(cells[6].getAttribute('fill'), '#fff');
+    assert.equal(single.querySelector('[data-month]'), null);
+    assert.match(single.textContent, /≤ 120/);
+    assert.match(single.textContent, /2026 · Besuche/);
+    assert.match(single.textContent, /https:\/\/example.test/);
+    model.series[2].values.fill(null);
+    model.series[2].values[0] = 0;
+    const zeroKey = renderChartSvg(model, [2026]).querySelector('.rrze-statistik-heat-key').textContent;
+    assert.match(zeroKey, /0/);
+    assert.doesNotMatch(zeroKey, /≤/);
+    model.series[2].values[0] = null;
+    assert.doesNotMatch(renderChartSvg(model, [2026]).querySelector('.rrze-statistik-heat-key').textContent, /≤|0/);
+});

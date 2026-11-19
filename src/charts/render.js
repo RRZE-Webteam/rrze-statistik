@@ -1,7 +1,8 @@
 import * as Plot from '@observablehq/plot';
-import {formatValue, formatVisibleYears} from './model.js';
+import {formatVisibleYears} from './model.js';
+import {svgElement, monthTicks} from './svg.js';
+import {drawHeatmap} from './heatmap.js';
 
-const SVG_NS = 'http://www.w3.org/2000/svg';
 const SERIES_STYLES = [
     {color: '#005a9c', dash: '', symbol: 'circle', pattern: 'solid'},
     // The stroke-oriented diamond has equal width and height, avoiding the
@@ -20,23 +21,6 @@ let renderSequence = 0;
  */
 export function getSeriesStyle(model, year) {
     return SERIES_STYLES[Math.max(0, model.years.indexOf(year)) % SERIES_STYLES.length];
-}
-
-/**
- * Create an SVG element without interpreting supplied text as markup.
- *
- * @param {string} tag SVG element name.
- * @param {object} attributes SVG attributes.
- * @param {string|null} text Optional plain text content.
- * @returns {SVGElement} Newly created SVG element.
- */
-function svgElement(tag, attributes = {}, text = null) {
-    const element = document.createElementNS(SVG_NS, tag);
-    for (const [name, value] of Object.entries(attributes)) {
-        element.setAttribute(name, String(value));
-    }
-    if (text !== null) element.textContent = text;
-    return element;
 }
 
 /**
@@ -109,10 +93,10 @@ function appendPatterns(root, model, prefix) {
         pattern.append(svgElement('rect', {width: 8, height: 8, fill: style.color}));
         if (style.pattern === 'diagonal') {
             pattern.append(svgElement('path', {
-                d: 'M-2,2L2,-2M0,8L8,0M6,10L10,6', stroke: '#fff', 'stroke-width': 1.4,
+                d: 'M-2,2L2,-2M0,8L8,0M6,10L10,6', stroke: '#fff', 'stroke-width': 1.2, 'stroke-opacity': 0.48,
             }));
         } else {
-            pattern.append(svgElement('circle', {cx: 4, cy: 4, r: 1.4, fill: '#fff'}));
+            pattern.append(svgElement('circle', {cx: 4, cy: 4, r: 1.2, fill: '#fff', 'fill-opacity': 0.65}));
         }
         defs.append(pattern);
         fills.set(year, `url(#${id})`);
@@ -141,12 +125,15 @@ function seriesRecords(series) {
  * @param {number} month One-based month index.
  * @param {number} slot Position among visible years.
  * @param {number} count Number of visible years.
- * @returns {[number,number]} Lower and upper coordinates on the month scale.
+ * @param {number} pitch Width or height of one month in pixels.
+ * @returns {[number,number]} Bounds on the month scale.
  */
-function groupBounds(month, slot, count) {
-    const slotWidth = 0.76 / count;
-    const start = month - 0.38 + slot * slotWidth;
-    return [start + slotWidth * 0.08, start + slotWidth * 0.92];
+function groupBounds(month, slot, count, pitch) {
+    const innerGap = Math.min(2, pitch * 0.04);
+    const bar = Math.min(28, (pitch * 0.82 - innerGap * (count - 1)) / count);
+    const group = count * bar + (count - 1) * innerGap;
+    const start = month + (slot * (bar + innerGap) - group / 2) / pitch;
+    return [start, start + bar / pitch];
 }
 
 /**
@@ -155,9 +142,10 @@ function groupBounds(month, slot, count) {
  * @param {object} model Normalized chart model.
  * @param {Array<object>} series Visible series.
  * @param {Map<number,string>} fills Stable year fill patterns.
+ * @param {number} pitch Width or height of a month in pixels.
  * @returns {Array<object>} Observable Plot marks.
  */
-function createMarks(model, series, fills) {
+function createMarks(model, series, fills, pitch) {
     const marks = [];
     const horizontal = model.displayType === 'bar';
     const bars = horizontal || model.displayType === 'column';
@@ -166,16 +154,18 @@ function createMarks(model, series, fills) {
         const records = seriesRecords(item);
         if (bars) {
             const rectangles = records.filter((record) => record.value !== null).map((record) => {
-                const [start, end] = groupBounds(record.month, slot, series.length);
+                const [start, end] = groupBounds(record.month, slot, series.length, pitch);
                 return {...record, start, end};
             });
-            marks.push(Plot.rect(rectangles, horizontal ? {
-                x1: 0, x2: 'value', y1: 'start', y2: 'end',
-                fill: fills.get(item.year), stroke: style.color,
-            } : {
-                x1: 'start', x2: 'end', y1: 0, y2: 'value',
-                fill: fills.get(item.year), stroke: style.color,
-            }));
+            const axes = horizontal ? {x1: 0, x2: 'value', y1: 'start', y2: 'end'}
+                : {x1: 'start', x2: 'end', y1: 0, y2: 'value'};
+            marks.push(Plot.rect(rectangles, {...axes, fill: fills.get(item.year), rx: 1.5}));
+            const zeros = rectangles.filter((record) => record.value === 0);
+            if (zeros.length) {
+                const zeroMark = horizontal ? Plot.ruleX(zeros, {x: 0, y1: 'start', y2: 'end', stroke: style.color, strokeWidth: 2})
+                    : Plot.ruleY(zeros, {y: 0, x1: 'start', x2: 'end', stroke: style.color, strokeWidth: 2});
+                marks.push(zeroMark);
+            }
         } else {
             if (model.displayType === 'areaspline') {
                 marks.push(Plot.areaY(records, {
@@ -211,21 +201,35 @@ function appendInteraction(plot, model, series, options, layout) {
     const y = plot.scale('y');
     const horizontal = model.displayType === 'bar';
     const bars = horizontal || model.displayType === 'column';
+    const pitch = Math.abs((horizontal ? y : x).apply(2) - (horizontal ? y : x).apply(1));
     const overlay = svgElement('g', {'aria-hidden': 'true', class: 'rrze-statistik-point-targets'});
     for (const [slot, item] of series.entries()) {
         for (const record of seriesRecords(item)) {
             if (record.value === null) continue;
             let shape;
             if (bars) {
-                const [start, end] = groupBounds(record.month, slot, series.length);
+                const [start, end] = groupBounds(record.month, slot, series.length, pitch);
                 const x1 = horizontal ? x.apply(0) : x.apply(start);
                 const x2 = horizontal ? x.apply(record.value) : x.apply(end);
                 const y1 = horizontal ? y.apply(start) : y.apply(0);
                 const y2 = horizontal ? y.apply(end) : y.apply(record.value);
-                shape = svgElement('rect', {
+                const bounds = {
                     x: Math.min(x1, x2), y: Math.min(y1, y2),
-                    width: Math.max(6, Math.abs(x2 - x1)), height: Math.max(6, Math.abs(y2 - y1)),
-                });
+                    width: Math.abs(x2 - x1), height: Math.abs(y2 - y1),
+                };
+                if (item.year === options.selectedYear && record.month === options.selectedMonth) {
+                    const marker = svgElement('g', {class: 'rrze-statistik-selection', 'pointer-events': 'none'});
+                    const outline = {...bounds, width: Math.max(1, bounds.width), height: Math.max(1, bounds.height),
+                        rx: 1.5, fill: 'none'};
+                    marker.append(svgElement('rect', {...outline, stroke: '#fff', 'stroke-width': 4}),
+                        svgElement('rect', {...outline, stroke: '#17283d', 'stroke-width': 2}));
+                    plot.append(marker);
+                }
+                if (record.value === 0) {
+                    if (horizontal) bounds.width = 6;
+                    else { bounds.y -= 6; bounds.height = 6; }
+                }
+                shape = svgElement('rect', bounds);
             } else {
                 shape = svgElement('circle', {cx: x.apply(record.month), cy: y.apply(record.value), r: 10});
             }
@@ -238,25 +242,19 @@ function appendInteraction(plot, model, series, options, layout) {
     }
     const selected = series.find((item) => item.year === options.selectedYear);
     const month = options.selectedMonth;
-    if (selected && month >= 1 && month <= 12) {
-        const slot = series.indexOf(selected);
-        const [start, end] = groupBounds(month, slot, series.length);
-        const position = bars ? (start + end) / 2 : month;
+    if (!bars && selected && month >= 1 && month <= 12) {
         const value = selected.values[month - 1];
-        const monthPosition = horizontal ? y.apply(position) : x.apply(position);
+        const monthPosition = x.apply(month);
         const marker = svgElement('g', {class: 'rrze-statistik-selection', 'aria-hidden': 'true', 'pointer-events': 'none'});
-        marker.append(svgElement('line', horizontal ? {
-            x1: layout.marginLeft, x2: layout.width - layout.marginRight,
-            y1: monthPosition, y2: monthPosition, stroke: '#1d2327', 'stroke-width': 1, 'stroke-dasharray': '3,3',
-        } : {
+        marker.append(svgElement('line', {
             x1: monthPosition, x2: monthPosition,
             y1: layout.marginTop, y2: layout.height - layout.marginBottom,
             stroke: '#1d2327', 'stroke-width': 1, 'stroke-dasharray': '3,3',
         }));
         if (value !== null) {
             marker.append(svgElement('circle', {
-                cx: horizontal ? x.apply(value) : monthPosition,
-                cy: horizontal ? monthPosition : y.apply(value),
+                cx: monthPosition,
+                cy: y.apply(value),
                 r: 6, fill: '#fff', stroke: '#111', 'stroke-width': 2.5,
             }));
         }
@@ -277,17 +275,14 @@ export function renderChartSvg(model, visibleYears, options = {}) {
     const width = Math.max(160, Math.round(Number(options.width) || 640));
     const horizontal = model.displayType === 'bar';
     const series = model.series.filter((item) => visibleYears.includes(item.year));
-    const values = series.flatMap((item) => item.values.filter((value) => value !== null));
-    const maximum = Math.max(0, ...values) || 1;
-    const marginLeft = horizontal ? 50 : Math.min(120, Math.max(56, formatValue(model, maximum).length * 7 + 20));
-    const layout = {width, height: horizontal ? 440 : 350, marginTop: 30, marginRight: 22, marginBottom: 48, marginLeft};
     const root = svgElement('svg', {
         width, role: 'img',
         style: 'background:#fff;color:#1d2327;font-family:Arial,sans-serif;font-size:12px;',
         class: 'rrze-statistik-svg',
     });
     const prefix = `rrze-chart-${++renderSequence}`;
-    const fills = appendPatterns(root, model, prefix);
+    const heatmap = model.displayType === 'heatmap';
+    const fills = heatmap ? null : appendPatterns(root, model, prefix);
     root.append(svgElement('title', {}, model.title));
     const period = formatVisibleYears(model, visibleYears);
     root.append(svgElement('desc', {}, `${model.description} ${period}. ${model.unit}.`));
@@ -296,7 +291,7 @@ export function renderChartSvg(model, visibleYears, options = {}) {
         let baseline = appendWrappedText(root, model.title, width, 28, 20, 'bold');
         baseline = appendWrappedText(root, `${period} · ${model.unit}`, width, baseline, 13);
         let legendX = 20;
-        for (const item of series) {
+        for (const item of heatmap ? [] : series) {
             const style = getSeriesStyle(model, item.year);
             if (legendX + 130 > width) {
                 legendX = 20;
@@ -315,14 +310,51 @@ export function renderChartSvg(model, visibleYears, options = {}) {
         }
         headerHeight = baseline + 10;
     }
-    const ticks = width < 500 && !horizontal ? [1, 3, 5, 7, 9, 11] : Array.from({length: 12}, (_, index) => index + 1);
+    const plotHeight = heatmap ? drawHeatmap(root, model, series, options, width, headerHeight, prefix)
+        : drawSeriesChart(root, model, series, options, width, headerHeight, fills);
+    let height = headerHeight + plotHeight;
+    if (options.exportMode) {
+        height = appendWrappedText(root, `${model.sourceText}${model.sourceUrl ? ` — ${model.sourceUrl}` : ''}`, width, height + 22, 12) + 8;
+    }
+    root.setAttribute('height', String(height));
+    root.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    return root;
+}
+
+/**
+ * Draw monthly time series with axes shared by the interactive and exported views.
+ * @param {SVGElement} root Outer SVG.
+ * @param {object} model Normalized chart.
+ * @param {object[]} series Visible years.
+ * @param {object} options Active selection and export mode.
+ * @param {number} width Drawing width in pixels.
+ * @param {number} headerHeight Export metadata height.
+ * @param {Map} fills Year textures.
+ * @returns {number} Drawing height.
+ */
+function drawSeriesChart(root, model, series, options, width, headerHeight, fills) {
+    const horizontal = model.displayType === 'bar';
+    const values = series.flatMap((item) => item.values.filter((value) => value !== null));
+    const maximum = Math.max(0, ...values) || 1;
+    const compact = width < 650 && maximum >= 10000;
+    const axisFormat = new Intl.NumberFormat(model.locale, compact
+        ? {notation: 'compact', maximumFractionDigits: 1} : {maximumSignificantDigits: 12});
+    const marginLeft = horizontal ? 40 : Math.max(40, axisFormat.format(maximum).length * 7 + 12);
+    const layout = {width, height: horizontal ? 66 + 12 * (16 + 9 * series.length) : 326,
+        marginTop: 28, marginRight: horizontal ? 34 : 12, marginBottom: 38, marginLeft};
+    const span = horizontal ? layout.height - layout.marginTop - layout.marginBottom
+        : layout.width - layout.marginLeft - layout.marginRight;
+    const pitch = span / 12;
+    const ticks = horizontal ? model.months.map((_, i) => i + 1) : monthTicks(model.months, span, options.selectedMonth);
     const monthScale = {
         domain: [0.5, 12.5], ticks, tickFormat: (month) => model.months[month - 1] || '',
-        label: model.labels.month, nice: false,
+        label: null, nice: false, tickSize: 0, tickPadding: 8,
     };
+    const labelWidth = axisFormat.format(maximum).length * 7 + 16;
+    const tickCount = horizontal ? Math.max(1, Math.floor((layout.width - layout.marginLeft - layout.marginRight) / labelWidth)) : 5;
     const valueScale = {
-        domain: [0, maximum], nice: true, grid: true, label: model.unit,
-        ticks: Math.min(5, Math.max(1, Math.ceil(maximum))), tickFormat: (value) => formatValue(model, value),
+        domain: [0, maximum], nice: true, label: model.unit, labelArrow: false, tickSize: 0,
+        ticks: Math.min(5, tickCount, Math.max(1, Math.ceil(maximum))), tickFormat: axisFormat.format,
     };
     const plot = Plot.plot({
         document,
@@ -330,18 +362,14 @@ export function renderChartSvg(model, visibleYears, options = {}) {
         style: {fontFamily: 'Arial, sans-serif', fontSize: '12px', color: '#1d2327', background: '#fff', overflow: 'visible'},
         x: horizontal ? valueScale : monthScale,
         y: horizontal ? {...monthScale, reverse: true} : valueScale,
-        marks: createMarks(model, series, fills),
+        marks: [horizontal ? Plot.gridX({ticks: valueScale.ticks, stroke: '#dce3eb', strokeOpacity: 1})
+            : Plot.gridY({ticks: valueScale.ticks, stroke: '#dce3eb', strokeOpacity: 1}),
+            ...createMarks(model, series, fills, pitch)],
     });
     plot.setAttribute('x', '0');
     plot.setAttribute('y', String(headerHeight));
     plot.setAttribute('aria-hidden', 'true');
     if (!options.exportMode) appendInteraction(plot, model, series, options, layout);
     root.append(plot);
-    let height = headerHeight + layout.height;
-    if (options.exportMode) {
-        height = appendWrappedText(root, `${model.sourceText}${model.sourceUrl ? ` — ${model.sourceUrl}` : ''}`, width, height + 22, 12) + 8;
-    }
-    root.setAttribute('height', String(height));
-    root.setAttribute('viewBox', `0 0 ${width} ${height}`);
-    return root;
+    return layout.height;
 }

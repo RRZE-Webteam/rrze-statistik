@@ -9,6 +9,7 @@
  * @property {string} sourceUrl
  * @property {string} sourceText
  * @property {string} locale
+ * @property {number} currentMonth Last calendar month reached in the WordPress timezone.
  * @property {number[]} years
  * @property {string[]} months
  * @property {ChartSeries[]} series
@@ -17,7 +18,7 @@
  */
 
 export const METRICS = ['visits', 'hits', 'hosts', 'files', 'kbytes'];
-export const DISPLAY_TYPES = ['spline', 'areaspline', 'column', 'bar'];
+export const DISPLAY_TYPES = ['spline', 'areaspline', 'column', 'bar', 'heatmap'];
 
 export const DEFAULT_LABELS = Object.freeze({
     month: 'Month', year: 'Year', chooseYear: 'Choose a year', chooseMonth: 'Choose a month',
@@ -33,6 +34,7 @@ export const DEFAULT_LABELS = Object.freeze({
     summary: '{range}. Minimum: {min} ({minDate}). Maximum: {max} ({maxDate}).',
     range: '{first}–{last}', minimum: 'Minimum', maximum: 'Maximum',
     navigationHelp: 'Choose a year and use the month slider to explore the values.',
+    futureMonth: 'Future month', intensityScale: 'Upper limits',
     missingValue: 'No data available', source: 'Source',
     preferencesError: 'Your selection could not be saved. It remains active until this page is reloaded.',
     preferencesSaving: 'Saving selection…', preferencesSaved: 'Selection saved.',
@@ -94,6 +96,7 @@ export function createChartModel(transfer = {}, metric) {
     const suppliedYear = Number(transfer.currentYear);
     const currentYear = Number.isInteger(suppliedYear) && suppliedYear >= 1970 && suppliedYear <= 9998
         ? suppliedYear : new Date().getFullYear();
+    const calendarMonth = Number(transfer.currentMonth);
     const locale = normalizeLocale(transfer.locale);
     const years = [currentYear - 2, currentYear - 1, currentYear];
     const series = years.map((year) => ({year, values: Array(12).fill(null)}));
@@ -121,6 +124,7 @@ export function createChartModel(transfer = {}, metric) {
         description: String(transfer.descriptions?.[metric] || ''),
         sourceUrl: String(transfer.sourceUrl || ''), sourceText: String(transfer.sourceText || labels.source),
         locale, years, months, series, labels,
+        currentMonth: Number.isInteger(calendarMonth) && calendarMonth >= 1 && calendarMonth <= 12 ? calendarMonth : 12,
         displayType: DISPLAY_TYPES.includes(transfer.displayType) ? transfer.displayType : 'spline',
     };
 }
@@ -180,5 +184,29 @@ export function describePoint(model, year, month) {
     const value = model.series.find((series) => series.year === year)?.values[month - 1] ?? null;
     const date = new Intl.DateTimeFormat(model.locale, {month: 'long', year: 'numeric', timeZone: 'UTC'})
         .format(new Date(Date.UTC(year, month - 1, 1)));
-    return `${date}: ${formatValue(model, value)}${value === null ? '' : ` ${model.unit}`}`;
+    return `${date}: ${monthValueLabel(model, year, month, value)}${value === null ? '' : ` ${model.unit}`}`;
+}
+
+/**
+ * Identify a future calendar slot only when it has no measurement.
+ * @param {ChartModel} model Normalized calendar.
+ * @param {number} year Calendar year.
+ * @param {number} month One-based calendar month.
+ * @param {number|null} value Recorded value.
+ * @returns {boolean} Whether this slot is still in the future.
+ */
+export function isFutureMonth(model, year, month, value) {
+    return value === null && year === model.years[model.years.length - 1] && month > model.currentMonth;
+}
+
+/**
+ * Describe measured, missing and future months consistently in the chart controls and table.
+ * @param {ChartModel} model Normalized chart.
+ * @param {number} year Calendar year.
+ * @param {number} month One-based calendar month.
+ * @param {number|null} value Recorded value.
+ * @returns {string} Localized number or state.
+ */
+export function monthValueLabel(model, year, month, value) {
+    return isFutureMonth(model, year, month, value) ? model.labels.futureMonth : formatValue(model, value);
 }

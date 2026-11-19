@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-19T09:24:09+00:00\n"
+"POT-Creation-Date: 2026-11-19T10:47:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rrze-statistik\n"
@@ -74,7 +74,7 @@ msgid "Documents"
 msgstr ""
 
 #: includes/Analytics.php:144
-#: includes/Language.php:211
+#: includes/Language.php:214
 msgid "Requests"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgid "Retry saving"
 msgstr ""
 
 #: includes/Charts.php:125
-#: includes/Language.php:254
+#: includes/Language.php:258
 msgid "Loading statistics…"
 msgstr ""
 
@@ -160,7 +160,7 @@ msgid "Source: Statistiken.rrze.fau.de"
 msgstr ""
 
 #: includes/Language.php:66
-#: includes/Language.php:210
+#: includes/Language.php:213
 msgid "Visits"
 msgstr ""
 
@@ -186,7 +186,7 @@ msgid " Hits / Month"
 msgstr ""
 
 #: includes/Language.php:76
-#: includes/Language.php:212
+#: includes/Language.php:215
 msgid "Hosts"
 msgstr ""
 
@@ -200,7 +200,7 @@ msgid " Hosts / Month"
 msgstr ""
 
 #: includes/Language.php:81
-#: includes/Language.php:213
+#: includes/Language.php:216
 msgid "Files"
 msgstr ""
 
@@ -239,190 +239,203 @@ msgid "Unknown container"
 msgstr ""
 
 #: includes/Language.php:134
-#: includes/Language.php:229
-msgid "Bar chart"
+#: includes/Language.php:233
+msgid "Monthly heatmap"
 msgstr ""
 
 #: includes/Language.php:137
-#: includes/Language.php:226
-msgid "Line chart"
+#: includes/Language.php:232
+msgid "Bar chart"
 msgstr ""
 
 #: includes/Language.php:140
-#: includes/Language.php:227
-msgid "Area chart"
+#: includes/Language.php:229
+msgid "Line chart"
 msgstr ""
 
 #: includes/Language.php:143
-#: includes/Language.php:228
+#: includes/Language.php:230
+msgid "Area chart"
+msgstr ""
+
+#: includes/Language.php:146
+#: includes/Language.php:231
 msgid "Column chart"
 msgstr ""
 
-#: includes/Language.php:147
+#: includes/Language.php:150
 msgid "Chart"
 msgstr ""
 
 #. translators: %s: Selected chart type.
-#: includes/Language.php:154
+#: includes/Language.php:157
 #, php-format
 msgid "%s displaying monthly site visits. Visits are not a count of unique people."
 msgstr ""
 
-#: includes/Language.php:156
+#: includes/Language.php:159
 #, php-format
 msgid "%s displaying the number of hits over several months. A hit is a request for a file such as a web page, image, javascript, or CSS hosted on a web server. A single visitor can generate plenty of hits."
 msgstr ""
 
-#: includes/Language.php:158
+#: includes/Language.php:161
 #, php-format
 msgid "%s displaying the number of hosts over several months. A host is a computer or server opening your website. Larger online services are often only displayed as a single host if they share one server."
 msgstr ""
 
-#: includes/Language.php:160
+#: includes/Language.php:163
 #, php-format
 msgid "%s displaying the number of successful loaded files from your domain. This includes all documents, css-files, scripts and media-files."
 msgstr ""
 
-#: includes/Language.php:162
+#: includes/Language.php:165
 #, php-format
 msgid "%s displaying the number of transferred Data in kBytes over several months."
 msgstr ""
 
-#: includes/Language.php:174
+#: includes/Language.php:177
 msgid "Time"
 msgstr ""
 
 #. translators: 1: First calendar year, 2: Last calendar year.
-#: includes/Language.php:187
+#: includes/Language.php:190
 #, php-format
 msgid "Monthly values from January %1$d to December %2$d"
 msgstr ""
 
-#: includes/Language.php:200
+#: includes/Language.php:203
 msgid "Copy CSV to clipboard"
 msgstr ""
 
-#: includes/Language.php:214
+#: includes/Language.php:217
 msgid "Transfer"
 msgstr ""
 
-#: includes/Language.php:215
+#: includes/Language.php:218
 msgid "Popular pages"
 msgstr ""
 
-#: includes/Language.php:243
+#: includes/Language.php:247
 msgid "Month"
 msgstr ""
 
-#: includes/Language.php:244
+#: includes/Language.php:248
 msgid "Year"
 msgstr ""
 
-#: includes/Language.php:245
+#: includes/Language.php:249
 msgid "Choose a year"
 msgstr ""
 
-#: includes/Language.php:246
+#: includes/Language.php:250
 msgid "Choose a month"
 msgstr ""
 
-#: includes/Language.php:247
+#: includes/Language.php:251
 msgid "Visible years"
 msgstr ""
 
-#: includes/Language.php:248
+#: includes/Language.php:252
 msgid "Show data table"
 msgstr ""
 
 #. translators: {title} is the chart title; preserve the placeholder.
-#: includes/Language.php:250
+#: includes/Language.php:254
 msgid "{title}: monthly values"
 msgstr ""
 
-#: includes/Language.php:251
-#: includes/Language.php:272
+#: includes/Language.php:255
+#: includes/Language.php:278
 msgid "No data available"
 msgstr ""
 
-#: includes/Language.php:252
+#: includes/Language.php:256
 msgid "No monthly data are available for this period."
 msgstr ""
 
-#: includes/Language.php:253
+#: includes/Language.php:257
 msgid "The chart could not be displayed. The data table and CSV export remain available."
 msgstr ""
 
-#: includes/Language.php:256
+#: includes/Language.php:260
 msgid "Download CSV"
 msgstr ""
 
-#: includes/Language.php:257
+#: includes/Language.php:261
 msgid "Download SVG"
 msgstr ""
 
-#: includes/Language.php:258
+#: includes/Language.php:262
 msgid "Download PNG"
 msgstr ""
 
-#: includes/Language.php:259
+#: includes/Language.php:263
 msgid "CSV copied to clipboard."
 msgstr ""
 
-#: includes/Language.php:260
+#: includes/Language.php:264
 msgid "The CSV could not be copied. Please use the CSV download instead."
 msgstr ""
 
-#: includes/Language.php:261
+#: includes/Language.php:265
 msgid "The export could not be created. Please try again."
 msgstr ""
 
-#: includes/Language.php:262
+#: includes/Language.php:266
 msgid "Preparing export…"
 msgstr ""
 
-#: includes/Language.php:263
+#: includes/Language.php:267
 msgid "The download is ready."
 msgstr ""
 
-#: includes/Language.php:264
+#: includes/Language.php:268
 msgid "At least one year must remain visible."
 msgstr ""
 
 #. translators: Preserve {range}, {min}, {minDate}, {max} and {maxDate}.
-#: includes/Language.php:266
+#: includes/Language.php:270
 msgid "{range}. Minimum: {min} ({minDate}). Maximum: {max} ({maxDate})."
 msgstr ""
 
 #. translators: {first} and {last} are calendar years; preserve the placeholders.
-#: includes/Language.php:268
+#: includes/Language.php:272
 msgid "{first}–{last}"
 msgstr ""
 
-#: includes/Language.php:269
+#: includes/Language.php:273
 msgid "Minimum"
 msgstr ""
 
-#: includes/Language.php:270
+#: includes/Language.php:274
 msgid "Maximum"
 msgstr ""
 
-#: includes/Language.php:271
+#: includes/Language.php:275
 msgid "Choose a year and use the month slider to explore the values."
 msgstr ""
 
-#: includes/Language.php:273
+#: includes/Language.php:276
+msgid "Future month"
+msgstr ""
+
+#: includes/Language.php:277
+msgid "Upper limits"
+msgstr ""
+
+#: includes/Language.php:279
 msgid "Source"
 msgstr ""
 
-#: includes/Language.php:274
+#: includes/Language.php:280
 msgid "Your selection could not be saved. It remains active until this page is reloaded."
 msgstr ""
 
-#: includes/Language.php:275
+#: includes/Language.php:281
 msgid "Saving selection…"
 msgstr ""
 
-#: includes/Language.php:276
+#: includes/Language.php:282
 msgid "Selection saved."
 msgstr ""
 

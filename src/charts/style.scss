@@ -56,12 +56,13 @@
     background: var(--series-color);
     border: 1px solid var(--series-color);
   }
+  .rrze-statistik-swatch[hidden] { display: none; }
   .rrze-statistik-swatch-diagonal {
-    background: repeating-linear-gradient(135deg, var(--series-color) 0 4px, #fff 4px 5px, var(--series-color) 5px 8px);
+    background: repeating-linear-gradient(135deg, var(--series-color) 0 4px, color-mix(in srgb, var(--series-color), white 48%) 4px 5px, var(--series-color) 5px 8px);
   }
   .rrze-statistik-swatch-dots {
     background-color: var(--series-color);
-    background-image: radial-gradient(#fff 1px, transparent 1.5px);
+    background-image: radial-gradient(rgb(255 255 255 / 65%) 1px, transparent 1.5px);
     background-size: 6px 6px;
   }
   .rrze-statistik-swatch-line {
@@ -375,7 +376,7 @@
   .rrze-statistik-chart {
     .rrze-statistik-swatch { border-color: ButtonText; }
     .rrze-statistik-year-toggle[aria-pressed="true"] { outline: 2px solid ButtonText; }
-    .rrze-statistik-selection circle, .rrze-statistik-selection line { stroke: CanvasText; }
+    .rrze-statistik-selection rect, .rrze-statistik-selection circle, .rrze-statistik-selection line { stroke: CanvasText; }
     button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible,
     a:focus-visible, .rrze-statistik-table-scroll:focus-visible { outline-color: Highlight; }
   }
