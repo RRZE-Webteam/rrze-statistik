@@ -24,6 +24,5 @@ module.exports = function createWebpackConfig(env, argv) {
                     {loader: 'postcss-loader', options: {postcssOptions: {plugins: [autoprefixer()]}}}, 'sass-loader']},
             ],
         },
-        externals: {jquery: 'jQuery'},
     };
 };

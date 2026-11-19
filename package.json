@@ -1,6 +1,6 @@
 {
   "name": "rrze-statistik",
-  "version": "1.1.16",
+  "version": "1.2.0",
   "description": "Anzeige der Statistik von Webauftritten in der Dashboard",
   "main": "index.js",
   "scripts": {
@@ -9,41 +9,39 @@
     "build": "webpack --mode=production",
     "clean": "rm -rf dist/",
     "test": "node --test tests/*.test.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "test:php": "php tests/php/chart-integration.php && php tests/php/dashboard-layout.php"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RRZE-Webteam/rrze-statistik.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+  },
   "bugs": {
     "url": "https://github.com/RRZE-Webteam/rrze-statistik/issues"
   },
   "homepage": "https://github.com/RRZE-Webteam/rrze-statistik#readme",
   "dependencies": {
-    "@observablehq/plot": "^0.6.19",
-    "jquery": "^4.1.0"
+    "@observablehq/plot": "^0.6.19"
   },
   "devDependencies": {
-    "@automattic/babel-plugin-preserve-i18n": "^1.0.0",
     "@axe-core/playwright": "^4.14.0",
     "@babel/core": "^8.1.2",
     "@babel/preset-env": "^8.0",
     "@playwright/test": "^1.65.1",
     "autoprefixer": "^10.6.2",
     "babel-loader": "^10.1.1",
-    "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^7.1.5",
     "css-minimizer-webpack-plugin": "^8.0.0",
-    "install": "^0.13.0",
     "jsdom": "^31.0.1",
     "mini-css-extract-plugin": "^2.10.2",
     "postcss-loader": "^8.2.1",
     "sass": "^1.108.2",
     "sass-loader": "^17.1.0",
-    "semver": "^7.8.6",
-    "style-loader": "^4.0.0",
     "terser-webpack-plugin": "^5.6.1",
     "webpack": "^5.112.2",
     "webpack-cli": "^7.3.1"

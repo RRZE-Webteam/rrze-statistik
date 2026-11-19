@@ -134,6 +134,21 @@ test('SVG export is standalone and includes metadata without interaction targets
 /**
  * Clipboard rejection must leave the accessible error and download alternative.
  */
+/** Verify shared-renderer export metadata for single years, ranges and gaps. */
+test('export metadata describes exactly the selected year set', (context) => {
+    const dom = installDom(context);
+    for (const [years, period] of [[[2026], '2026'], [[2025, 2026], '2025–2026'], [[2024, 2026], '2024 und 2026']]) {
+        const model = fixture();
+        const markup = serializeChartSvg(model, years);
+        const svg = new dom.window.DOMParser().parseFromString(markup, 'image/svg+xml');
+        assert.equal(svg.querySelector('desc').textContent, `${model.description} ${period}. ${model.unit}.`);
+        const text = [...svg.documentElement.children].filter((node) => node.localName === 'text').map((node) => node.textContent);
+        assert.equal(text[1], `${period} · Besuche`);
+        assert.deepEqual(text.slice(2, 2 + years.length), years.map(String));
+        assert.ok(!markup.includes('2024–2026'));
+    }
+});
+
 test('clipboard rejection keeps CSV download usable with BOM only in the file', async (context) => {
     const dom = installDom(context);
     const model = fixture();

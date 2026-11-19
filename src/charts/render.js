@@ -1,5 +1,5 @@
 import * as Plot from '@observablehq/plot';
-import {formatValue} from './model.js';
+import {formatValue, formatVisibleYears} from './model.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const SERIES_STYLES = [
@@ -289,11 +289,12 @@ export function renderChartSvg(model, visibleYears, options = {}) {
     const prefix = `rrze-chart-${++renderSequence}`;
     const fills = appendPatterns(root, model, prefix);
     root.append(svgElement('title', {}, model.title));
-    root.append(svgElement('desc', {}, `${model.description} ${model.years[0]}–${model.years[model.years.length - 1]}. ${model.unit}.`));
+    const period = formatVisibleYears(model, visibleYears);
+    root.append(svgElement('desc', {}, `${model.description} ${period}. ${model.unit}.`));
     let headerHeight = 0;
     if (options.exportMode) {
         let baseline = appendWrappedText(root, model.title, width, 28, 20, 'bold');
-        baseline = appendWrappedText(root, `${model.years[0]}–${model.years[model.years.length - 1]} · ${model.unit}`, width, baseline, 13);
+        baseline = appendWrappedText(root, `${period} · ${model.unit}`, width, baseline, 13);
         let legendX = 20;
         for (const item of series) {
             const style = getSeriesStyle(model, item.year);

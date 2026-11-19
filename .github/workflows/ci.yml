@@ -1,0 +1,82 @@
+name: Plugin checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  charts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+      - run: npm ci
+      - run: npm audit
+      - run: npm audit --omit=dev
+      - run: npm run build
+      - name: Verify committed production assets and licenses
+        run: git diff --exit-code -- dist THIRD-PARTY-LICENSES.txt
+      - run: npm test
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run test:browser -- --workers=3
+
+  wordpress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - php: '7.4'
+            wordpress: '5.8'
+          - php: '8.5'
+            wordpress: latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: wordpress-test
+          MYSQL_DATABASE: rrze_statistik_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pwordpress-test"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli
+          coverage: none
+          tools: wp-cli:2.12.0
+      - name: PHP syntax and integration checks
+        run: |
+          find includes tests/php -name '*.php' -print0 | xargs -0 -n1 php -l
+          php -l rrze-statistik.php
+          php tests/php/chart-integration.php
+          php tests/php/dashboard-layout.php
+      - name: Install an isolated WordPress test site
+        env:
+          WORDPRESS_VERSION: ${{ matrix.wordpress }}
+        run: |
+          wp core download --version="$WORDPRESS_VERSION" --path="$RUNNER_TEMP/wordpress"
+          wp config create --path="$RUNNER_TEMP/wordpress" --dbname=rrze_statistik_test --dbuser=root --dbpass=wordpress-test --dbhost=127.0.0.1:3306
+          wp config set RRZE_STATISTIK_TEST_SITE true --raw --path="$RUNNER_TEMP/wordpress"
+          wp core install --path="$RUNNER_TEMP/wordpress" --url=http://statistik.test --title=Statistics --admin_user=test-admin --admin_password=wordpress-test --admin_email=test@example.test --skip-email
+          ln -s "$GITHUB_WORKSPACE" "$RUNNER_TEMP/wordpress/wp-content/plugins/rrze-statistik"
+          wp plugin activate rrze-statistik --path="$RUNNER_TEMP/wordpress"
+      - name: Exercise real WordPress hooks, storage and rendering
+        run: wp eval-file "$GITHUB_WORKSPACE/tests/php/wordpress-smoke.php" --path="$RUNNER_TEMP/wordpress"

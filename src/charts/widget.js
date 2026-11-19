@@ -1,4 +1,4 @@
-import {createInitialState, describePoint, formatValue, DISPLAY_TYPES} from './model.js';
+import {createInitialState, describePoint, formatValue, formatVisibleYears, DISPLAY_TYPES} from './model.js';
 import {getSeriesStyle, renderChartSvg} from './render.js';
 import {mountExportControls} from './exports.js';
 
@@ -50,7 +50,7 @@ function summarize(model, visibleYears) {
     const min = points.reduce((lowest, point) => point.value < lowest.value ? point : lowest);
     const max = points.reduce((highest, point) => point.value > highest.value ? point : highest);
     return message(model.labels.summary, {
-        range: message(model.labels.range, {first: model.years[0], last: model.years[model.years.length - 1]}),
+        range: formatVisibleYears(model, visibleYears),
         min: `${formatValue(model, min.value)} ${model.unit}`, minDate: min.date,
         max: `${formatValue(model, max.value)} ${model.unit}`, maxDate: max.date,
     });

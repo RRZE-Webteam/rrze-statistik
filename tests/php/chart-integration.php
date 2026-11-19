@@ -25,6 +25,7 @@ $state = [
     'widgets' => [],
     'userUpdates' => [],
     'storageFailure' => false,
+    'userMeta' => [],
 ];
 
 /**
@@ -42,7 +43,7 @@ class TestPlugin
      * @return string Plugin version.
 
      */
-    public function getVersion() { return '1.1.16'; }
+    public function getVersion() { return '1.2.0'; }
 }
 
 /**
@@ -333,6 +334,12 @@ function update_user_option($user, $key, $value, $global)
 /** @param string $name Option key. @param array $value Options. @return void */
 function update_option($name, $value) { $GLOBALS['state']['options'] = $value; }
 
+/** @param int $user User ID. @param string $key Metadata key. @param bool $single Single value. @return mixed Stored value. */
+function get_user_meta($user, $key, $single) { return $GLOBALS['state']['userMeta'][$user][$key] ?? ''; }
+
+/** @param int $user User ID. @param string $key Metadata key. @param mixed $value New value. @return bool Successful write. */
+function update_user_meta($user, $key, $value) { $GLOBALS['state']['userMeta'][$user][$key] = $value; return true; }
+
 /**
  * Capture dashboard registration without a running WordPress instance.
  * @param string $id Widget identifier.
@@ -369,6 +376,7 @@ function saveResponse($dashboard)
 
 require __DIR__ . '/../../includes/Language.php';
 require __DIR__ . '/../../includes/Dashboard.php';
+require __DIR__ . '/../../includes/DashboardLayout.php';
 require __DIR__ . '/../../includes/Charts.php';
 require __DIR__ . '/../../includes/Transfer.php';
 require __DIR__ . '/../../includes/Analytics.php';

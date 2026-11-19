@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createChartModel, createInitialState, describePoint, normalizeValue, normalizeLocale} from '../src/charts/model.js';
+import {createChartModel, createInitialState, describePoint, normalizeValue, normalizeLocale, formatVisibleYears} from '../src/charts/model.js';
 
 /** Build a deterministic metric model from raw rows. @param {Object[]} rows Raw records. @returns {Object} Model. */
 function model(rows) {
@@ -43,4 +43,14 @@ test('latest measured zero can be selected and locale variants work', () => {
     assert.match(describePoint(chart, 2026, 1), /Januar 2026: 0/);
     assert.match(describePoint(chart, 2026, 2), /No data/);
     assert.equal(normalizeLocale('de_DE_formal'), 'de-DE');
+});
+
+/** Check that localized periods never imply an excluded intermediate year. */
+test('visible periods distinguish a single year, consecutive ranges and gaps', () => {
+    const chart = model([]);
+    assert.equal(formatVisibleYears(chart, [2026]), '2026');
+    assert.equal(formatVisibleYears(chart, [2026, 2025, 2025, 1999]), '2025–2026');
+    assert.equal(formatVisibleYears(chart, [2026, 2024]), '2024 und 2026');
+    assert.equal(formatVisibleYears({...chart, locale: 'en-GB'}, [2024, 2026]), '2024 and 2026');
+    assert.equal(formatVisibleYears(chart, []), chart.labels.noData);
 });

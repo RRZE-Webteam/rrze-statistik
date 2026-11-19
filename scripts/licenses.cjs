@@ -10,7 +10,7 @@ const path = require('node:path');
 function writeLicenseNotices() {
     const root = path.resolve(__dirname, '..');
     const lock = JSON.parse(fs.readFileSync(path.join(root, 'package-lock.json'), 'utf8'));
-    const sections = ['Third-party licenses\n\nGenerated from installed production dependencies.\nWordPress supplies jQuery at runtime; its package license is included for completeness.'];
+    const sections = ['Third-party licenses\n\nGenerated from installed production dependencies.'];
     for (const [relative, entry] of Object.entries(lock.packages).sort(([a], [b]) => a.localeCompare(b))) {
         if (!relative || entry.dev || entry.link) continue;
         const directory = path.join(root, relative);

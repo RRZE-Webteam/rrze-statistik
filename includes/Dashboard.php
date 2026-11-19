@@ -55,13 +55,14 @@ class Dashboard
     }
 
     /**
-     * Registers one widget, retaining the common visits widget's placement/visibility.
+     * Migrates the user's layout and registers the consolidated statistics widget.
      * @return void
      */
     public function add_rrze_statistik_dashboard_widget()
     {
+        DashboardLayout::migrate();
         wp_add_dashboard_widget(
-            'rrze_statistik_widget_visits',
+            DashboardLayout::WIDGET_ID,
             __('Website statistics', 'rrze-statistik'),
             [$this, 'render']
         );

@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: RRZE Statistics 1.1.16\n"
+"Project-Id-Version: RRZE Statistics 1.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/rrze-statistik\n"
-"POT-Creation-Date: 2026-11-19T08:34:49+00:00\n"
-"PO-Revision-Date: 2026-11-18\n"
+"POT-Creation-Date: 2026-11-19T09:24:09+00:00\n"
+"PO-Revision-Date: 2026-11-19\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -124,7 +124,7 @@ msgstr ""
 "Für die Diagramme wird JavaScript benötigt. Die ursprüngliche Statistik ist "
 "über den folgenden Link verfügbar."
 
-#: includes/Dashboard.php:65
+#: includes/Dashboard.php:66
 msgid "Website statistics"
 msgstr "Website-Statistik"
 
@@ -471,7 +471,7 @@ msgid "Selection saved."
 msgstr "Auswahl gespeichert."
 
 #. translators: 1: Server PHP version number, 2: Required PHP version number.
-#: rrze-statistik.php:62
+#: rrze-statistik.php:64
 #, php-format
 msgid ""
 "The server is running PHP version %1$s. The Plugin requires at least PHP "
@@ -481,7 +481,7 @@ msgstr ""
 "mindestens die PHP-Version %2$s."
 
 #. translators: 1: Server WordPress version number, 2: Required WordPress version number.
-#: rrze-statistik.php:69
+#: rrze-statistik.php:71
 #, php-format
 msgid ""
 "The server is running WordPress version %1$s. The Plugin requires at least "
@@ -491,7 +491,7 @@ msgstr ""
 "benötigt mindestens die WordPress-Version %2$s."
 
 #. translators: 1: The plugin name, 2: The error string.
-#: rrze-statistik.php:87 rrze-statistik.php:140
+#: rrze-statistik.php:89 rrze-statistik.php:142
 #, php-format
 msgid "Plugins: %1$s: %2$s"
 msgstr "Plugins: %1$s: %2$s"

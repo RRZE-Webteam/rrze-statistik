@@ -76,6 +76,20 @@ test('SVG and PNG downloads are complete, standalone and local', async ({page}) 
     expect(requests.filter((url) => !url.startsWith('http://127.0.0.1:8765/') && !url.startsWith('blob:'))).toEqual([]);
 });
 
+/** Check real downloads against the visible summary after changing year filters. */
+test('filtered summaries and SVG headers agree with the selected years', async ({page}) => {
+    const root = await openChart(page, '?locale=de-DE');
+    for (const [toggle, period] of [
+        [2024, '2025–2026'], [2025, '2026'], [2024, '2024 und 2026'],
+    ]) {
+        await root.locator(`[data-year="${toggle}"].rrze-statistik-year-toggle`).click();
+        await expect(root.locator('.rrze-statistik-summary')).toHaveText(new RegExp(`^${period}\\.`));
+        const svg = (await downloadBytes(page, root, 'svg')).toString('utf8');
+        expect(svg).toContain(`${period} · visits`);
+        expect(svg).not.toContain('2024–2026');
+    }
+});
+
 test('clipboard denial preserves CSV download', async ({page}) => {
     const root = await openChart(page);
     await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', {configurable: true, value: {

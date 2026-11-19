@@ -154,6 +154,22 @@ export function formatValue(model, value) {
 }
 
 /**
+ * Describe only selected model years, without implying that hidden years are present.
+ * @param {ChartModel} model Normalized model with localized labels.
+ * @param {number[]} visibleYears Selected series identifiers.
+ * @returns {string} A single year, consecutive range, localized list, or no-data label.
+ */
+export function formatVisibleYears(model, visibleYears) {
+    const years = model.years.filter((year) => visibleYears.includes(year));
+    if (!years.length) return model.labels.noData;
+    if (years.length === 1) return String(years[0]);
+    if (years.every((year, index) => index === 0 || year === years[index - 1] + 1)) {
+        return interpolate(model.labels.range, {first: years[0], last: years[years.length - 1]});
+    }
+    return new Intl.ListFormat(model.locale, {style: 'long', type: 'conjunction'}).format(years.map(String));
+}
+
+/**
  * Describe a selected point consistently for visible output and assistive tools.
  * @param {ChartModel} model Normalized model.
  * @param {number} year Selected calendar year.
