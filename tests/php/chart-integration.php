@@ -216,7 +216,7 @@ function get_option($name) { return $GLOBALS['state']['options']; }
  * @return string Calendar year fixture.
 
  */
-function wp_date($format) { return '2026'; }
+function wp_date($format) { return $format === 'Y-n' ? '2026-7' : '2026'; }
 
 /**
 
@@ -409,7 +409,7 @@ expect(count($state['inline']) === 1, 'Multiple widgets must receive one shared 
 $script = $state['inline'][0][1];
 expect(strpos($script, '</script>') === false, 'Payload content must not terminate its script element.');
 $payload = json_decode(substr($script, strlen('var RRZESTATISTIKTRANSFER = '), -1), true);
-expect($payload['currentYear'] === 2026 && $payload['locale'] === 'de-DE', 'Calendar year and user locale must be supplied.');
+expect($payload['currentYear'] === 2026 && $payload['currentMonth'] === 7 && $payload['locale'] === 'de-DE', 'Calendar year and user locale must be supplied.');
 expect($payload['displayType'] === 'column', 'Existing display options must be retained.');
 expect($payload['linechartDataset'][0]['visits'] === '0', 'Zero-valued source records must be retained.');
 expect(isset($payload['labels']['navigationHelp'], $payload['descriptions']['visits']), 'Translated accessibility metadata must be supplied.');
@@ -442,11 +442,11 @@ $markup = Charts::dashboard();
 expect(substr_count($markup, 'role="tab"') === 6, 'All five metrics and popular pages must have tabs.');
 expect(substr_count($markup, 'data-statistik-panel=') === 6, 'Each tab must have one panel.');
 expect(strpos($markup, 'rrze-statistik-dashboard-controls" hidden') !== false, 'Inactive JavaScript controls must be hidden in the fallback.');
-expect(isset($payload['descriptionsByType']['bar']['visits']), 'Changing chart type must have localized descriptions.');
+expect(strpos($markup, 'value="heatmap"') !== false && count($payload['descriptionsByType']['heatmap']) === 5, 'Changing chart type must have localized descriptions.');
 
-$_POST = ['nonce' => 'valid', 'view' => 'hits', 'displayType' => 'bar'];
+$_POST = ['nonce' => 'valid', 'view' => 'hits', 'displayType' => 'heatmap'];
 expect(saveResponse($dashboard) === 200, 'Valid selections must be saved.');
-expect($state['userUpdates'][0] === [12, 'rrze_statistik_preferences', ['view' => 'hits', 'displayType' => 'bar'], false], 'Writes must be restricted to the current user and site.');
+expect($state['userUpdates'][0] === [12, 'rrze_statistik_preferences', ['view' => 'hits', 'displayType' => 'heatmap'], false], 'Writes must be restricted to the current user and site.');
 expect($state['options'] === false, 'Personal selections must not change the site-wide legacy options.');
 expect(saveResponse($dashboard) === 200, 'Saving an unchanged selection must succeed.');
 expect(count($state['userUpdates']) === 1, 'Unchanged selections must not trigger metadata writes again.');

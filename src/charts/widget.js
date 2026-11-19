@@ -1,4 +1,4 @@
-import {createInitialState, describePoint, formatValue, formatVisibleYears, DISPLAY_TYPES} from './model.js';
+import {createInitialState, describePoint, formatValue, formatVisibleYears, monthValueLabel, DISPLAY_TYPES} from './model.js';
 import {getSeriesStyle, renderChartSvg} from './render.js';
 import {mountExportControls} from './exports.js';
 
@@ -84,7 +84,7 @@ function updateTable(table, model, visibleYears) {
         const label = element('th', '', model.months[month]);
         label.scope = 'row';
         row.append(label);
-        for (const item of series) row.append(element('td', '', formatValue(model, item.values[month])));
+        for (const item of series) row.append(element('td', '', monthValueLabel(model, item.year, month + 1, item.values[month])));
         body.append(row);
     }
     table.replaceChildren(caption, head, body);
@@ -123,6 +123,7 @@ export function mountChart(root, model) {
         button.dataset.year = String(year);
         const style = getSeriesStyle(model, year);
         const swatch = element('span', `rrze-statistik-swatch rrze-statistik-swatch-${style.pattern}`);
+        swatch.hidden = model.displayType === 'heatmap';
         if (model.displayType === 'spline' || model.displayType === 'areaspline') {
             swatch.classList.add('rrze-statistik-swatch-line');
         }
@@ -224,7 +225,9 @@ export function mountChart(root, model) {
                 width: lastWidth, selectedYear: state.selectedYear, selectedMonth: state.selectedMonth,
             });
             svg.setAttribute('aria-labelledby', heading.id);
-            svg.setAttribute('aria-describedby', summary.id);
+            const desc = svg.querySelector('desc');
+            desc.id = id + '-chart-desc';
+            svg.setAttribute('aria-describedby', summary.id + ' ' + desc.id);
             plotHost.replaceChildren(svg);
         } catch (error) {
             plotHost.replaceChildren(element('p', 'notice notice-error rrze-statistik-render-error', model.labels.renderError));
@@ -244,11 +247,13 @@ export function mountChart(root, model) {
         model.description = text;
         description.textContent = text;
         for (const button of legendButtons.values()) {
-            button.querySelector('.rrze-statistik-swatch').classList.toggle(
+            const swatch = button.querySelector('.rrze-statistik-swatch');
+            swatch.hidden = type === 'heatmap';
+            swatch.classList.toggle(
                 'rrze-statistik-swatch-line', type === 'spline' || type === 'areaspline'
             );
         }
-        updatePlot();
+        updateSelection();
     }
 
     /**
@@ -268,10 +273,10 @@ export function mountChart(root, model) {
         selectedDate.textContent = new Intl.DateTimeFormat(model.locale, {
             month: 'long', year: 'numeric', timeZone: 'UTC',
         }).format(new Date(Date.UTC(state.selectedYear, state.selectedMonth - 1, 1)));
-        selectedValue.textContent = formatValue(model, measurement);
+        selectedValue.textContent = monthValueLabel(model, state.selectedYear, state.selectedMonth, measurement);
         selectedUnit.textContent = measurement === null ? '' : model.unit;
         output.classList.toggle('rrze-statistik-value-missing', measurement === null);
-        const color = getSeriesStyle(model, state.selectedYear).color;
+        const color = model.displayType === 'heatmap' ? '#005a9c' : getSeriesStyle(model, state.selectedYear).color;
         controls.style.setProperty('--explorer-accent', color);
         if (announce) status.textContent = value;
         updatePlot();

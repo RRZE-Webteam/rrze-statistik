@@ -56,13 +56,17 @@ test('inline chart type preserves selection and drives current-metric exports an
     await chart.locator('[data-year="2024"].rrze-statistik-year-toggle').click();
     const typeSelect = root.getByLabel('Display type');
     await typeSelect.focus();
-    for (const type of ['areaspline', 'column', 'spline', 'bar']) {
+    for (const type of ['areaspline', 'column', 'spline', 'bar', 'heatmap']) {
         await typeSelect.selectOption(type);
         await expect(typeSelect).toBeFocused();
         await expect(chart.locator('.rrze-statistik-description')).toHaveText(`${type} chart: monthly hits.`);
         await expect(chart.locator('select')).toHaveValue('2025');
         await expect(chart.locator('input[type="range"]')).toHaveValue('1');
         await expect(chart.locator('.rrze-statistik-year-toggle[aria-pressed="true"]')).toHaveCount(2);
+        if (type === 'heatmap') {
+            await expect(chart.locator('.rrze-statistik-point-targets rect')).toHaveCount(24);
+            continue;
+        }
         const mark = type === 'spline' ? 'line' : type === 'areaspline' ? 'area' : 'rect';
         await expect(chart.locator(`g[aria-label="${mark}"]`)).toHaveCount(2);
     }
@@ -72,13 +76,13 @@ test('inline chart type preserves selection and drives current-metric exports an
     expect(download.suggestedFilename()).toBe('rrze-statistik-hits-2025-2026.svg');
     const svg = await fs.readFile(await download.path(), 'utf8');
     expect(svg).toContain('hits over time');
-    expect(svg).toContain('aria-label="rect"');
+    expect(svg).toContain('Upper limits');
     expect(svg).not.toContain('aria-label="line"');
-    await expect.poll(async () => (await page.context().cookies()).find((cookie) => cookie.name === 'rrze-test-displayType')?.value).toBe('bar');
+    await expect.poll(async () => (await page.context().cookies()).find((cookie) => cookie.name === 'rrze-test-displayType')?.value).toBe('heatmap');
     await page.reload();
     await expect(root.getByRole('tab', {name: 'hits', exact: true})).toHaveAttribute('aria-selected', 'true');
-    await expect(root.getByLabel('Display type')).toHaveValue('bar');
-    await expect(root.locator('#hits g[aria-label="rect"]')).toHaveCount(3);
+    await expect(root.getByLabel('Display type')).toHaveValue('heatmap');
+    await expect(root.locator('#hits .rrze-statistik-point-targets rect')).toHaveCount(36);
 });
 
 test('preference failures remain usable and can be retried', async ({page}) => {

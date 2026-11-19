@@ -21,12 +21,12 @@ function createPayload(params) {
         }
     }
     return {
-        currentYear: 2026, locale: params.get('locale') || 'en-GB',
+        currentYear: 2026, currentMonth: 7, locale: params.get('locale') || 'en-GB',
         linechartDataset: params.get('scenario') === 'empty' ? [] : linechartDataset,
         displayType: params.get('type') || 'spline',
         languagePackage: Object.fromEntries(metrics.map((metric) => [metric, {headline_chart: `${metric} over time`, ordinate_desc: metric}])),
         descriptions: {visits: 'Monthly visits compared across three calendar years.'},
-        descriptionsByType: Object.fromEntries(['spline', 'areaspline', 'column', 'bar'].map((type) => [type,
+        descriptionsByType: Object.fromEntries(['spline', 'areaspline', 'column', 'bar', 'heatmap'].map((type) => [type,
             Object.fromEntries(metrics.map((metric) => [metric, `${type} chart: monthly ${metric}.`]))])),
         sourceText: 'Source: statistics.example.test', sourceUrl: 'https://statistics.example.test/',
     };
@@ -44,7 +44,7 @@ function dashboardMarkup() {
         ${views.map((view) => `<button type="button" role="tab" id="rrze-statistik-tab-${view}" aria-controls="rrze-statistik-panel-${view}" data-statistik-tab="${view}">${view === 'urls' ? 'Popular pages' : view}</button>`).join('')}</div>
         <div class="rrze-statistik-display-controls"><label for="rrze-statistik-display-type">Display type</label>
         <select id="rrze-statistik-display-type" data-statistik-display-type>
-        ${['spline', 'areaspline', 'column', 'bar'].map((type) => `<option value="${type}">${type}</option>`).join('')}</select></div>
+        ${['spline', 'areaspline', 'column', 'bar', 'heatmap'].map((type) => `<option value="${type}">${type}</option>`).join('')}</select></div>
         <p class="rrze-statistik-preferences-progress" role="status"></p>
         <div class="rrze-statistik-preferences-feedback" hidden><p role="status" class="rrze-statistik-preferences-status"></p>
         <button type="button" data-statistik-retry>Retry saving</button></div></div>

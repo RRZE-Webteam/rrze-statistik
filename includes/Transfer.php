@@ -44,6 +44,7 @@ class Transfer
             }
         }
 
+        [$calendarYear, $calendarMonth] = explode('-', wp_date('Y-n'));
         $payload = [
             'nonce' => wp_create_nonce('rrze_statistik_transfer'),
             'preferencesNonce' => wp_create_nonce('rrze_statistik_preferences'),
@@ -56,7 +57,8 @@ class Transfer
             'sourceText' => Language::getSource(),
             'a11yAbscissa' => Language::getAccessibilityAbscissa(),
             'displayType' => $displayType,
-            'currentYear' => (int) wp_date('Y'),
+            'currentYear' => (int) $calendarYear,
+            'currentMonth' => (int) $calendarMonth,
             'locale' => str_replace('_', '-', get_user_locale()),
             'sourceUrl' => Analytics::retrieveSiteUrl('logs'),
             'descriptions' => $descriptions,

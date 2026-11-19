@@ -11,7 +11,7 @@ class Dashboard
     const VIEWS = ['visits', 'hits', 'hosts', 'files', 'kbytes', 'urls'];
 
     /** @var string[] Supported chart representations. */
-    const DISPLAY_TYPES = ['spline', 'areaspline', 'column', 'bar'];
+    const DISPLAY_TYPES = ['spline', 'areaspline', 'column', 'bar', 'heatmap'];
 
     /** Registers dashboard rendering and the authenticated preference endpoint. */
     public function __construct()
